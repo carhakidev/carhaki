@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+{% block title %}Search Vehicle History — CarHaki{% endblock %}
+{% block meta_description %}Search vehicle history for any car imported from Japan or the USA. Enter a VIN or chassis number to get a free preview, then unlock the full report.{% endblock %}
+
+{% block content %}
+
+<section class="bg-ch-green py-12">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <h1 class="font-heading font-bold text-3xl text-white mb-2">Search Vehicle History</h1>
+    <p class="text-green-200 text-sm">Enter a 17-digit VIN (USA) or 8-14 character chassis number (Japan)</p>
+  </div>
+</section>
+
+<section class="bg-ch-green pb-16 -mb-8">
+  <div class="max-w-2xl mx-auto px-4">
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+
+      <form method="post" action="{% url 'vehicles:search' %}" id="searchForm" novalidate>
+        {% csrf_token %}
+
+        <!-- Country Toggle -->
+        <div class="flex rounded-lg overflow-hidden border border-gray-200 mb-4" id="countryToggle">
+          <button type="button"
+            class="flex-1 py-3 text-sm font-semibold transition-colors country-btn active-country"
+            data-country="USA"
+            onclick="selectCountry('USA')">
+            <span>&#127482;&#127480;</span> Imported from USA
+          </button>
+          <button type="button"
+            class="flex-1 py-3 text-sm font-semibold transition-colors country-btn"
+            data-country="JAPAN"
+            onclick="selectCountry('JAPAN')">
+            <span>&#127471;&#127477;</span> Imported from Japan
+          </button>
+        </div>
+        <input type="hidden" name="source_country" id="source_country" value="{{ source_country|default:'USA' }}">
+
+        <!-- Search Input -->
+        <div class="relative mb-2">
+          <input
+            type="text"
+            name="identifier"
+            id="identifier"
+            value="{{ form.identifier.value|default:'' }}"
+            placeholder="Enter VIN or chassis number..."
+            maxlength="20"
+            autocomplete="off"
+            class="w-full border-2 border-gray-300 rounded-xl px-5 py-4 text-base pr-36 focus:outline-none focus:border-ch-gold transition-colors uppercase"
+            oninput="detectType(this.value)"
+          >
+          <button type="submit"
+            class="absolute right-2 top-2 bottom-2 bg-ch-gold text-ch-dark font-heading font-semibold px-5 rounded-lg hover:bg-ch-gold-d transition-colors text-sm">
+            Search
+          </button>
+        </div>
+
+        <!-- Type Hint -->
+        <p id="typeHint" class="text-xs text-gray-500 mb-4 min-h-[1rem]"></p>
+
+        {% if form.identifier.errors %}
+        <p class="text-red-500 text-sm mb-4">{{ form.identifier.errors|join:", " }}</p>
+        {% endif %}
+
+      </form>
+
+      <!-- Quick help -->
+      <div class="grid grid-cols-2 gap-3 mt-2">
+        <div class="bg-blue-50 rounded-lg p-3 text-xs">
+          <p class="font-semibold text-blue-800 mb-1">USA VIN Format</p>
+          <p class="text-blue-600 font-mono">1HGCM82633A004352</p>
+          <p class="text-blue-600 mt-1">17 characters. Found on dashboard or door frame.</p>
+        </div>
+        <div class="bg-red-50 rounded-lg p-3 text-xs">
+          <p class="font-semibold text-red-800 mb-1">Japan Chassis Format</p>
+          <p class="text-red-600 font-mono">ZZT240-987654</p>
+          <p class="text-red-600 mt-1">8-14 characters. On firewall or registration.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pt-16 pb-12 bg-ch-light">
+  <div class="max-w-5xl mx-auto px-4">
+
+    {% if recent_searches %}
+    <div class="mb-10">
+      <h2 class="font-heading font-semibold text-lg text-ch-green mb-4">Your Recent Searches</h2>
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+        {% for search in recent_searches %}
+        <a href="{% url 'vehicles:preview' identifier=search.identifier %}?country={{ search.source_country }}"
+          class="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-ch-gold hover:shadow-sm transition-all">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center text-sm flex-shrink-0
+            {% if search.source_country == 'USA' %}bg-blue-100 text-blue-600{% else %}bg-red-100 text-red-600{% endif %}">
+            {{ search.source_country }}
+          </div>
+          <div class="min-w-0">
+            <p class="font-mono font-semibold text-sm text-gray-800 truncate">{{ search.identifier }}</p>
+            <p class="text-xs text-gray-500">{{ search.created_at|timesince }} ago</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- How It Works -->
+    <div class="mb-10">
+      <h2 class="font-heading font-semibold text-xl text-ch-green mb-6 text-center">How a Search Works</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-xl p-5 text-center shadow-sm">
+          <div class="w-10 h-10 bg-ch-gold/20 text-ch-navy font-heading font-bold text-lg rounded-full flex items-center justify-center mx-auto mb-3">1</div>
+          <h3 class="font-semibold text-ch-green mb-1 text-sm">Free Preview</h3>
+          <p class="text-gray-600 text-xs">Enter the VIN or chassis number. We immediately show you the make, model, year, and engine at no charge.</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 text-center shadow-sm">
+          <div class="w-10 h-10 bg-ch-gold/20 text-ch-navy font-heading font-bold text-lg rounded-full flex items-center justify-center mx-auto mb-3">2</div>
+          <h3 class="font-semibold text-ch-green mb-1 text-sm">Choose Your Report</h3>
+          <p class="text-gray-600 text-xs">Select Basic (UGX 35,000) for title and recall status, or Full (UGX 75,000) for complete accident history, odometer check, and AI analysis.</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 text-center shadow-sm">
+          <div class="w-10 h-10 bg-ch-gold/20 text-ch-navy font-heading font-bold text-lg rounded-full flex items-center justify-center mx-auto mb-3">3</div>
+          <h3 class="font-semibold text-ch-green mb-1 text-sm">Pay and Receive</h3>
+          <p class="text-gray-600 text-xs">Pay via MTN Money, Airtel Money, or card. Your report is generated within 1 to 3 minutes and available to download as PDF.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="bg-white border border-gray-200 rounded-xl p-5">
+      <h3 class="font-heading font-semibold text-ch-green mb-3 text-sm">Tips for finding the number</h3>
+      <div class="grid sm:grid-cols-2 gap-4 text-sm text-gray-600">
+        <div>
+          <p class="font-semibold text-gray-800 mb-1">For USA vehicles:</p>
+          <ul class="space-y-1 text-xs">
+            <li>- Look through the windscreen at the dashboard on the driver's side</li>
+            <li>- Check inside the driver's door on the door frame sticker</li>
+            <li>- Find it on the vehicle registration or insurance documents</li>
+            <li>- 17 characters, no I, O, or Q</li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-semibold text-gray-800 mb-1">For Japan vehicles:</p>
+          <ul class="space-y-1 text-xs">
+            <li>- Check the firewall (panel between engine and cabin)</li>
+            <li>- Look at the Japanese export certificate</li>
+            <li>- Auction sheets often show the chassis number at the top</li>
+            <li>- Usually in format MODEL-XXXXXX (e.g. ZZT240-987654)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% block extra_js %}
+<style>
+  .active-country { background-color: #0C1F3F; color: white; }
+  .country-btn:not(.active-country) { background-color: white; color: #6b7280; }
+</style>
+<script>
+  function selectCountry(country) {
+    document.getElementById('source_country').value = country;
+    document.querySelectorAll('.country-btn').forEach(btn => {
+      if (btn.dataset.country === country) {
+        btn.classList.add('active-country');
+        btn.classList.remove('bg-white', 'text-gray-500');
+      } else {
+        btn.classList.remove('active-country');
+      }
+    });
+    var hint = document.getElementById('typeHint');
+    if (country === 'USA') {
+      hint.textContent = 'Enter the 17-character VIN from a USA-imported vehicle.';
+    } else {
+      hint.textContent = 'Enter the chassis number (8-14 characters) from a Japan-imported vehicle.';
+    }
+  }
+
+  function detectType(val) {
+    val = val.trim().toUpperCase();
+    var hint = document.getElementById('typeHint');
+    if (val.length === 0) { hint.textContent = ''; return; }
+    if (val.length === 17) {
+      var invalid = /[IOQ]/.test(val);
+      if (invalid) {
+        hint.textContent = 'VIN contains invalid characters (I, O, or Q are not used in VINs).';
+        hint.className = 'text-xs text-red-500 mb-4 min-h-[1rem]';
+      } else {
+        hint.textContent = 'Looks like a valid USA VIN. Make sure USA is selected above.';
+        hint.className = 'text-xs text-green-600 mb-4 min-h-[1rem]';
+        selectCountry('USA');
+      }
+    } else if (val.length >= 8 && val.length <= 14) {
+      hint.textContent = 'Looks like a Japan chassis number. Make sure Japan is selected above.';
+      hint.className = 'text-xs text-orange-600 mb-4 min-h-[1rem]';
+      selectCountry('JAPAN');
+    } else if (val.length < 8) {
+      hint.textContent = 'Keep typing... VINs are 17 characters; chassis numbers are 8 to 14.';
+      hint.className = 'text-xs text-gray-500 mb-4 min-h-[1rem]';
+    } else {
+      hint.textContent = 'Number is longer than expected. Please double-check it.';
+      hint.className = 'text-xs text-red-500 mb-4 min-h-[1rem]';
+    }
+  }
+
+  // Init
+  selectCountry('{{ source_country|default:"USA" }}');
+  var initial = document.getElementById('identifier').value;
+  if (initial) detectType(initial);
+</script>
+{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Create Account — CarHaki{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-ch-light flex items-center justify-center py-12 px-4">
+  <div class="max-w-md w-full">
+
+    <div class="text-center mb-8">
+      <a href="{% url 'vehicles:home' %}" class="text-ch-gold font-heading font-bold text-3xl">Car<span class="text-ch-green">Haki</span></a>
+      <h1 class="font-heading font-bold text-2xl text-ch-green mt-4">Create Your Account</h1>
+      <p class="text-gray-500 text-sm mt-1">Already have an account? <a href="{% url 'accounts:login' %}" class="text-ch-green font-semibold hover:underline">Sign in</a></p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm p-8">
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">First Name</label>
+            <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}"
+                   class="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:border-ch-green focus:outline-none text-sm"
+                   placeholder="John" required>
+            {% if form.first_name.errors %}<p class="text-red-500 text-xs mt-1">{{ form.first_name.errors.0 }}</p>{% endif %}
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Last Name</label>
+            <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}"
+                   class="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:border-ch-green focus:outline-none text-sm"
+                   placeholder="Mukasa" required>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
+          <input type="email" name="email" value="{{ form.email.value|default:'' }}"
+                 class="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:border-ch-green focus:outline-none text-sm"
+                 placeholder="you@example.com" required autocomplete="email">
+          {% if form.email.errors %}<p class="text-red-500 text-xs mt-1">{{ form.email.errors.0 }}</p>{% endif %}
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Phone Number <span class="font-normal text-gray-400">(optional)</span></label>
+          <input type="tel" name="phone_number" value="{{ form.phone_number.value|default:'' }}"
+                 class="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:border-ch-green focus:outline-none text-sm"
+                 placeholder="+256 700 123456">
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold text-gray-700 mb-1">I am a…</label>
+          <select name="account_type"
+                  class="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:border-ch-green focus:outline-none text-sm bg-white">
+            <option value="INDIVIDUAL">Individual Car Buyer</option>
+            <option value="DEALER">Car Dealer / Importer</option>
+            <option value="BANK">Bank / Microfinance</option>
+            <option value="INSURANCE">Insurance Company</option>
+            <option value="MECHANIC">Mechanic / Inspector</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+          <input type="password" name="password1"
+                 class="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:border-ch-green focus:outline-none text-sm"
+                 placeholder="Minimum 8 characters" required autocomplete="new-password">
+          {% if form.password1.errors %}<p class="text-red-500 text-xs mt-1">{{ form.password1.errors.0 }}</p>{% endif %}
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Confirm Password</label>
+          <input type="password" name="password2"
+                 class="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:border-ch-green focus:outline-none text-sm"
+                 placeholder="Repeat your password" required autocomplete="new-password">
+          {% if form.password2.errors %}<p class="text-red-500 text-xs mt-1">{{ form.password2.errors.0 }}</p>{% endif %}
+        </div>
+
+        {% if form.non_field_errors %}
+        <div class="bg-red-50 border border-red-200 rounded-xl p-3 mb-4">
+          {% for error in form.non_field_errors %}<p class="text-red-600 text-sm">{{ error }}</p>{% endfor %}
+        </div>
+        {% endif %}
+
+        <button type="submit" class="w-full bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold py-3 rounded-xl transition-colors text-sm">
+          Create Account
+        </button>
+
+        <p class="text-center text-gray-400 text-xs mt-4">
+          By registering you agree to our <a href="{% url 'vehicles:terms' %}" class="underline">Terms of Service</a>
+          and <a href="{% url 'vehicles:privacy' %}" class="underline">Privacy Policy</a>.
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

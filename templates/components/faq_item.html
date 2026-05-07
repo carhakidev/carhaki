@@ -1,0 +1,14 @@
+<div class="border border-gray-200 rounded-xl overflow-hidden">
+  <button
+    class="w-full text-left px-6 py-4 flex items-center justify-between hover:bg-ch-light transition-colors"
+    onclick="var body=this.nextElementSibling; body.classList.toggle('hidden'); this.querySelector('svg').classList.toggle('rotate-180');"
+  >
+    <span class="font-heading font-semibold text-gray-800 pr-4">{{ question }}</span>
+    <svg class="w-5 h-5 text-ch-gold flex-shrink-0 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </button>
+  <div class="hidden px-6 py-4 bg-ch-light border-t border-gray-100">
+    <p class="text-gray-700 leading-relaxed">{{ answer }}</p>
+  </div>
+</div>

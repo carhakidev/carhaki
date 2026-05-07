@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Set Up Dealer Profile — CarHaki{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-16">
+  <div class="text-center mb-8">
+    <h1 class="font-heading font-bold text-3xl text-ch-green">Set Up Your Dealer Profile</h1>
+    <p class="text-gray-600 mt-2">
+      Complete your dealer profile to access bulk credit packs and the dealer dashboard.
+      Your profile will be reviewed and approved within 2 business days.
+    </p>
+  </div>
+
+  <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="space-y-4">
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Business Name <span class="text-red-500">*</span></label>
+          <input type="text" name="business_name" value="{{ form.business_name.value|default:'' }}"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ch-gold"
+            placeholder="Your dealership trading name" required>
+          {% if form.business_name.errors %}<p class="text-red-500 text-xs mt-1">{{ form.business_name.errors|join:", " }}</p>{% endif %}
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Business Registration Number</label>
+          <input type="text" name="registration_number" value="{{ form.registration_number.value|default:'' }}"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ch-gold"
+            placeholder="URSB registration number (optional)">
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Business Email <span class="text-red-500">*</span></label>
+            <input type="email" name="contact_email" value="{{ form.contact_email.value|default:'' }}"
+              class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ch-gold"
+              placeholder="business@email.com" required>
+            {% if form.contact_email.errors %}<p class="text-red-500 text-xs mt-1">{{ form.contact_email.errors|join:", " }}</p>{% endif %}
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Business Phone <span class="text-red-500">*</span></label>
+            <input type="tel" name="contact_phone" value="{{ form.contact_phone.value|default:'' }}"
+              class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ch-gold"
+              placeholder="+256 7XX XXX XXX" required>
+            {% if form.contact_phone.errors %}<p class="text-red-500 text-xs mt-1">{{ form.contact_phone.errors|join:", " }}</p>{% endif %}
+          </div>
+        </div>
+
+        <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 text-sm text-blue-800">
+          <strong>What happens next:</strong> Once you submit this form, the CarHaki team will
+          review your profile. When approved, you will be able to purchase bulk report credit
+          packs at dealer rates.
+        </div>
+
+        <button type="submit" class="btn-primary w-full text-center">
+          Submit Dealer Profile
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <p class="text-center text-sm text-gray-500 mt-6">
+    Looking to apply as a new dealer partner instead?
+    <a href="{% url 'vehicles:dealers' %}" class="text-ch-gold hover:underline">See the Dealer Programme</a>
+  </p>
+</div>
+{% endblock %}

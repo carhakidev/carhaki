@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>We Received Your Message — CarHaki</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f8f9fa;font-family:'Inter',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f9fa;padding:40px 20px;">
+  <tr>
+    <td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+        <tr>
+          <td style="background-color:#1B4332;border-radius:12px 12px 0 0;padding:28px 32px;text-align:center;">
+            <h1 style="margin:0;color:#F4A81D;font-family:'Poppins',Arial,sans-serif;font-size:24px;font-weight:700;">CarHaki</h1>
+            <p style="margin:6px 0 0;color:#a7c4b5;font-size:13px;">Uganda Vehicle History Verification</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background-color:#ffffff;padding:36px 32px;">
+            <h2 style="margin:0 0 16px;color:#1B4332;font-family:'Poppins',Arial,sans-serif;font-size:20px;font-weight:600;">We Received Your Message</h2>
+            <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
+              Hello {% if message %}{{ message.name }}{% endif %},
+            </p>
+            <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
+              Thank you for contacting CarHaki. We have received your message and a member of our
+              support team will respond within 4 business hours during working days
+              (Monday to Friday, 8:00 AM to 6:00 PM East Africa Time).
+            </p>
+
+            {% if message %}
+            <table style="width:100%;background-color:#f8f9fa;border-radius:8px;margin:16px 0;" cellpadding="12" cellspacing="0">
+              <tr>
+                <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #e5e7eb;">Subject</td>
+                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #e5e7eb;">{{ message.get_subject_display }}</td>
+              </tr>
+              <tr>
+                <td style="color:#6b7280;font-size:13px;vertical-align:top;padding-top:12px;">Your Message</td>
+                <td style="color:#374151;font-size:13px;line-height:1.5;padding-top:12px;">{{ message.message|truncatewords:40 }}</td>
+              </tr>
+            </table>
+            {% endif %}
+
+            <p style="margin:0 0 0;color:#6b7280;font-size:13px;line-height:1.5;border-top:1px solid #e5e7eb;padding-top:16px;">
+              For urgent matters, you can also reach us on WhatsApp at
+              <a href="https://wa.me/256700123456" style="color:#F4A81D;">+256 700 123 456</a>.
+              Please quote the email address you used to contact us.
+            </p>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background-color:#f8f9fa;border-radius:0 0 12px 12px;padding:20px 32px;text-align:center;">
+            <p style="margin:0;color:#9ca3af;font-size:12px;line-height:1.6;">
+              CarHaki Limited &bull; Plot 45, Kampala Road, Kampala, Uganda<br>
+              <a href="mailto:support@carhaki.ug" style="color:#9ca3af;">support@carhaki.ug</a>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

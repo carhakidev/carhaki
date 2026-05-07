@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CarHaki Vehicle Report — {{ report.search.identifier }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; color: #1a1a1a; font-size: 12px; line-height: 1.5; }
+    h1,h2,h3 { font-family: 'Poppins', sans-serif; }
+
+    .header { background: #1B4332; color: white; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 22px; font-weight: 800; }
+    .logo span { color: #F4A81D; }
+    .grade-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Poppins',sans-serif; font-size: 28px; font-weight: 900; color: white; }
+
+    .vehicle-title { background: #f8f9fa; padding: 20px 32px; border-bottom: 2px solid #1B4332; }
+    .vehicle-title h1 { font-size: 22px; color: #1B4332; }
+    .vehicle-title .meta { color: #666; font-size: 11px; margin-top: 4px; }
+
+    .section { padding: 20px 32px; border-bottom: 1px solid #eee; }
+    .section h2 { font-size: 14px; font-weight: 700; color: #1B4332; margin-bottom: 12px; border-bottom: 2px solid #F4A81D; padding-bottom: 6px; }
+
+    .specs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .spec-item dt { font-size: 10px; text-transform: uppercase; color: #999; }
+    .spec-item dd { font-weight: 600; font-size: 12px; }
+
+    .traffic-lights { display: flex; gap: 12px; flex-wrap: wrap; }
+    .tl-box { border: 1px solid #eee; border-radius: 8px; padding: 10px 14px; text-align: center; min-width: 100px; }
+    .tl-dot { font-size: 18px; display: block; margin-bottom: 4px; }
+    .tl-label { font-size: 10px; font-weight: 600; color: #333; }
+    .tl-sub { font-size: 9px; color: #999; }
+
+    .brand-badge { display: inline-block; background: #fee2e2; color: #991b1b; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin: 2px; }
+
+    .ai-box { background: linear-gradient(135deg, #f0fdf4, #fef9ee); border-left: 4px solid #1B4332; padding: 16px; border-radius: 4px; }
+    .ai-box p { font-size: 12px; color: #374151; line-height: 1.7; }
+
+    .disclaimer { background: #f8f9fa; padding: 16px 32px; font-size: 10px; color: #666; }
+
+    .footer { background: #1B4332; color: #9ca3af; padding: 12px 32px; display: flex; justify-content: space-between; font-size: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="logo">Car<span>Haki</span></div>
+    <div style="font-size:11px; color:#9ca3af; margin-top:2px;">Uganda's Vehicle History Platform</div>
+  </div>
+  <div style="text-align:center;">
+    <div class="grade-circle" style="background-color: {{ report.grade_colour }}; margin:0 auto;">
+      {{ report.overall_grade }}
+    </div>
+    <div style="font-size:10px; color:#9ca3af; margin-top:4px;">{{ report.grade_label }}</div>
+  </div>
+</div>
+
+<div class="vehicle-title">
+  <h1>{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }} {% if vehicle.trim %}{{ vehicle.trim }}{% endif %}</h1>
+  <div class="meta">
+    Identifier: {{ report.search.identifier }} &bull;
+    Source: {{ report.search.source_country }} &bull;
+    Report Type: {{ report.get_report_type_display }} &bull;
+    Generated: {{ report.completed_at|date:"N j, Y g:i A" }}
+  </div>
+</div>
+
+<!-- AI Summary -->
+{% if ai_summary %}
+<div class="section">
+  <h2>AI Summary</h2>
+  <div class="ai-box"><p>{{ ai_summary }}</p></div>
+</div>
+{% endif %}
+
+<!-- Traffic Lights -->
+<div class="section">
+  <h2>At a Glance</h2>
+  <div class="traffic-lights">
+    {% if brands %}
+    <div class="tl-box"><span class="tl-dot">🔴</span><div class="tl-label">Title Issues</div><div class="tl-sub">{{ brands|join:", " }}</div></div>
+    {% else %}
+    <div class="tl-box"><span class="tl-dot">🟢</span><div class="tl-label">Clean Title</div></div>
+    {% endif %}
+
+    {% if accidents %}
+    <div class="tl-box"><span class="tl-dot">🔴</span><div class="tl-label">{{ accidents|length }} Accident(s)</div></div>
+    {% else %}
+    <div class="tl-box"><span class="tl-dot">🟢</span><div class="tl-label">No Accidents</div></div>
+    {% endif %}
+
+    {% with ug=uganda %}
+    {% if ug.eligible %}
+    <div class="tl-box"><span class="tl-dot">🟢</span><div class="tl-label">URA Eligible</div><div class="tl-sub">{{ ug.vehicle_age_years }} yrs old</div></div>
+    {% else %}
+    <div class="tl-box"><span class="tl-dot">🔴</span><div class="tl-label">URA Ineligible</div><div class="tl-sub">{{ ug.vehicle_age_years }} yrs (max {{ ug.max_allowed_years }})</div></div>
+    {% endif %}
+    {% endwith %}
+
+    {% if recalls %}
+    <div class="tl-box"><span class="tl-dot">🟠</span><div class="tl-label">{{ recalls|length }} Recall(s)</div></div>
+    {% else %}
+    <div class="tl-box"><span class="tl-dot">🟢</span><div class="tl-label">No Recalls</div></div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Specs -->
+<div class="section">
+  <h2>Vehicle Specifications</h2>
+  <div class="specs-grid">
+    {% if vehicle.make %}<dl class="spec-item"><dt>Make</dt><dd>{{ vehicle.make }}</dd></dl>{% endif %}
+    {% if vehicle.model %}<dl class="spec-item"><dt>Model</dt><dd>{{ vehicle.model }}</dd></dl>{% endif %}
+    {% if vehicle.year %}<dl class="spec-item"><dt>Year</dt><dd>{{ vehicle.year }}</dd></dl>{% endif %}
+    {% if vehicle.engine %}<dl class="spec-item"><dt>Engine</dt><dd>{{ vehicle.engine }}</dd></dl>{% endif %}
+    {% if vehicle.fuel_type %}<dl class="spec-item"><dt>Fuel</dt><dd>{{ vehicle.fuel_type }}</dd></dl>{% endif %}
+    {% if vehicle.transmission %}<dl class="spec-item"><dt>Transmission</dt><dd>{{ vehicle.transmission }}</dd></dl>{% endif %}
+    {% if vehicle.drive_type %}<dl class="spec-item"><dt>Drive</dt><dd>{{ vehicle.drive_type }}</dd></dl>{% endif %}
+    {% if vehicle.body_type %}<dl class="spec-item"><dt>Body</dt><dd>{{ vehicle.body_type }}</dd></dl>{% endif %}
+    {% if vehicle.country_of_manufacture %}<dl class="spec-item"><dt>Made In</dt><dd>{{ vehicle.country_of_manufacture }}</dd></dl>{% endif %}
+  </div>
+</div>
+
+<!-- Title History -->
+{% if title_history %}
+<div class="section">
+  <h2>Title History</h2>
+  {% for t in title_history %}
+  <div style="padding:6px 0; border-bottom:1px solid #f0f0f0;">
+    <strong>{{ t.state }}</strong> &mdash; {{ t.date }}
+    {% if t.odometer %} &mdash; {{ t.odometer|floatformat:0 }} mi{% endif %}
+    {% if t.brand %} <span class="brand-badge">{{ t.brand }}</span>{% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Disclaimer -->
+<div class="disclaimer">
+  <strong>Disclaimer:</strong> This report is based on available records and may not capture all vehicle events. CarHaki recommends an independent physical inspection by a qualified mechanic before purchasing. CarHaki is not liable for decisions made based solely on this report. Data sourced from NMVTIS, NHTSA, and partner databases.
+</div>
+
+<div class="footer">
+  <span>CarHaki — carhaki.com</span>
+  <span>Report ID: {{ report.pk }} &bull; Generated: {% now "N j, Y" %}</span>
+</div>
+
+</body>
+</html>

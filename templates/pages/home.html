@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+
+{% block title %}CarHaki — Uganda #1 Vehicle History Verification Platform{% endblock %}
+{% block meta_description %}Check the history of your import car before buying. VIN history for USA imports, chassis history for Japan imports. MTN Mobile Money accepted. Uganda's most trusted car check platform.{% endblock %}
+
+{% block content %}
+
+<!-- ==================== HERO ==================== -->
+<section class="bg-gradient-to-br from-ch-green via-ch-green to-ch-green-l text-white pt-16 pb-20 lg:pt-24 lg:pb-28">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+      <!-- Left: headline + search -->
+      <div>
+        <div class="inline-flex items-center bg-ch-gold/20 text-ch-gold rounded-full px-4 py-1.5 text-sm font-semibold mb-6">
+          🇺🇬 Built for Uganda Car Market
+        </div>
+
+        <h1 class="font-heading font-bold text-4xl lg:text-5xl xl:text-6xl leading-tight mb-6">
+          Know Your Car
+          <span class="text-ch-gold">True History</span>
+          Before You Buy
+        </h1>
+
+        <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+          Over 85% of cars in Uganda are imported. Don't buy blind. CarHaki reveals accident history,
+          salvage titles, odometer fraud, and open recalls — for both <strong class="text-white">USA</strong>
+          and <strong class="text-white">Japan</strong> imports.
+        </p>
+
+        <!-- Search Box -->
+        <div class="bg-white rounded-2xl p-4 shadow-2xl">
+          <form method="get" action="{% url 'vehicles:search' %}">
+            <!-- Country selector -->
+            <div class="flex gap-2 mb-4">
+              <label class="flex-1 cursor-pointer">
+                <input type="radio" name="source_country" value="USA" checked class="peer hidden">
+                <div class="peer-checked:bg-ch-green peer-checked:text-white border-2 peer-checked:border-ch-green border-gray-200 rounded-xl p-3 text-center text-sm font-semibold text-gray-600 transition-all hover:border-ch-green">
+                  🇺🇸 Imported from USA
+                  <div class="text-xs font-normal mt-0.5">Enter 17-digit VIN</div>
+                </div>
+              </label>
+              <label class="flex-1 cursor-pointer">
+                <input type="radio" name="source_country" value="JAPAN" class="peer hidden">
+                <div class="peer-checked:bg-ch-green peer-checked:text-white border-2 peer-checked:border-ch-green border-gray-200 rounded-xl p-3 text-center text-sm font-semibold text-gray-600 transition-all hover:border-ch-green">
+                  🇯🇵 Imported from Japan
+                  <div class="text-xs font-normal mt-0.5">Enter chassis number</div>
+                </div>
+              </label>
+            </div>
+
+            <!-- VIN / Chassis input -->
+            <div class="flex gap-2">
+              <input
+                type="text"
+                name="identifier"
+                id="hero-search-input"
+                placeholder="e.g. 5TDYK3DC8DS290235 or NZE141-6048723"
+                maxlength="25"
+                autocomplete="off"
+                class="flex-1 px-4 py-3.5 text-gray-800 rounded-xl border-2 border-gray-200 focus:border-ch-green focus:outline-none text-base font-mono uppercase"
+              >
+              <button type="submit"
+                class="bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold px-6 py-3.5 rounded-xl transition-colors whitespace-nowrap shadow">
+                Check Now
+              </button>
+            </div>
+
+            <p class="text-gray-400 text-xs mt-3 text-center">
+              Basic vehicle info shown free, Full history report from UGX 35,000
+            </p>
+          </form>
+        </div>
+
+        <!-- Trust indicators -->
+        <div class="flex flex-wrap gap-4 mt-6">
+          <div class="flex items-center gap-1.5 text-gray-400 text-sm">
+            <svg class="w-4 h-4 text-ch-gold" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            MTN & Airtel Money accepted
+          </div>
+          <div class="flex items-center gap-1.5 text-gray-400 text-sm">
+            <svg class="w-4 h-4 text-ch-gold" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            NMVTIS + MLIT Japan data
+          </div>
+          <div class="flex items-center gap-1.5 text-gray-400 text-sm">
+            <svg class="w-4 h-4 text-ch-gold" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            {{ total_reports|default:"1,200" }}+ reports generated
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: sample report card preview -->
+      <div class="hidden lg:block">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 text-gray-800 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <p class="text-xs text-gray-400 uppercase tracking-wide">Sample Report</p>
+              <h3 class="font-heading font-bold text-xl text-ch-green">2019 Toyota Harrier</h3>
+              <p class="text-xs text-gray-500">Chassis: ZSU60-0012345</p>
+            </div>
+            <div class="w-16 h-16 rounded-full flex items-center justify-center text-3xl font-heading font-black text-white" style="background: #198754">
+              A
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 mb-4">
+            <div class="bg-green-50 border border-green-200 rounded-lg p-2 text-center">
+              <div class="text-ch-success text-lg">✓</div>
+              <div class="text-xs font-semibold text-gray-700">Clean Title</div>
+            </div>
+            <div class="bg-green-50 border border-green-200 rounded-lg p-2 text-center">
+              <div class="text-ch-success text-lg">✓</div>
+              <div class="text-xs font-semibold text-gray-700">No Accidents</div>
+            </div>
+            <div class="bg-green-50 border border-green-200 rounded-lg p-2 text-center">
+              <div class="text-ch-success text-lg">✓</div>
+              <div class="text-xs font-semibold text-gray-700">URA Eligible</div>
+            </div>
+          </div>
+
+          <div class="bg-ch-green/5 rounded-lg p-3 border-l-4 border-ch-green">
+            <p class="text-xs text-gray-600 leading-relaxed">
+              <strong class="text-ch-green">AI Summary:</strong> This Toyota Harrier has a clean history with one previous owner and consistent mileage records. Auction grade 4.5 indicates excellent condition. Uganda import eligible — 6 years old. Recommend independent inspection before purchase.
+            </p>
+          </div>
+
+          <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
+            <span class="text-xs text-gray-400">Powered by MLIT Japan &bull; OtoFacts</span>
+            <span class="bg-ch-gold text-ch-dark text-xs font-semibold px-2 py-1 rounded">CarHaki</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== HOW IT WORKS ==================== -->
+<section class="py-16 bg-ch-light">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="font-heading font-bold text-3xl text-ch-green mb-3">How CarHaki Works</h2>
+      <p class="text-gray-600 max-w-xl mx-auto">Get a complete vehicle history in 3 simple steps. No technical knowledge required.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {% for step in steps %}
+      <div class="bg-white rounded-2xl p-6 shadow-sm text-center relative">
+        <div class="w-12 h-12 bg-ch-gold rounded-full flex items-center justify-center text-ch-dark font-heading font-black text-xl mx-auto mb-4">
+          {{ forloop.counter }}
+        </div>
+        <h3 class="font-heading font-semibold text-lg text-ch-green mb-2">{{ step.title }}</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">{{ step.desc }}</p>
+      </div>
+      {% empty %}
+      <!-- Static fallback -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm text-center">
+        <div class="w-12 h-12 bg-ch-gold rounded-full flex items-center justify-center text-ch-dark font-heading font-black text-xl mx-auto mb-4">1</div>
+        <h3 class="font-heading font-semibold text-lg text-ch-green mb-2">Enter the VIN or Chassis Number</h3>
+        <p class="text-gray-600 text-sm">Type the 17-digit VIN (for USA cars) or chassis number (for Japan cars). We auto-detect the type.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 shadow-sm text-center">
+        <div class="w-12 h-12 bg-ch-gold rounded-full flex items-center justify-center text-ch-dark font-heading font-black text-xl mx-auto mb-4">2</div>
+        <h3 class="font-heading font-semibold text-lg text-ch-green mb-2">Pay with Mobile Money</h3>
+        <p class="text-gray-600 text-sm">Pay securely via MTN Mobile Money, Airtel Money, or Visa/Mastercard. From UGX 35,000.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 shadow-sm text-center">
+        <div class="w-12 h-12 bg-ch-gold rounded-full flex items-center justify-center text-ch-dark font-heading font-black text-xl mx-auto mb-4">3</div>
+        <h3 class="font-heading font-semibold text-lg text-ch-green mb-2">Get Your Full Report</h3>
+        <p class="text-gray-600 text-sm">Receive a detailed history report with accident data, title history, recalls, and an AI summary — instantly.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== WHAT'S IN THE REPORT ==================== -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="font-heading font-bold text-3xl text-ch-green mb-3">What's in Your Report?</h2>
+      <p class="text-gray-600">Everything you need to know before spending millions of shillings on a used car.</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {% for feature in report_features %}
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl">
+        <span class="text-ch-success text-xl flex-shrink-0">{{ feature.icon }}</span>
+        <div>
+          <div class="font-heading font-semibold text-sm text-ch-green">{{ feature.title }}</div>
+          <div class="text-xs text-gray-500 mt-0.5">{{ feature.desc }}</div>
+        </div>
+      </div>
+      {% empty %}
+      <!-- Static features -->
+      {% for item in "12345678910111213" %}{% endfor %}
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-ch-success text-xl"></span><div><div class="font-heading font-semibold text-sm text-ch-green">Title History</div><div class="text-xs text-gray-500">All states/countries it was registered in</div></div></div>
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-xl">💥</span><div><div class="font-heading font-semibold text-sm text-ch-green">Accident History</div><div class="text-xs text-gray-500">Reported collisions with severity</div></div></div>
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-xl"></span><div><div class="font-heading font-semibold text-sm text-ch-green">Odometer Records</div><div class="text-xs text-gray-500">Mileage timeline — detect rollback fraud</div></div></div>
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-ch-danger text-xl">⚠️</span><div><div class="font-heading font-semibold text-sm text-ch-green">Salvage / Rebuilt Title</div><div class="text-xs text-gray-500">Was this car written off or rebuilt?</div></div></div>
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-xl"></span><div><div class="font-heading font-semibold text-sm text-ch-green">Recall Alerts</div><div class="text-xs text-gray-500">Open safety recalls from NHTSA</div></div></div>
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-xl"></span><div><div class="font-heading font-semibold text-sm text-ch-green">Auction Grade (Japan)</div><div class="text-xs text-gray-500">Official auction condition score</div></div></div>
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-xl"></span><div><div class="font-heading font-semibold text-sm text-ch-green">AI Plain-English Summary</div><div class="text-xs text-gray-500">No jargon — just what you need to know</div></div></div>
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-xl">🇺🇬</span><div><div class="font-heading font-semibold text-sm text-ch-green">Uganda Import Check</div><div class="text-xs text-gray-500">Is this car within the 15-year URA limit?</div></div></div>
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-xl">🔍</span><div><div class="font-heading font-semibold text-sm text-ch-green">Theft Records</div><div class="text-xs text-gray-500">National theft database check</div></div></div>
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-xl">💰</span><div><div class="font-heading font-semibold text-sm text-ch-green">Market Value</div><div class="text-xs text-gray-500">Fair price estimate in UGX</div></div></div>
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-xl"></span><div><div class="font-heading font-semibold text-sm text-ch-green">PDF Download</div><div class="text-xs text-gray-500">Share with your mechanic or banker</div></div></div>
+      <div class="flex items-start gap-3 p-4 bg-ch-light rounded-xl"><span class="text-xl"></span><div><div class="font-heading font-semibold text-sm text-ch-green">Shareable Link</div><div class="text-xs text-gray-500">Send the report URL to anyone</div></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== PRICING ==================== -->
+<section class="py-16 bg-ch-light">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="font-heading font-bold text-3xl text-ch-green mb-3">Simple, Transparent Pricing</h2>
+      <p class="text-gray-600">No subscriptions. Pay per report. All prices in Ugandan Shillings.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+
+      <!-- Basic -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <h3 class="font-heading font-bold text-xl text-ch-green mb-1">Basic Report</h3>
+        <p class="text-gray-500 text-sm mb-4">Vehicle specs + title + odometer</p>
+        <div class="mb-6">
+          <span class="font-heading font-black text-3xl text-ch-green">UGX {{ BASIC_PRICE_UGX }}</span>
+          <span class="text-gray-400 text-sm ml-1">per report</span>
+        </div>
+        <ul class="space-y-2 text-sm text-gray-600 mb-6">
+          <li class="flex items-center gap-2"><span class="text-ch-success">✓</span> Vehicle specifications</li>
+          <li class="flex items-center gap-2"><span class="text-ch-success">✓</span> Title history</li>
+          <li class="flex items-center gap-2"><span class="text-ch-success">✓</span> Odometer records</li>
+          <li class="flex items-center gap-2"><span class="text-ch-success">✓</span> Uganda import eligibility</li>
+          <li class="flex items-center gap-2 text-gray-300"><span>✗</span> Accident history</li>
+          <li class="flex items-center gap-2 text-gray-300"><span>✗</span> AI summary</li>
+        </ul>
+        <a href="{% url 'vehicles:home' %}" class="block w-full text-center border-2 border-ch-green text-ch-green hover:bg-ch-green hover:text-white font-heading font-semibold py-2.5 rounded-xl transition-colors text-sm">
+          Check Now
+        </a>
+      </div>
+
+      <!-- Full — featured -->
+      <div class="bg-ch-green rounded-2xl p-6 shadow-xl text-white relative">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-ch-gold text-ch-dark text-xs font-heading font-bold px-4 py-1 rounded-full">
+          MOST POPULAR
+        </div>
+        <h3 class="font-heading font-bold text-xl mb-1">Full Report</h3>
+        <p class="text-gray-300 text-sm mb-4">Everything — recommended for all buyers</p>
+        <div class="mb-6">
+          <span class="font-heading font-black text-3xl">UGX {{ FULL_PRICE_UGX }}</span>
+          <span class="text-gray-400 text-sm ml-1">per report</span>
+        </div>
+        <ul class="space-y-2 text-sm text-gray-300 mb-6">
+          <li class="flex items-center gap-2"><span class="text-ch-gold">✓</span> Everything in Basic</li>
+          <li class="flex items-center gap-2"><span class="text-ch-gold">✓</span> Accident & damage history</li>
+          <li class="flex items-center gap-2"><span class="text-ch-gold">✓</span> Salvage / rebuilt title brands</li>
+          <li class="flex items-center gap-2"><span class="text-ch-gold">✓</span> Theft records</li>
+          <li class="flex items-center gap-2"><span class="text-ch-gold">✓</span> Open recall alerts</li>
+          <li class="flex items-center gap-2"><span class="text-ch-gold">✓</span> AI plain-English summary</li>
+          <li class="flex items-center gap-2"><span class="text-ch-gold">✓</span> PDF download + share link</li>
+        </ul>
+        <a href="{% url 'vehicles:home' %}" class="block w-full text-center bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold py-2.5 rounded-xl transition-colors text-sm">
+          Get Full Report
+        </a>
+      </div>
+
+      <!-- Dealer Pack -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <h3 class="font-heading font-bold text-xl text-ch-green mb-1">Dealer Pack</h3>
+        <p class="text-gray-500 text-sm mb-4">10 full reports at a discount</p>
+        <div class="mb-6">
+          <span class="font-heading font-black text-3xl text-ch-green">UGX {{ DEALER_PACK_PRICE_UGX }}</span>
+          <span class="text-gray-400 text-sm ml-1">for 10 reports</span>
+        </div>
+        <ul class="space-y-2 text-sm text-gray-600 mb-6">
+          <li class="flex items-center gap-2"><span class="text-ch-success">✓</span> 10 full reports</li>
+          <li class="flex items-center gap-2"><span class="text-ch-success">✓</span> Save UGX 150,000</li>
+          <li class="flex items-center gap-2"><span class="text-ch-success">✓</span> Credits never expire</li>
+          <li class="flex items-center gap-2"><span class="text-ch-success">✓</span> Dealer dashboard</li>
+          <li class="flex items-center gap-2"><span class="text-ch-success">✓</span> Branded sharing (coming soon)</li>
+        </ul>
+        <a href="{% url 'accounts:dealer_register' %}" class="block w-full text-center border-2 border-ch-green text-ch-green hover:bg-ch-green hover:text-white font-heading font-semibold py-2.5 rounded-xl transition-colors text-sm">
+          Register as Dealer
+        </a>
+      </div>
+    </div>
+
+    <p class="text-center text-gray-500 text-sm mt-6">
+      Pay with <strong>MTN Mobile Money</strong>, <strong>Airtel Money</strong>, or <strong>Visa/Mastercard</strong>
+    </p>
+  </div>
+</section>
+
+
+<!-- ==================== TESTIMONIALS ==================== -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="font-heading font-bold text-3xl text-ch-green mb-3">Trusted by Ugandan Car Buyers</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-ch-light rounded-2xl p-6">
+        <div class="flex items-center gap-1 text-ch-gold mb-3">★★★★★</div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-4">"CarHaki saved me from buying a rebuilt wreck. The report showed a major accident in 2019 that the seller never mentioned. Money well spent!"</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-ch-green rounded-full flex items-center justify-center text-white font-bold text-sm">JK</div>
+          <div>
+            <div class="font-semibold text-sm text-ch-green">John Kakande</div>
+            <div class="text-xs text-gray-400">Kampala, Uganda</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-ch-light rounded-2xl p-6">
+        <div class="flex items-center gap-1 text-ch-gold mb-3">★★★★★</div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-4">"As a car dealer I check every import before selling. CarHaki's dealer pack saves me money and helps me give buyers confidence. The Japan auction grades are spot on."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-ch-green rounded-full flex items-center justify-center text-white font-bold text-sm">RM</div>
+          <div>
+            <div class="font-semibold text-sm text-ch-green">Robert Mugisha</div>
+            <div class="text-xs text-gray-400">Dealer, Entebbe Road</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-ch-light rounded-2xl p-6">
+        <div class="flex items-center gap-1 text-ch-gold mb-3">★★★★★</div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-4">"Our microfinance company now requires a CarHaki report before financing any vehicle purchase. It's become part of our due diligence process."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-ch-green rounded-full flex items-center justify-center text-white font-bold text-sm">AN</div>
+          <div>
+            <div class="font-semibold text-sm text-ch-green">Agnes Namutebi</div>
+            <div class="text-xs text-gray-400">Finance Manager, Kampala</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== CTA ==================== -->
+<section class="py-16 bg-ch-green text-white">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <h2 class="font-heading font-bold text-3xl lg:text-4xl mb-4">Don't Buy Blind. Check First.</h2>
+    <p class="text-gray-300 text-lg mb-8">A CarHaki report costs less than a mechanic visit — and tells you far more.</p>
+    <a href="{% url 'vehicles:home' %}"
+       class="inline-block bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold px-8 py-4 rounded-xl text-lg transition-colors shadow-lg">
+      Check Your Car Now — From UGX {{ BASIC_PRICE_UGX }}
+    </a>
+    <p class="text-gray-400 text-sm mt-4">No account required to start. Pay only when you see your free preview.</p>
+  </div>
+</section>
+
+{% endblock %}

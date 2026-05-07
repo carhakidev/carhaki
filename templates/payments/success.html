@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Payment Successful — CarHaki{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto px-4 py-16 text-center">
+  <div class="text-6xl mb-6">✅</div>
+  <h1 class="font-heading font-bold text-3xl text-ch-green mb-3">Payment Confirmed!</h1>
+  <p class="text-gray-600 mb-2">Your CarHaki report is now being generated.</p>
+  <p class="text-gray-500 text-sm mb-8">This usually takes 20–40 seconds. We'll also email it to <strong>{{ request.user.email }}</strong>.</p>
+
+  {% if report %}
+  <a href="{% url 'vehicles:report_detail' report.pk %}"
+     class="inline-block bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold px-8 py-3.5 rounded-xl transition-colors text-base shadow">
+    View My Report →
+  </a>
+  {% else %}
+  <a href="{% url 'accounts:dashboard' %}"
+     class="inline-block bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold px-8 py-3.5 rounded-xl transition-colors text-base">
+    Go to Dashboard
+  </a>
+  {% endif %}
+
+  <p class="text-gray-400 text-xs mt-6">Order {{ order.id }}</p>
+</div>
+{% endblock %}

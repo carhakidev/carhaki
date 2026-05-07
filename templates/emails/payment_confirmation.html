@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Confirmed — CarHaki</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f8f9fa;font-family:'Inter',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f9fa;padding:40px 20px;">
+  <tr>
+    <td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+        <tr>
+          <td style="background-color:#1B4332;border-radius:12px 12px 0 0;padding:28px 32px;text-align:center;">
+            <h1 style="margin:0;color:#F4A81D;font-family:'Poppins',Arial,sans-serif;font-size:24px;font-weight:700;">CarHaki</h1>
+            <p style="margin:6px 0 0;color:#a7c4b5;font-size:13px;">Payment Confirmation</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background-color:#ffffff;padding:36px 32px;">
+            <div style="text-align:center;margin-bottom:24px;">
+              <div style="display:inline-block;background-color:#d1fae5;border-radius:50%;width:56px;height:56px;line-height:56px;text-align:center;font-size:28px;">&#10003;</div>
+            </div>
+            <h2 style="margin:0 0 16px;color:#1B4332;font-family:'Poppins',Arial,sans-serif;font-size:20px;font-weight:600;text-align:center;">Payment Confirmed</h2>
+            <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
+              Hello {% if user %}{{ user.first_name }}{% endif %},
+            </p>
+            <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
+              Your payment has been confirmed and your vehicle history report is now being generated.
+              This usually takes 1 to 3 minutes.
+            </p>
+
+            {% if order %}
+            <table style="width:100%;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin:16px 0;" cellpadding="12" cellspacing="0">
+              <tr style="background-color:#f8f9fa;">
+                <td colspan="2" style="color:#1B4332;font-size:13px;font-weight:600;border-bottom:1px solid #e5e7eb;">Payment Receipt</td>
+              </tr>
+              <tr>
+                <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #f3f4f6;">Vehicle</td>
+                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f3f4f6;text-align:right;">{{ order.report.search.identifier }}</td>
+              </tr>
+              <tr>
+                <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #f3f4f6;">Report Type</td>
+                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f3f4f6;text-align:right;">{{ order.get_report_type_display }}</td>
+              </tr>
+              <tr>
+                <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #f3f4f6;">Amount</td>
+                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f3f4f6;text-align:right;">UGX {{ order.amount_ugx|floatformat:0 }}</td>
+              </tr>
+              <tr>
+                <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #f3f4f6;">Payment Method</td>
+                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f3f4f6;text-align:right;">{{ order.get_payment_method_display }}</td>
+              </tr>
+              <tr>
+                <td style="color:#6b7280;font-size:13px;">Reference</td>
+                <td style="color:#111827;font-size:12px;font-family:monospace;text-align:right;">{{ order.flutterwave_ref }}</td>
+              </tr>
+            </table>
+            {% endif %}
+
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center" style="padding:20px 0;">
+                  <a href="{{ site_url }}{% url 'accounts:dashboard' %}"
+                    style="display:inline-block;background-color:#F4A81D;color:#1B4332;text-decoration:none;font-family:'Poppins',Arial,sans-serif;font-weight:700;font-size:15px;padding:14px 32px;border-radius:8px;">
+                    Go to My Dashboard
+                  </a>
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin:0;color:#6b7280;font-size:13px;line-height:1.5;border-top:1px solid #e5e7eb;padding-top:16px;">
+              If you did not make this payment or have questions, contact us immediately at
+              <a href="mailto:support@carhaki.ug" style="color:#F4A81D;">support@carhaki.ug</a>
+              with your reference number.
+            </p>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background-color:#f8f9fa;border-radius:0 0 12px 12px;padding:20px 32px;text-align:center;">
+            <p style="margin:0;color:#9ca3af;font-size:12px;line-height:1.6;">
+              CarHaki Limited &bull; Plot 45, Kampala Road, Kampala, Uganda<br>
+              <a href="mailto:support@carhaki.ug" style="color:#9ca3af;">support@carhaki.ug</a>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

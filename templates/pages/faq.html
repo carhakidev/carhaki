@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Frequently Asked Questions — CarHaki{% endblock %}
+{% block meta_description %}Answers to the most common questions about CarHaki vehicle history reports, VIN searches, chassis numbers, payments, and understanding your results.{% endblock %}
+
+{% block content %}
+
+<section class="bg-ch-green text-white py-14">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h1 class="font-heading font-bold text-4xl mb-4">Frequently Asked Questions</h1>
+    <p class="text-green-100 text-lg">
+      Everything you need to know about CarHaki reports, searching for a vehicle,
+      payments, and understanding what your results mean.
+    </p>
+  </div>
+</section>
+
+<section class="py-16 bg-white">
+  <div class="max-w-4xl mx-auto px-4">
+
+    {% if faq_groups %}
+      {% for category, faqs in faq_groups.items %}
+      <div class="mb-12">
+        <h2 class="font-heading font-bold text-2xl text-ch-green mb-6 pb-2 border-b-2 border-ch-gold">{{ category }}</h2>
+        <div class="space-y-4">
+          {% for faq in faqs %}
+          <div class="border border-gray-200 rounded-xl overflow-hidden">
+            <button
+              class="w-full text-left px-6 py-4 flex items-center justify-between hover:bg-ch-light transition-colors"
+              onclick="var body=this.nextElementSibling; body.classList.toggle('hidden'); this.querySelector('svg').classList.toggle('rotate-180');"
+            >
+              <span class="font-heading font-semibold text-gray-800 pr-4">{{ faq.question }}</span>
+              <svg class="w-5 h-5 text-ch-gold flex-shrink-0 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="hidden px-6 py-4 bg-ch-light border-t border-gray-100">
+              <p class="text-gray-700 leading-relaxed">{{ faq.answer }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+
+    {% else %}
+    <!-- Static content shown when no FAQ records are in the database yet -->
+    <div class="mb-12">
+      <h2 class="font-heading font-bold text-2xl text-ch-green mb-6 pb-2 border-b-2 border-ch-gold">About the Reports</h2>
+      <div class="space-y-4">
+
+        {% include "components/faq_item.html" with question="What is a vehicle history report?" answer="A vehicle history report is a document that summarises the recorded history of a specific vehicle based on official government and insurance databases. For cars from the USA, it shows title records, accident history, odometer readings, recall status, and more. For cars from Japan, it shows auction history, inspection grades, and MLIT registration records. CarHaki compiles this data into a clear, easy-to-read report so you can make an informed decision before buying." %}
+
+        {% include "components/faq_item.html" with question="What information does a CarHaki Full Report contain?" answer="A Full Report includes: overall vehicle grade (A to F), AI-generated plain-English summary, title history with all recorded brands (salvage, rebuilt, not actual mileage, etc.), odometer history chart, accident and damage records, theft records, open safety recalls, market value estimate, Uganda URA import eligibility check, and for Japan vehicles: auction grade, auction house records, and Shaken (vehicle inspection) validity. A Basic Report includes vehicle specifications, title status summary, and recall check." %}
+
+        {% include "components/faq_item.html" with question="How is CarHaki different from just trusting the seller?" answer="A seller can tell you anything about a car. CarHaki accesses official government databases that record what actually happened to the vehicle, regardless of what the seller claims. If a car was in a flood, declared a total loss, had its mileage rolled back, or was reported stolen, those events are typically recorded in databases that the seller cannot alter. The report shows you the documented truth." %}
+
+        {% include "components/faq_item.html" with question="Can a report guarantee a car is in good condition?" answer="No report can guarantee a car is in perfect mechanical condition. CarHaki reports show the recorded history of a vehicle, but not all damage is reported to databases. A car can have unreported mechanical problems that were never filed with an insurance company. We always recommend getting an independent mechanical inspection from a qualified mechanic in addition to a CarHaki report." %}
+
+        {% include "components/faq_item.html" with question="What does a salvage title mean for a car being sold in Uganda?" answer="A salvage title means an insurance company declared the vehicle a total loss, typically after a serious accident, flood, or theft. The car was deemed too expensive to repair relative to its value. Salvage-titled vehicles can be cheaper to buy, but may have structural weaknesses that affect safety and resale value. Banks in Uganda typically do not finance salvage-titled vehicles. CarHaki flags salvage records prominently." %}
+
+        {% include "components/faq_item.html" with question="What does a rebuilt title mean and is it safe to buy such a car?" answer="A rebuilt title means the vehicle was previously a salvage vehicle that was repaired and passed a state inspection in its country of origin. Whether it is safe depends on the quality of the repairs. Some rebuilt title vehicles are repaired to a high standard; others may have hidden structural issues. If considering a rebuilt title vehicle, we strongly advise a thorough inspection by a qualified mechanic who can assess the quality of the repair work." %}
+
+        {% include "components/faq_item.html" with question="What is an auction sheet and why does it matter for Japanese imports?" answer="An auction sheet is a condition report produced by independent inspectors at Japanese car auctions. It records every dent, scratch, rust spot, and mechanical issue along with an overall grade. Grades range from S (near new) to 1 (poor condition), with R and RA indicating repaired major damage or repaired airbag deployment. The auction sheet is highly reliable because it was produced independently before the car was exported from Japan." %}
+
+      </div>
+    </div>
+
+    <div class="mb-12">
+      <h2 class="font-heading font-bold text-2xl text-ch-green mb-6 pb-2 border-b-2 border-ch-gold">Searching for a Vehicle</h2>
+      <div class="space-y-4">
+
+        {% include "components/faq_item.html" with question="What is a VIN number and where do I find it on the car?" answer="A VIN (Vehicle Identification Number) is a 17-character alphanumeric code that uniquely identifies every vehicle made for the American market. You can find it on a metal plate visible through the windshield on the driver's side dashboard, on a sticker inside the driver's door jamb, on the engine block, and on the vehicle registration documents. The characters I, O, and Q are never used in a valid VIN." %}
+
+        {% include "components/faq_item.html" with question="What is a chassis number and how is it different from a VIN?" answer="A chassis number (also called a frame number) is the identifier used for Japanese vehicles. Unlike the 17-character American VIN format, Japanese chassis numbers are shorter (8 to 14 characters) and follow the pattern of a model code followed by a serial number, such as ZZT240-987654. The model code indicates the vehicle model and engine type. Chassis numbers are stamped on the firewall between the engine and the cabin, and also appear on the vehicle registration certificate." %}
+
+        {% include "components/faq_item.html" with question="The car has a 9-character number, not 17. Is this still searchable?" answer="A number shorter than 17 characters is most likely a Japanese chassis number, not an American VIN. Select 'Japan' as the country of origin when searching. If the number is between 8 and 14 characters and alphanumeric, CarHaki will attempt a Japan chassis search." %}
+
+        {% include "components/faq_item.html" with question="I searched but got no results. What does this mean?" answer="No results can mean several things: the vehicle was manufactured before electronic records were widely kept; the identifier was not correctly transcribed; the vehicle is a grey-market import not registered in US or Japanese databases; or the database does not have records for that specific vehicle. No results do not necessarily mean the vehicle has a bad history. Contact us at support@carhaki.ug for assistance." %}
+
+        {% include "components/faq_item.html" with question="Can I search for any car or only cars from Japan and the USA?" answer="Currently CarHaki supports vehicles from Japan (using the chassis number) and the United States (using the 17-digit VIN). These two countries account for the majority of used vehicle imports into Uganda. We are working on adding support for vehicles from the United Kingdom and Singapore." %}
+
+      </div>
+    </div>
+
+    <div class="mb-12">
+      <h2 class="font-heading font-bold text-2xl text-ch-green mb-6 pb-2 border-b-2 border-ch-gold">Payments</h2>
+      <div class="space-y-4">
+
+        {% include "components/faq_item.html" with question="What payment methods does CarHaki accept?" answer="CarHaki accepts MTN Mobile Money, Airtel Money, and Visa or Mastercard payments through Flutterwave. All prices are in Uganda Shillings (UGX). MTN and Airtel Mobile Money are available for all Ugandan phone numbers. Card payments accept both Ugandan and international cards." %}
+
+        {% include "components/faq_item.html" with question="How do I pay using MTN Mobile Money?" answer="On the checkout page, select MTN Mobile Money, enter your MTN phone number in 256XXXXXXXXX format, and click Pay. You will receive a payment prompt on your phone. Enter your Mobile Money PIN to confirm. The payment is processed within a few seconds and your report generation begins immediately." %}
+
+        {% include "components/faq_item.html" with question="How do I pay using Airtel Money?" answer="On the checkout page, select Airtel Money, enter your Airtel phone number in 256XXXXXXXXX format, and click Pay. You will receive a payment prompt from Airtel. Enter your PIN to confirm. Report generation begins immediately after payment is confirmed." %}
+
+        {% include "components/faq_item.html" with question="I paid but did not receive my report. What should I do?" answer="Report generation usually takes 1 to 3 minutes after payment is confirmed. If more than 10 minutes have passed and your report is still not in your dashboard, please contact us at support@carhaki.ug with your transaction reference number. We will investigate and either deliver your report or process a refund." %}
+
+        {% include "components/faq_item.html" with question="Are reports refundable?" answer="Once a report has been successfully generated, it is non-refundable because the cost of retrieving data from third-party providers has already been incurred. If a report completely failed to generate after payment was confirmed, we will generate it again or issue a full refund. Contact support@carhaki.ug within 7 days with your transaction reference number." %}
+
+        {% include "components/faq_item.html" with question="Can I buy multiple reports at a discount?" answer="Yes. Dealer account holders can purchase bulk credit packs at a significantly reduced rate per report. A Starter Pack of 10 reports costs UGX 600,000 (saving UGX 150,000 compared to buying individually). Larger packs of 25, 50, and 100 reports offer even greater savings. See our Dealer Programme page for full pricing details." %}
+
+      </div>
+    </div>
+
+    <div class="mb-12">
+      <h2 class="font-heading font-bold text-2xl text-ch-green mb-6 pb-2 border-b-2 border-ch-gold">Understanding Results</h2>
+      <div class="space-y-4">
+
+        {% include "components/faq_item.html" with question="What do the letter grades A through F mean?" answer="CarHaki uses a penalty scoring system starting at 100 points. Points are deducted for each negative finding: salvage title (-40), total loss (-35), flood damage (-35), not actual mileage (-30), rebuilt title (-20), major accident (-20), theft (-20), open recall (-10 each), and minor accident (-8). The final score determines the grade: A (90-100, Excellent), B (75-89, Good), C (60-74, Acceptable), D (45-59, Concerning), E (20-44, Poor), F (0-19, Critical Risk)." %}
+
+        {% include "components/faq_item.html" with question="The report shows the car was sold as salvage. Should I still buy it?" answer="A salvage record is a serious concern but not an automatic disqualification. The key questions are: Was it repaired and does it now have a rebuilt title? What was the nature of the damage? What is the quality of the repair? If the car has a rebuilt title and you can verify the repair work from a qualified mechanic, some buyers accept this in exchange for a lower price. CarHaki always recommends a thorough independent mechanical inspection for any salvage-history vehicle." %}
+
+        {% include "components/faq_item.html" with question="The mileage in the report does not match what the seller told me. Is this fraud?" answer="A significant discrepancy between recorded mileage and the seller's stated mileage is a serious red flag. If recorded readings are higher than the seller's claim, the odometer may have been tampered with. This is illegal in both the USA and Japan. CarHaki flags odometer discrepancies clearly. We strongly advise against purchasing a vehicle with suspected odometer fraud." %}
+
+        {% include "components/faq_item.html" with question="There are open recalls on the vehicle. What should I do?" answer="An open recall means a safety defect has been identified by the manufacturer and not yet repaired. The repair is typically free at any authorised dealer in the original country. For a vehicle already imported to Uganda, contact the manufacturer's regional office to enquire about local remedy options, or have a qualified mechanic assess the severity and advise on alternatives. Open recalls range from minor software updates to serious safety issues. Read the recall summary carefully before proceeding." %}
+
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<section class="py-12 bg-ch-light">
+  <div class="max-w-2xl mx-auto px-4 text-center">
+    <h2 class="font-heading font-bold text-2xl text-ch-green mb-3">Still have a question?</h2>
+    <p class="text-gray-600 mb-6">Our support team responds to all enquiries within 4 business hours.</p>
+    <a href="{% url 'vehicles:contact' %}" class="inline-block btn-primary">Contact Support</a>
+  </div>
+</section>
+
+{% endblock %}

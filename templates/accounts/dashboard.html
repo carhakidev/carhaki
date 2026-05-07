@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard — CarHaki{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-10">
+
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="font-heading font-bold text-3xl text-ch-green">My Dashboard</h1>
+      <p class="text-gray-500">Welcome back, {{ user.get_full_name }}!</p>
+    </div>
+    <a href="{% url 'vehicles:home' %}" class="bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors">
+      + New Report
+    </a>
+  </div>
+
+  <!-- Reports list -->
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100">
+    <div class="p-6 border-b border-gray-100">
+      <h2 class="font-heading font-bold text-ch-green text-lg">My Reports</h2>
+    </div>
+
+    {% if reports %}
+    <div class="divide-y divide-gray-100">
+      {% for report in reports %}
+      <div class="p-5 flex items-center justify-between hover:bg-ch-light/50 transition-colors">
+        <div class="flex items-center gap-4">
+          <!-- Grade badge -->
+          {% if report.overall_grade %}
+          <div class="w-12 h-12 rounded-full flex items-center justify-center text-lg font-heading font-black text-white flex-shrink-0"
+               style="background-color: {{ report.grade_colour }}">
+            {{ report.overall_grade }}
+          </div>
+          {% else %}
+          <div class="w-12 h-12 rounded-full flex items-center justify-center bg-gray-100 text-gray-400 text-xs font-semibold">
+            {{ report.status|slice:":3" }}
+          </div>
+          {% endif %}
+
+          <div>
+            <div class="font-semibold text-ch-green text-sm">
+              {% if report.processed_data %}
+                {{ report.processed_data.vehicle.year }} {{ report.processed_data.vehicle.make }} {{ report.processed_data.vehicle.model }}
+              {% else %}
+                {{ report.search.identifier }}
+              {% endif %}
+            </div>
+            <div class="text-xs text-gray-400 font-mono">{{ report.search.identifier }}</div>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="text-xs {% if report.status == 'COMPLETED' %}text-ch-success{% elif report.status == 'FAILED' %}text-ch-danger{% else %}text-ch-warn{% endif %}">
+                ● {{ report.status }}
+              </span>
+              <span class="text-xs text-gray-400">{{ report.created_at|date:"N j, Y" }}</span>
+              <span class="text-xs bg-ch-light px-2 py-0.5 rounded text-gray-500">{{ report.get_report_type_display }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 flex-shrink-0">
+          {% if report.status == 'COMPLETED' %}
+            <a href="{% url 'vehicles:report_detail' report.pk %}" class="text-ch-green hover:underline text-sm font-semibold">View</a>
+            <a href="{% url 'vehicles:report_pdf' report.pk %}" class="text-gray-400 hover:text-ch-green text-sm" title="Download PDF">📥</a>
+          {% elif report.status == 'PROCESSING' or report.status == 'PENDING' %}
+            <span class="text-xs text-ch-warn animate-pulse">Processing…</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="p-12 text-center">
+      <div class="text-4xl mb-4">🚗</div>
+      <h3 class="font-heading font-semibold text-ch-green mb-2">No reports yet</h3>
+      <p class="text-gray-500 text-sm mb-6">Check the history of your first vehicle.</p>
+      <a href="{% url 'vehicles:home' %}" class="inline-block bg-ch-gold text-ch-dark font-semibold px-6 py-2.5 rounded-xl text-sm">
+        Check a Car Now
+      </a>
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

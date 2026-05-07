@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if vehicle_data %}{{ vehicle_data.year }} {{ vehicle_data.make }} {{ vehicle_data.model }} — CarHaki Preview{% else %}Vehicle Preview — CarHaki{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-12">
+
+  {% if error %}
+  <div class="bg-red-50 border border-red-300 rounded-2xl p-8 text-center">
+    <div class="text-5xl mb-4">😕</div>
+    <h2 class="font-heading font-bold text-xl text-red-800 mb-2">Vehicle Not Found</h2>
+    <p class="text-red-600 mb-6">We couldn't find data for <strong class="font-mono">{{ identifier }}</strong>.</p>
+    <p class="text-gray-500 text-sm mb-6">Please check the VIN or chassis number and try again. Make sure you've selected the correct origin (USA or Japan).</p>
+    <a href="{% url 'vehicles:home' %}" class="inline-block bg-ch-green text-white font-heading font-semibold px-6 py-3 rounded-xl hover:bg-ch-green-l transition-colors">
+      Try Again
+    </a>
+  </div>
+
+  {% elif is_japan_preview %}
+  <!-- Japan chassis preview -->
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="bg-ch-green text-white p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-400 text-sm uppercase tracking-wider mb-1">Japan Vehicle Detected</p>
+          <h1 class="font-heading font-bold text-2xl lg:text-3xl">Chassis: {{ identifier }}</h1>
+          <p class="text-gray-400 text-sm mt-1">Japan import history available in full report</p>
+        </div>
+        <div class="text-right">
+          <span class="bg-ch-gold text-ch-dark text-xs font-bold px-3 py-1 rounded-full">🇯🇵 JAPAN</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-6">
+      <div class="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+        <span class="text-amber-500 text-xl flex-shrink-0">ℹ️</span>
+        <p class="text-amber-800 text-sm leading-relaxed">
+          Japan vehicle preview requires a paid report. The full report will include auction grade, auction history, MLIT records, Shaken (MOT) validity, and complete condition details from Japan.
+        </p>
+      </div>
+
+      <h3 class="font-heading font-semibold text-gray-700 mb-3">Your Full Japan Report Will Include:</h3>
+      <div class="space-y-2">
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+          <span class="text-gray-300 text-xl">🔒</span>
+          <span class="text-gray-400 text-sm">Auction grade (S / 4.5 / 4 / 3.5 / R etc.) + auction sheet details</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+          <span class="text-gray-300 text-xl">🔒</span>
+          <span class="text-gray-400 text-sm">MLIT Japan registration history + owner count</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+          <span class="text-gray-300 text-xl">🔒</span>
+          <span class="text-gray-400 text-sm">Accident & flood damage records</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+          <span class="text-gray-300 text-xl">🔒</span>
+          <span class="text-gray-400 text-sm">Shaken (Japanese MOT) validity date</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+          <span class="text-gray-300 text-xl">🔒</span>
+          <span class="text-gray-400 text-sm">Uganda URA 15-year import eligibility check + AI summary</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-ch-green/5 border-t border-ch-green/10 p-6">
+      <div class="text-center">
+        <h3 class="font-heading font-bold text-ch-green text-xl mb-2">Unlock Japan History Report</h3>
+        <p class="text-gray-600 text-sm mb-6">Get the complete auction and MLIT history for chassis <strong class="font-mono">{{ identifier }}</strong>.</p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center mb-4">
+          <form method="post" action="{% url 'vehicles:home' %}">
+            {% csrf_token %}
+            <input type="hidden" name="identifier" value="{{ identifier }}">
+            <input type="hidden" name="source_country" value="JAPAN">
+            <input type="hidden" name="report_type" value="BASIC">
+            <button type="submit" class="w-full sm:w-auto border-2 border-ch-green text-ch-green hover:bg-ch-green hover:text-white font-heading font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
+              Basic Report — UGX {{ BASIC_PRICE_UGX }}
+            </button>
+          </form>
+          <form method="post" action="{% url 'vehicles:home' %}">
+            {% csrf_token %}
+            <input type="hidden" name="identifier" value="{{ identifier }}">
+            <input type="hidden" name="source_country" value="JAPAN">
+            <input type="hidden" name="report_type" value="FULL">
+            <button type="submit" class="w-full sm:w-auto bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold px-6 py-3 rounded-xl transition-colors text-sm shadow">
+              Full Report — UGX {{ FULL_PRICE_UGX }} ⭐
+            </button>
+          </form>
+        </div>
+        <p class="text-gray-400 text-xs">Pay with MTN Mobile Money, Airtel Money, or Visa/Mastercard</p>
+      </div>
+    </div>
+  </div>
+
+  {% elif vehicle_data %}
+
+  <!-- Free Preview Card -->
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-ch-green text-white p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-400 text-sm uppercase tracking-wider mb-1">Free Preview</p>
+          <h1 class="font-heading font-bold text-2xl lg:text-3xl">
+            {{ vehicle_data.year }} {{ vehicle_data.make }} {{ vehicle_data.model }}
+            {% if vehicle_data.trim %}<span class="font-normal text-gray-300">{{ vehicle_data.trim }}</span>{% endif %}
+          </h1>
+          <p class="text-gray-400 text-sm mt-1 font-mono">{{ identifier }}</p>
+        </div>
+        <div class="text-right">
+          <span class="bg-ch-gold text-ch-dark text-xs font-bold px-3 py-1 rounded-full">
+            {% if source_country == 'USA' %}🇺🇸 USA{% else %}🇯🇵 JAPAN{% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Specs preview -->
+    <div class="p-6">
+      <h2 class="font-heading font-semibold text-ch-green mb-4">Vehicle Specifications (Free)</h2>
+      <div class="grid grid-cols-2 gap-3">
+        {% if vehicle_data.engine %}
+        <div class="bg-ch-light rounded-lg p-3">
+          <div class="text-xs text-gray-400 uppercase">Engine</div>
+          <div class="font-semibold text-ch-green text-sm">{{ vehicle_data.engine }} {% if vehicle_data.cylinders %}({{ vehicle_data.cylinders }} cyl){% endif %}</div>
+        </div>
+        {% endif %}
+        {% if vehicle_data.fuel_type %}
+        <div class="bg-ch-light rounded-lg p-3">
+          <div class="text-xs text-gray-400 uppercase">Fuel Type</div>
+          <div class="font-semibold text-ch-green text-sm">{{ vehicle_data.fuel_type }}</div>
+        </div>
+        {% endif %}
+        {% if vehicle_data.transmission %}
+        <div class="bg-ch-light rounded-lg p-3">
+          <div class="text-xs text-gray-400 uppercase">Transmission</div>
+          <div class="font-semibold text-ch-green text-sm">{{ vehicle_data.transmission }}</div>
+        </div>
+        {% endif %}
+        {% if vehicle_data.drive_type %}
+        <div class="bg-ch-light rounded-lg p-3">
+          <div class="text-xs text-gray-400 uppercase">Drive Type</div>
+          <div class="font-semibold text-ch-green text-sm">{{ vehicle_data.drive_type }}</div>
+        </div>
+        {% endif %}
+        {% if vehicle_data.body_type %}
+        <div class="bg-ch-light rounded-lg p-3">
+          <div class="text-xs text-gray-400 uppercase">Body Type</div>
+          <div class="font-semibold text-ch-green text-sm">{{ vehicle_data.body_type }}</div>
+        </div>
+        {% endif %}
+        {% if vehicle_data.doors %}
+        <div class="bg-ch-light rounded-lg p-3">
+          <div class="text-xs text-gray-400 uppercase">Doors</div>
+          <div class="font-semibold text-ch-green text-sm">{{ vehicle_data.doors }}</div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Locked sections -->
+      <div class="mt-6 border-t border-gray-100 pt-6">
+        <h3 class="font-heading font-semibold text-gray-700 mb-3">Full Report Includes:</h3>
+        <div class="space-y-2">
+          {% for item in "123456" %}{% endfor %}
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg relative overflow-hidden">
+            <span class="text-gray-300 text-xl">🔒</span>
+            <span class="text-gray-400 text-sm">Accident & damage history ({{ source_country }} records)</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <span class="text-gray-300 text-xl">🔒</span>
+            <span class="text-gray-400 text-sm">Title brands (Salvage / Rebuilt / Not Actual Mileage)</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <span class="text-gray-300 text-xl">🔒</span>
+            <span class="text-gray-400 text-sm">Odometer timeline — detect mileage fraud</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <span class="text-gray-300 text-xl">🔒</span>
+            <span class="text-gray-400 text-sm">Open recall alerts + AI plain-English summary</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <span class="text-gray-300 text-xl">🔒</span>
+            <span class="text-gray-400 text-sm">Uganda URA 15-year import eligibility check</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="bg-ch-green/5 border-t border-ch-green/10 p-6">
+      <div class="text-center">
+        <h3 class="font-heading font-bold text-ch-green text-xl mb-2">Unlock the Full Report</h3>
+        <p class="text-gray-600 text-sm mb-6">Know exactly what you're buying before paying millions of shillings.</p>
+
+        <div class="flex flex-col sm:flex-row gap-3 justify-center mb-4">
+          <!-- Basic report -->
+          <form method="post" action="{% url 'vehicles:home' %}">
+            {% csrf_token %}
+            <input type="hidden" name="identifier" value="{{ identifier }}">
+            <input type="hidden" name="source_country" value="{{ source_country }}">
+            <input type="hidden" name="report_type" value="BASIC">
+            <button type="submit" class="w-full sm:w-auto border-2 border-ch-green text-ch-green hover:bg-ch-green hover:text-white font-heading font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
+              Basic Report — UGX {{ BASIC_PRICE_UGX }}
+            </button>
+          </form>
+
+          <!-- Full report (primary) -->
+          <form method="post" action="{% url 'vehicles:home' %}">
+            {% csrf_token %}
+            <input type="hidden" name="identifier" value="{{ identifier }}">
+            <input type="hidden" name="source_country" value="{{ source_country }}">
+            <input type="hidden" name="report_type" value="FULL">
+            <button type="submit" class="w-full sm:w-auto bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold px-6 py-3 rounded-xl transition-colors text-sm shadow">
+              Full Report — UGX {{ FULL_PRICE_UGX }} ⭐
+            </button>
+          </form>
+        </div>
+
+        <p class="text-gray-400 text-xs">Pay with MTN Mobile Money, Airtel Money, or Visa/Mastercard</p>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="text-center py-12">
+    <div class="text-5xl mb-4">🔍</div>
+    <h2 class="font-heading font-bold text-xl text-ch-green mb-2">Looking up vehicle…</h2>
+    <p class="text-gray-500">Checking {{ identifier }}</p>
+    <a href="{% url 'vehicles:home' %}" class="mt-6 inline-block text-ch-green underline text-sm">Back to search</a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

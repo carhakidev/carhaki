@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to CarHaki</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f8f9fa;font-family:'Inter',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f9fa;padding:40px 20px;">
+  <tr>
+    <td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+        <tr>
+          <td style="background-color:#1B4332;border-radius:12px 12px 0 0;padding:28px 32px;text-align:center;">
+            <h1 style="margin:0;color:#F4A81D;font-family:'Poppins',Arial,sans-serif;font-size:24px;font-weight:700;">CarHaki</h1>
+            <p style="margin:6px 0 0;color:#a7c4b5;font-size:13px;">Uganda Vehicle History Verification</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background-color:#ffffff;padding:36px 32px;">
+            <h2 style="margin:0 0 16px;color:#1B4332;font-family:'Poppins',Arial,sans-serif;font-size:20px;font-weight:600;">Welcome to CarHaki</h2>
+            <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
+              Hello {% if user %}{{ user.first_name }}{% endif %},
+            </p>
+            <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
+              Your CarHaki account has been created. You can now search vehicle history
+              for any car imported from Japan or the United States of America before buying.
+            </p>
+
+            <table style="width:100%;background-color:#f0fdf4;border-radius:8px;margin:16px 0;" cellpadding="14" cellspacing="0">
+              <tr>
+                <td style="border-bottom:1px solid #d1fae5;">
+                  <p style="margin:0;color:#1B4332;font-size:13px;font-weight:600;">Free preview on every search</p>
+                  <p style="margin:4px 0 0;color:#6b7280;font-size:12px;">See the make, model, and year at no charge before paying for the full report.</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="border-bottom:1px solid #d1fae5;padding-top:14px;">
+                  <p style="margin:0;color:#1B4332;font-size:13px;font-weight:600;">Full reports from UGX 35,000</p>
+                  <p style="margin:4px 0 0;color:#6b7280;font-size:12px;">Pay via MTN Mobile Money, Airtel Money, or card. Report ready in 1 to 3 minutes.</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-top:14px;">
+                  <p style="margin:0;color:#1B4332;font-size:13px;font-weight:600;">AI-powered plain English summary</p>
+                  <p style="margin:4px 0 0;color:#6b7280;font-size:12px;">Every report includes a clear recommendation: buy, proceed with caution, or avoid.</p>
+                </td>
+              </tr>
+            </table>
+
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center" style="padding:20px 0;">
+                  <a href="{{ site_url }}{% url 'vehicles:search' %}"
+                    style="display:inline-block;background-color:#F4A81D;color:#1B4332;text-decoration:none;font-family:'Poppins',Arial,sans-serif;font-weight:700;font-size:15px;padding:14px 32px;border-radius:8px;">
+                    Start Your First Search
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background-color:#f8f9fa;border-radius:0 0 12px 12px;padding:20px 32px;text-align:center;">
+            <p style="margin:0;color:#9ca3af;font-size:12px;line-height:1.6;">
+              CarHaki Limited &bull; Plot 45, Kampala Road, Kampala, Uganda<br>
+              <a href="mailto:support@carhaki.ug" style="color:#9ca3af;">support@carhaki.ug</a>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Sign In — CarHaki{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-ch-light flex items-center justify-center py-12 px-4">
+  <div class="max-w-md w-full">
+
+    <div class="text-center mb-8">
+      <a href="{% url 'vehicles:home' %}" class="text-ch-gold font-heading font-bold text-3xl">Car<span class="text-ch-green">Haki</span></a>
+      <h1 class="font-heading font-bold text-2xl text-ch-green mt-4">Welcome Back</h1>
+      <p class="text-gray-500 text-sm mt-1">Don't have an account? <a href="{% url 'accounts:register' %}" class="text-ch-green font-semibold hover:underline">Sign up free</a></p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm p-8">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
+          <input type="email" name="username" autocomplete="email" autofocus
+                 class="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:border-ch-green focus:outline-none text-sm"
+                 placeholder="you@example.com">
+        </div>
+
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-1">
+            <label class="block text-sm font-semibold text-gray-700">Password</label>
+            <a href="{% url 'accounts:password_reset' %}" class="text-xs text-ch-green hover:underline">Forgot password?</a>
+          </div>
+          <input type="password" name="password" autocomplete="current-password"
+                 class="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:border-ch-green focus:outline-none text-sm"
+                 placeholder="Your password">
+        </div>
+
+        {% if form.non_field_errors %}
+        <div class="bg-red-50 border border-red-200 rounded-xl p-3 mb-4">
+          {% for error in form.non_field_errors %}<p class="text-red-600 text-sm">{{ error }}</p>{% endfor %}
+        </div>
+        {% endif %}
+
+        <button type="submit" class="w-full bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold py-3 rounded-xl transition-colors text-sm">
+          Sign In
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

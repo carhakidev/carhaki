@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% block title %}About CarHaki — Uganda Vehicle History Verification{% endblock %}
+{% block meta_description %}Learn about CarHaki, Uganda trusted vehicle history verification platform. We protect Ugandan car buyers from vehicles with hidden accidents, tampered odometers, and undisclosed damage.{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="bg-ch-green text-white py-20">
+  <div class="max-w-5xl mx-auto px-4 text-center">
+    <h1 class="font-heading font-bold text-4xl md:text-5xl mb-6">The Truth About Every Car</h1>
+    <p class="text-lg text-green-100 max-w-3xl mx-auto">
+      CarHaki was built with one mission: to protect Ugandan car buyers from purchasing
+      vehicles with hidden histories, tampered odometers, and undisclosed damage.
+    </p>
+  </div>
+</section>
+
+<!-- The Problem -->
+<section class="py-16 bg-white">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="text-ch-gold font-semibold text-sm uppercase tracking-wide">The Problem in Uganda</span>
+        <h2 class="font-heading font-bold text-3xl text-ch-green mt-2 mb-4">Thousands of buyers get deceived every year</h2>
+        <p class="text-gray-600 mb-4">
+          Over 85 percent of vehicles on Ugandan roads are imported used cars, primarily
+          from Japan and the United States. Before CarHaki existed, there was no trusted
+          local service that could tell a buyer whether a car had been in a serious accident,
+          declared a total loss, had its mileage rolled back, or was still under a safety recall.
+        </p>
+        <p class="text-gray-600 mb-4">
+          Thousands of buyers every year unknowingly paid good money for vehicles with
+          salvage titles, rebuilt structures, flooded interiors, or odometers that had been
+          tampered with. Sellers often imported these cars precisely because there was no
+          easy way to check their history once they arrived in Uganda.
+        </p>
+        <p class="text-gray-600">
+          The information to verify these vehicles has always existed in government databases
+          in Japan and the United States. The problem was that no one was making that
+          information accessible to the ordinary Ugandan buyer.
+        </p>
+      </div>
+      <div class="bg-red-50 rounded-2xl p-8 border border-red-100">
+        <h3 class="font-heading font-semibold text-xl text-gray-800 mb-6">Common hidden problems we uncover</h3>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3">
+            <span class="text-red-500 mt-1">&#9679;</span>
+            <span class="text-gray-700">Salvage or rebuilt titles from insurance write-offs after major accidents</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-red-500 mt-1">&#9679;</span>
+            <span class="text-gray-700">Odometers rolled back by tens of thousands of kilometres</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-red-500 mt-1">&#9679;</span>
+            <span class="text-gray-700">Flood damage repaired and concealed before export</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-red-500 mt-1">&#9679;</span>
+            <span class="text-gray-700">Open safety recalls that have never been repaired</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-red-500 mt-1">&#9679;</span>
+            <span class="text-gray-700">Vehicles too old to legally import under URA regulations</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-red-500 mt-1">&#9679;</span>
+            <span class="text-gray-700">Stolen vehicles exported and sold with forged documents</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- What CarHaki Does -->
+<section class="py-16 bg-ch-light">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <span class="text-ch-gold font-semibold text-sm uppercase tracking-wide">How We Solve It</span>
+      <h2 class="font-heading font-bold text-3xl text-ch-green mt-2">The same data that banks and dealers use</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <h3 class="font-heading font-semibold text-lg text-ch-green mb-2">USA Vehicles</h3>
+        <p class="text-gray-600 text-sm">
+          For 17-digit VIN numbers, we access NMVTIS (the US National Motor Vehicle Title
+          Information System), NHTSA safety recalls, and full title and accident history
+          from official state DMV records and insurance databases.
+        </p>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <h3 class="font-heading font-semibold text-lg text-ch-green mb-2">Japan Vehicles</h3>
+        <p class="text-gray-600 text-sm">
+          For Japanese chassis numbers, we retrieve data from MLIT (the Ministry of Land,
+          Infrastructure, Transport and Tourism), Japanese vehicle auction records, and
+          inspection history including Shaken expiry dates.
+        </p>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <h3 class="font-heading font-semibold text-lg text-ch-green mb-2">AI Analysis</h3>
+        <p class="text-gray-600 text-sm">
+          Every report is summarised in plain English by an AI system trained to explain
+          vehicle history clearly. Instead of raw data tables, you get a direct answer:
+          should you buy this car or not?
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- The Name -->
+<section class="py-16 bg-ch-green text-white">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <h2 class="font-heading font-bold text-3xl mb-4">Why "CarHaki"?</h2>
+    <p class="text-green-100 text-lg mb-4">
+      <strong class="text-white">"Haki"</strong> is a Swahili word that means truth, right,
+      and genuineness. It is a word that carries weight across East Africa, from Uganda to
+      Kenya to Tanzania.
+    </p>
+    <p class="text-green-100 text-lg">
+      <strong class="text-ch-gold">CarHaki</strong> means the genuine truth about your car.
+      It is that simple.
+    </p>
+  </div>
+</section>
+
+<!-- Vision -->
+<section class="py-16 bg-white">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="text-ch-gold font-semibold text-sm uppercase tracking-wide">Our Vision</span>
+        <h2 class="font-heading font-bold text-3xl text-ch-green mt-2 mb-4">East Africa, starting in Uganda</h2>
+        <p class="text-gray-600 mb-4">
+          CarHaki launched in Uganda because Uganda has one of the highest proportions of
+          imported used vehicles in East Africa and some of the least protection for buyers.
+          But the problem exists across the region.
+        </p>
+        <p class="text-gray-600 mb-4">
+          Our roadmap includes expansion to Kenya, Tanzania, and Rwanda. The same databases,
+          the same grading system, the same AI analysis, and the same commitment to putting
+          buyers first.
+        </p>
+        <div class="grid grid-cols-2 gap-4 mt-6">
+          <div class="bg-ch-light rounded-lg p-4 text-center">
+            <div class="font-heading font-bold text-2xl text-ch-green">Uganda</div>
+            <div class="text-sm text-gray-500 mt-1">Live now</div>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-4 text-center border border-dashed border-gray-300">
+            <div class="font-heading font-bold text-2xl text-gray-400">Kenya</div>
+            <div class="text-sm text-gray-400 mt-1">Coming 2026</div>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-4 text-center border border-dashed border-gray-300">
+            <div class="font-heading font-bold text-2xl text-gray-400">Tanzania</div>
+            <div class="text-sm text-gray-400 mt-1">Coming 2026</div>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-4 text-center border border-dashed border-gray-300">
+            <div class="font-heading font-bold text-2xl text-gray-400">Rwanda</div>
+            <div class="text-sm text-gray-400 mt-1">Planned</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span class="text-ch-gold font-semibold text-sm uppercase tracking-wide">Data Sources</span>
+        <h3 class="font-heading font-semibold text-xl text-ch-green mt-2 mb-6">Official government databases</h3>
+        <div class="space-y-4">
+          <div class="flex items-center gap-4 p-4 bg-ch-light rounded-lg">
+            <div class="w-10 h-10 bg-blue-600 rounded text-white flex items-center justify-center font-bold text-xs">US</div>
+            <div>
+              <div class="font-semibold text-sm text-gray-800">NMVTIS</div>
+              <div class="text-xs text-gray-500">National Motor Vehicle Title Information System</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 p-4 bg-ch-light rounded-lg">
+            <div class="w-10 h-10 bg-blue-600 rounded text-white flex items-center justify-center font-bold text-xs">US</div>
+            <div>
+              <div class="font-semibold text-sm text-gray-800">NHTSA</div>
+              <div class="text-xs text-gray-500">National Highway Traffic Safety Administration</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 p-4 bg-ch-light rounded-lg">
+            <div class="w-10 h-10 bg-red-600 rounded text-white flex items-center justify-center font-bold text-xs">JP</div>
+            <div>
+              <div class="font-semibold text-sm text-gray-800">MLIT Japan</div>
+              <div class="text-xs text-gray-500">Ministry of Land, Infrastructure, Transport and Tourism</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 p-4 bg-ch-light rounded-lg">
+            <div class="w-10 h-10 bg-red-600 rounded text-white flex items-center justify-center font-bold text-xs">JP</div>
+            <div>
+              <div class="font-semibold text-sm text-gray-800">Japan Auction Records</div>
+              <div class="text-xs text-gray-500">USS, TAA, JU, and other major auction houses</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- CTA -->
+<section class="py-16 bg-ch-gold">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <h2 class="font-heading font-bold text-3xl text-ch-dark mb-4">Ready to check your car?</h2>
+    <p class="text-ch-dark text-lg mb-8 opacity-80">
+      Enter a VIN or chassis number and get the truth about any car before you buy.
+    </p>
+    <a href="{% url 'vehicles:search' %}" class="inline-block bg-ch-green text-white font-heading font-semibold px-10 py-4 rounded-lg hover:bg-ch-green-l transition-colors text-lg">
+      Start a Free Search
+    </a>
+  </div>
+</section>
+
+{% endblock %}
