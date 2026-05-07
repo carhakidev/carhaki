@@ -30,3 +30,10 @@ if not os.environ.get('SENDGRID_API_KEY'):
 # django-axes needs a persistent store for distributed deployments;
 # disable it on Vercel (stateless serverless) to avoid startup errors
 AXES_ENABLED = False
+
+# WhiteNoise: serve static files directly from source dirs without collectstatic.
+# CompressedManifestStaticFilesStorage requires a pre-built manifest which doesn't
+# exist on Vercel (no collectstatic build step), so fall back to plain storage.
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = True
