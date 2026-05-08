@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: carhaki
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+    startCommand: "gunicorn carhaki.wsgi:application --workers 2 --timeout 60 --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: carhaki.settings.production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: carhaki-db
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+
+databases:
+  - name: carhaki-db
+    plan: free

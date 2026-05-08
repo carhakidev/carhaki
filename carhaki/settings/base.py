@@ -77,16 +77,24 @@ DATABASES = {
     'default': env.db('DATABASE_URL', default='sqlite:///db.sqlite3')
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': env('REDIS_URL', default='redis://localhost:6379/0'),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        },
-        'TIMEOUT': 60 * 60 * 24 * 30,
+_redis_url = env('REDIS_URL', default='')
+if _redis_url:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': _redis_url,
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            },
+            'TIMEOUT': 60 * 60 * 24 * 30,
+        }
     }
-}
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        }
+    }
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
@@ -122,8 +130,8 @@ LOGIN_REDIRECT_URL = '/accounts/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Celery
-CELERY_BROKER_URL = env('REDIS_URL', default='redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = env('REDIS_URL', default='redis://localhost:6379/0')
+CELERY_BROKER_URL = _redis_url or 'memory://'
+CELERY_RESULT_BACKEND = _redis_url or 'cache+memory://'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
