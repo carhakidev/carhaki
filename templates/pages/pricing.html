@@ -1,72 +1,145 @@
-{% extends "base.html" %}
-{% block title %}Pricing — CarHaki{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pricing — CarHaki Uganda{% endblock %}
 
 {% block content %}
-<div class="max-w-5xl mx-auto px-4 py-16">
-  <div class="text-center mb-12">
-    <h1 class="font-heading font-bold text-4xl text-ch-green mb-3">Simple, Honest Pricing</h1>
-    <p class="text-gray-600 max-w-xl mx-auto">No monthly fees. No hidden charges. Pay only when you need a report. All prices in Ugandan Shillings.</p>
+
+<div style="background:var(--blue-deep);padding:64px 24px 80px;text-align:center;position:relative;overflow:hidden;">
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div style="position:relative;">
+    <div class="hero-badge" style="margin-bottom:16px;"><span class="hero-badge-dot"></span>Simple, honest pricing</div>
+    <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;color:white;letter-spacing:-.5px;margin-bottom:14px;">
+      Protect a UGX 15M Purchase<br>for <span style="color:var(--blue-light);">Just UGX 25,000</span>
+    </h1>
+    <p style="font-size:16px;color:rgba(255,255,255,.55);max-width:480px;margin:0 auto;">No subscriptions for individuals. Pay per report. Money-back guarantee if no data found.</p>
   </div>
+</div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-16">
-    <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-      <h2 class="font-heading font-bold text-2xl text-ch-green mb-2">Basic</h2>
-      <p class="text-gray-500 text-sm mb-6">Vehicle specs + title + odometer</p>
-      <div class="mb-8"><span class="font-heading font-black text-4xl text-ch-green">UGX {{ BASIC_PRICE_UGX }}</span></div>
-      <ul class="space-y-3 text-sm text-gray-600 mb-8">
-        <li class="flex gap-2"><span class="text-ch-success font-bold">✓</span> Full vehicle specifications</li>
-        <li class="flex gap-2"><span class="text-ch-success font-bold">✓</span> Title history & registration states</li>
-        <li class="flex gap-2"><span class="text-ch-success font-bold">✓</span> Odometer / mileage records</li>
-        <li class="flex gap-2"><span class="text-ch-success font-bold">✓</span> Uganda 15-year import check</li>
-        <li class="flex gap-2 text-gray-300"><span>✗</span> Accident & damage records</li>
-        <li class="flex gap-2 text-gray-300"><span>✗</span> AI plain-English summary</li>
-        <li class="flex gap-2 text-gray-300"><span>✗</span> PDF download</li>
-      </ul>
-      <a href="{% url 'vehicles:home' %}" class="block text-center border-2 border-ch-green text-ch-green hover:bg-ch-green hover:text-white font-heading font-semibold py-3 rounded-xl transition-colors">Get Basic Report</a>
+<!-- Pricing cards -->
+<div class="section" style="margin-top:-40px;">
+  <div class="container">
+    <div class="pricing-grid" style="max-width:960px;margin:0 auto;">
+
+      <!-- Basic -->
+      <div class="pricing-card">
+        <div class="pricing-name">Basic Report</div>
+        <div class="pricing-price">25,000 <span>UGX</span></div>
+        <div class="pricing-desc">Essential history for individual buyers</div>
+        <ul class="pricing-features">
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#D1FAE5"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Japan auction grade</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#D1FAE5"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Real mileage at auction</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#D1FAE5"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Accident history</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#D1FAE5"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Frame & engine grade</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#D1FAE5"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Import route</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#D1FAE5"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>AI plain-English summary</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#D1FAE5"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Shareable report link</li>
+          <li class="pricing-feature" style="opacity:.4;"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#F3F4F6"/><path d="M6 12L12 6M6 6L12 12" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>Japan auction photos</li>
+          <li class="pricing-feature" style="opacity:.4;"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#F3F4F6"/><path d="M6 12L12 6M6 6L12 12" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>PDF download</li>
+        </ul>
+        <a href="{% url 'vehicle_search' %}?tier=basic" class="btn-pricing btn-pricing-outline">Get Basic Report</a>
+      </div>
+
+      <!-- Full (featured) -->
+      <div class="pricing-card featured">
+        <div class="pricing-badge">MOST POPULAR</div>
+        <div class="pricing-name" style="color:var(--blue);">Full Report</div>
+        <div class="pricing-price" style="color:var(--blue);">50,000 <span>UGX</span></div>
+        <div class="pricing-desc">Complete history with photos — for serious buyers</div>
+        <ul class="pricing-features">
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#DBEAFE"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Basic</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#DBEAFE"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Original Japan auction photos</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#DBEAFE"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Detailed inspection notes</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#DBEAFE"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF download</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#DBEAFE"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Mileage fraud analysis</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#DBEAFE"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Structural damage photos</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#DBEAFE"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>URA import eligibility check</li>
+          <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#DBEAFE"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority support</li>
+        </ul>
+        <a href="{% url 'vehicle_search' %}?tier=full" class="btn-pricing btn-pricing-primary">Get Full Report</a>
+      </div>
+
+      <!-- Dealer -->
+      <div class="pricing-card" style="background:var(--blue-deep);">
+        <div class="pricing-name" style="color:rgba(255,255,255,.4);">Dealer Pack</div>
+        <div class="pricing-price" style="color:white;">500,000 <span style="color:rgba(255,255,255,.4);">UGX/mo</span></div>
+        <div class="pricing-desc" style="color:rgba(255,255,255,.5);">Unlimited reports for your dealership</div>
+        <ul class="pricing-features">
+          <li class="pricing-feature" style="color:rgba(255,255,255,.7);"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="rgba(96,165,250,.2)"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited Full Reports</li>
+          <li class="pricing-feature" style="color:rgba(255,255,255,.7);"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="rgba(96,165,250,.2)"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>CarHaki Verified badge</li>
+          <li class="pricing-feature" style="color:rgba(255,255,255,.7);"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="rgba(96,165,250,.2)"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Dealer dashboard</li>
+          <li class="pricing-feature" style="color:rgba(255,255,255,.7);"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="rgba(96,165,250,.2)"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Bulk report downloads</li>
+          <li class="pricing-feature" style="color:rgba(255,255,255,.7);"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="rgba(96,165,250,.2)"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Listing on CarHaki dealers page</li>
+          <li class="pricing-feature" style="color:rgba(255,255,255,.7);"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="rgba(96,165,250,.2)"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>WhatsApp priority support</li>
+          <li class="pricing-feature" style="color:rgba(255,255,255,.7);"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="rgba(96,165,250,.2)"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Custom branding on reports</li>
+          <li class="pricing-feature" style="color:rgba(255,255,255,.7);"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="rgba(96,165,250,.2)"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly analytics report</li>
+        </ul>
+        <a href="{% url 'dealer_apply' %}" class="btn-pricing" style="background:var(--blue);color:white;">Apply as Dealer</a>
+      </div>
+
     </div>
 
-    <div class="bg-ch-green rounded-2xl p-8 shadow-xl text-white relative">
-      <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-ch-gold text-ch-dark text-xs font-heading font-bold px-5 py-1.5 rounded-full">RECOMMENDED</div>
-      <h2 class="font-heading font-bold text-2xl mb-2">Full Report</h2>
-      <p class="text-gray-300 text-sm mb-6">Everything you need to know</p>
-      <div class="mb-8"><span class="font-heading font-black text-4xl">UGX {{ FULL_PRICE_UGX }}</span></div>
-      <ul class="space-y-3 text-sm text-gray-300 mb-8">
-        <li class="flex gap-2"><span class="text-ch-gold font-bold">✓</span> Everything in Basic</li>
-        <li class="flex gap-2"><span class="text-ch-gold font-bold">✓</span> Full accident & damage history</li>
-        <li class="flex gap-2"><span class="text-ch-gold font-bold">✓</span> Salvage / rebuilt title brands</li>
-        <li class="flex gap-2"><span class="text-ch-gold font-bold">✓</span> Theft records check</li>
-        <li class="flex gap-2"><span class="text-ch-gold font-bold">✓</span> Open NHTSA recall alerts</li>
-        <li class="flex gap-2"><span class="text-ch-gold font-bold">✓</span> AI plain-English summary</li>
-        <li class="flex gap-2"><span class="text-ch-gold font-bold">✓</span> PDF download + shareable link</li>
-        <li class="flex gap-2"><span class="text-ch-gold font-bold">✓</span> Market value estimate</li>
-      </ul>
-      <a href="{% url 'vehicles:home' %}" class="block text-center bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold py-3 rounded-xl transition-colors">Get Full Report</a>
-    </div>
-
-    <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-      <h2 class="font-heading font-bold text-2xl text-ch-green mb-2">Dealer Pack</h2>
-      <p class="text-gray-500 text-sm mb-6">10 full reports for dealers</p>
-      <div class="mb-2"><span class="font-heading font-black text-4xl text-ch-green">UGX {{ DEALER_PACK_PRICE_UGX }}</span></div>
-      <p class="text-ch-success text-sm mb-6 font-semibold">Save UGX 150,000!</p>
-      <ul class="space-y-3 text-sm text-gray-600 mb-8">
-        <li class="flex gap-2"><span class="text-ch-success font-bold">✓</span> 10 × Full reports</li>
-        <li class="flex gap-2"><span class="text-ch-success font-bold">✓</span> Credits never expire</li>
-        <li class="flex gap-2"><span class="text-ch-success font-bold">✓</span> Dealer dashboard</li>
-        <li class="flex gap-2"><span class="text-ch-success font-bold">✓</span> Priority support</li>
-        <li class="flex gap-2"><span class="text-ch-success font-bold">✓</span> Buy more credits anytime</li>
-      </ul>
-      <a href="{% url 'accounts:dealer_register' %}" class="block text-center border-2 border-ch-green text-ch-green hover:bg-ch-green hover:text-white font-heading font-semibold py-3 rounded-xl transition-colors">Register as Dealer</a>
-    </div>
-  </div>
-
-  <!-- Payment methods -->
-  <div class="text-center">
-    <p class="text-gray-500 text-sm mb-4">Accepted payment methods:</p>
-    <div class="flex justify-center flex-wrap gap-4">
-      <span class="bg-yellow-100 text-yellow-800 font-semibold px-4 py-2 rounded-full text-sm">MTN Mobile Money</span>
-      <span class="bg-red-100 text-red-800 font-semibold px-4 py-2 rounded-full text-sm">Airtel Money</span>
-      <span class="bg-blue-100 text-blue-800 font-semibold px-4 py-2 rounded-full text-sm">Visa / Mastercard</span>
+    <!-- Payment methods -->
+    <div style="text-align:center;margin-top:40px;">
+      <div style="font-size:13px;color:var(--text-3);margin-bottom:14px;">Accepted payment methods</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;">
+          <span style="font-size:16px;">📱</span><span style="font-size:13px;font-weight:500;color:var(--text-2);">MTN Mobile Money</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;">
+          <span style="font-size:16px;">📱</span><span style="font-size:13px;font-weight:500;color:var(--text-2);">Airtel Money</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;">
+          <span style="font-size:16px;">💳</span><span style="font-size:13px;font-weight:500;color:var(--text-2);">Visa / Mastercard</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:16px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:#22C55E;"></span>
+        <span style="font-size:13px;color:var(--text-3);">Money-back guarantee if no data is found for your chassis number</span>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- FAQ -->
+<div class="section" style="background:var(--surface);">
+  <div class="container-sm">
+    <h2 class="section-title text-center" style="margin-bottom:32px;">Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <div class="faq-question">What if no data is found for my chassis number? <span class="faq-icon" style="font-size:20px;color:var(--blue);">+</span></div>
+      <div class="faq-answer">If CarHaki cannot find any records for the chassis number you entered, we will refund your payment in full within 24 hours. No questions asked.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">How quickly do I receive my report? <span class="faq-icon" style="font-size:20px;color:var(--blue);">+</span></div>
+      <div class="faq-answer">Most reports are generated instantly — within 30 seconds of payment. For older vehicles or unusual chassis formats, it may take up to 5 minutes. You will receive an email notification when your report is ready.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Can I share the report with others? <span class="faq-icon" style="font-size:20px;color:var(--blue);">+</span></div>
+      <div class="faq-answer">Yes. Every report has a unique shareable link that works for anyone — even without a CarHaki account. Perfect for sharing with family, mechanics, or insurance brokers.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Where does the data come from? <span class="faq-icon" style="font-size:20px;color:var(--blue);">+</span></div>
+      <div class="faq-answer">CarHaki pulls data from Japan auction houses (USS, TAA, JAA, and 500+ others), MLIT (Japan's Ministry of Land and Transport), Japanese insurance records, and import/export databases.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Does CarHaki work for non-Japanese vehicles? <span class="faq-icon" style="font-size:20px;color:var(--blue);">+</span></div>
+      <div class="faq-answer">CarHaki is optimised for ex-Japan vehicles, which account for over 90% of Uganda's used car imports. US-sourced vehicles (VIN format) are also supported through our NHTSA and VinAudit integration.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="section">
+  <div class="container">
+    <div class="cta-section">
+      <h2 class="cta-title">Ready to Check Your Car?</h2>
+      <p class="cta-sub">Start with a free sample report, then check your actual vehicle.</p>
+      <div class="cta-actions">
+        <a href="{% url 'vehicle_search' %}" class="btn btn-white btn-lg"><i class="fa-solid fa-magnifying-glass"></i> Check a Car</a>
+        <a href="{% url 'sample_report' %}" class="btn btn-lg" style="background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.2);">See Sample Report</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

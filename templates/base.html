@@ -1,92 +1,101 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+{% load static %}<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="{% block meta_description %}CarHaki — Uganda's trusted vehicle history verification platform. Check VIN and chassis history for cars imported from USA and Japan.{% endblock %}">
-  <title>{% block title %}CarHaki — Verify Your Car's History{% endblock %}</title>
+  <meta name="description" content="{% block meta_desc %}CarHaki — Uganda's vehicle intelligence platform. Check any ex-Japan car history before you buy.{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}CarHaki — Know the Truth About Every Car{% endblock %}">
+  <meta property="og:description" content="Uganda's #1 vehicle history check. Powered by Japan auction records.">
+  <meta property="og:image" content="{% static 'images/og-image.png' %}">
+  <meta property="og:type" content="website">
+  <title>{% block title %}CarHaki — Vehicle Intelligence Uganda{% endblock %}</title>
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS CDN (dev — replace with compiled build in production) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'ch-green':   '#1D4ED8',
-            'ch-green-l': '#2563EB',
-            'ch-dark':    '#0C1F3F',
-            'ch-navy':    '#1E3A8A',
-            'ch-gold':    '#60A5FA',
-            'ch-gold-d':  '#3B82F6',
-            'ch-light':   '#F8FAFC',
-            'ch-surface': '#F8FAFC',
-            'ch-success': '#065F46',
-            'ch-danger':  '#991B1B',
-            'ch-warn':    '#92400E',
-          },
-          fontFamily: {
-            heading: ['Plus Jakarta Sans', 'sans-serif'],
-            body:    ['Inter', 'sans-serif'],
-            mono:    ['JetBrains Mono', 'monospace'],
-          },
-        }
-      }
-    }
-  </script>
-
-  <!-- Chart.js for odometer timeline -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
-
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    h1, h2, h3, h4, h5 { font-family: 'Plus Jakarta Sans', sans-serif; }
-    code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
-    .btn-primary {
-      @apply bg-ch-green hover:bg-ch-green-l text-white font-heading font-semibold px-6 py-3 rounded-lg transition-all duration-200 shadow-sm;
-    }
-    .btn-outline {
-      @apply border-2 border-ch-green text-ch-green hover:bg-ch-green hover:text-white font-heading font-semibold px-6 py-3 rounded-lg transition-all duration-200;
-    }
-  </style>
-
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/carhaki.css' %}">
+  <link rel="icon" type="image/svg+xml" href="{% static 'images/carhaki-favicon-32.svg' %}">
   {% block extra_head %}{% endblock %}
 </head>
+<body>
 
-<body class="bg-white text-gray-800 font-body">
+{% include 'components/nav.html' %}
 
-  <!-- Navbar -->
-  {% include "components/navbar.html" %}
-
-  <!-- Django Messages -->
-  {% if messages %}
-  <div class="max-w-7xl mx-auto px-4 mt-4">
-    {% for message in messages %}
-    <div class="flex items-center justify-between p-4 mb-2 rounded-lg
-      {% if message.tags == 'error' %}bg-red-50 border border-red-300 text-red-800
-      {% elif message.tags == 'success' %}bg-green-50 border border-green-300 text-green-800
-      {% elif message.tags == 'warning' %}bg-yellow-50 border border-yellow-300 text-yellow-800
-      {% else %}bg-blue-50 border border-blue-300 text-blue-800{% endif %}">
-      <span>{{ message }}</span>
-      <button onclick="this.parentElement.remove()" class="ml-4 opacity-60 hover:opacity-100 text-xl leading-none">&times;</button>
-    </div>
-    {% endfor %}
+{% if messages %}
+<div style="max-width:1200px;margin:16px auto;padding:0 24px;">
+  {% for message in messages %}
+  <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true">
+      {% if message.tags == 'success' %}<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+      {% else %}<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>{% endif %}
+    </svg>
+    {{ message }}
   </div>
-  {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
 
-  <!-- Main content -->
-  <main>
-    {% block content %}{% endblock %}
-  </main>
+{% block content %}{% endblock %}
 
-  <!-- Footer -->
-  {% include "components/footer.html" %}
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <a href="{% url 'vehicles:home' %}">
+          <img src="{% static 'images/carhaki-logo-light.svg' %}" alt="CarHaki" class="footer-logo">
+        </a>
+        <p class="footer-brand-desc">Uganda's vehicle intelligence platform. Know the truth about every ex-Japan car before you buy.</p>
+        <div style="margin-top:16px;display:flex;align-items:center;gap:8px;">
+          <span style="width:8px;height:8px;border-radius:50%;background:#22C55E;display:inline-block;flex-shrink:0;"></span>
+          <span style="font-size:12px;color:rgba(255,255,255,.4);">All systems operational</span>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Product</div>
+        <ul class="footer-links">
+          <li><a href="{% url 'vehicles:search' %}" class="footer-link">Check a Car</a></li>
+          <li><a href="{% url 'vehicles:sample_report' %}" class="footer-link">Sample Report</a></li>
+          <li><a href="{% url 'vehicles:pricing' %}" class="footer-link">Pricing</a></li>
+          <li><a href="{% url 'vehicles:dealers' %}" class="footer-link">For Dealers</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <ul class="footer-links">
+          <li><a href="{% url 'vehicles:faq' %}" class="footer-link">FAQ</a></li>
+          <li><a href="{% url 'vehicles:contact' %}" class="footer-link">Contact Us</a></li>
+          <li><a href="https://wa.me/256XXXXXXXX" target="_blank" rel="noopener" class="footer-link">WhatsApp</a></li>
+          <li><a href="{% url 'vehicles:about' %}" class="footer-link">About CarHaki</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <ul class="footer-links">
+          <li><a href="{% url 'vehicles:terms' %}" class="footer-link">Terms of Service</a></li>
+          <li><a href="{% url 'vehicles:privacy' %}" class="footer-link">Privacy Policy</a></li>
+          <li><a href="{% url 'vehicles:refund_policy' %}" class="footer-link">Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© {% now "Y" %} CarHaki Uganda. All rights reserved. Powered by Japan auction records.</p>
+      <div class="footer-socials">
+        <a href="https://instagram.com/carhakiug" target="_blank" rel="noopener" class="footer-social" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+        <a href="https://twitter.com/carhakiug" target="_blank" rel="noopener" class="footer-social" aria-label="X/Twitter"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+        <a href="https://facebook.com/carhaki" target="_blank" rel="noopener" class="footer-social" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+        <a href="https://youtube.com/@carhaki" target="_blank" rel="noopener" class="footer-social" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+        <a href="https://wa.me/256XXXXXXXX" target="_blank" rel="noopener" class="footer-social" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
 
-  {% block extra_js %}{% endblock %}
+<script>
+  document.querySelectorAll('.faq-question').forEach(function(q) {
+    q.addEventListener('click', function() { q.closest('.faq-item').classList.toggle('open'); });
+  });
+</script>
+{% block extra_scripts %}{% endblock %}
 </body>
 </html>
