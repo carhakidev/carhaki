@@ -2,48 +2,129 @@
 {% block title %}Sign In — CarHaki{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-ch-light flex items-center justify-center py-12 px-4">
-  <div class="max-w-md w-full">
+<div style="min-height:calc(100vh - var(--nav-h)); background:var(--ch-surface);
+            display:flex; align-items:center; justify-content:center;
+            padding:48px 16px;">
 
-    <div class="text-center mb-8">
-      <a href="{% url 'vehicles:home' %}" class="text-ch-gold font-heading font-bold text-3xl">Car<span class="text-ch-green">Haki</span></a>
-      <h1 class="font-heading font-bold text-2xl text-ch-green mt-4">Welcome Back</h1>
-      <p class="text-gray-500 text-sm mt-1">Don't have an account? <a href="{% url 'accounts:register' %}" class="text-ch-green font-semibold hover:underline">Sign up free</a></p>
+  <div style="width:100%; max-width:440px;">
+
+    <!-- ── Logo + heading ──────────────────────────────────── -->
+    <div style="text-align:center; margin-bottom:28px;">
+      <a href="{% url 'vehicles:home' %}" style="display:inline-block; margin-bottom:20px;">
+        <!-- carhaki-logo-dark.svg — dark version for light background -->
+        <img src="{% static 'images/carhaki-logo-dark.svg' %}"
+             alt="CarHaki" height="32" style="height:32px; width:auto;">
+      </a>
+      <h1 class="font-display"
+          style="font-size:22px; font-weight:800; color:var(--ch-navy); margin-bottom:6px;">
+        Welcome Back
+      </h1>
+      <p style="font-size:14px; color:var(--ch-text-3);">
+        Don't have an account?
+        <a href="{% url 'accounts:register' %}"
+           style="color:var(--ch-blue); font-weight:600; transition:opacity .15s;"
+           onmouseover="this.style.opacity='.7'"
+           onmouseout="this.style.opacity='1'">
+          Sign up free
+        </a>
+      </p>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm p-8">
+    <!-- ── Card ────────────────────────────────────────────── -->
+    <div style="background:white; border:1px solid var(--ch-border);
+                border-radius:var(--r-xl); box-shadow:var(--shadow-sm); padding:36px 40px;">
+
       <form method="post" novalidate>
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
 
-        <div class="mb-4">
-          <label class="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
-          <input type="email" name="username" autocomplete="email" autofocus
-                 class="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:border-ch-green focus:outline-none text-sm"
-                 placeholder="you@example.com">
-        </div>
-
-        <div class="mb-6">
-          <div class="flex justify-between items-center mb-1">
-            <label class="block text-sm font-semibold text-gray-700">Password</label>
-            <a href="{% url 'accounts:password_reset' %}" class="text-xs text-ch-green hover:underline">Forgot password?</a>
-          </div>
-          <input type="password" name="password" autocomplete="current-password"
-                 class="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:border-ch-green focus:outline-none text-sm"
-                 placeholder="Your password">
-        </div>
-
+        <!-- Non-field errors -->
         {% if form.non_field_errors %}
-        <div class="bg-red-50 border border-red-200 rounded-xl p-3 mb-4">
-          {% for error in form.non_field_errors %}<p class="text-red-600 text-sm">{{ error }}</p>{% endfor %}
+        <div class="alert alert-danger" style="margin-bottom:20px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round"
+               style="flex-shrink:0;" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <div>
+            {% for error in form.non_field_errors %}
+              <p style="font-size:13px;">{{ error }}</p>
+            {% endfor %}
+          </div>
         </div>
         {% endif %}
 
-        <button type="submit" class="w-full bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold py-3 rounded-xl transition-colors text-sm">
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label" for="id_username">Email Address</label>
+          <div class="form-input-icon">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <input class="form-input"
+                   type="email" id="id_username" name="username"
+                   autocomplete="email" autofocus
+                   placeholder="you@example.com">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group" style="margin-bottom:24px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+            <label class="form-label" for="id_password" style="margin-bottom:0;">
+              Password
+            </label>
+            <a href="{% url 'accounts:password_reset' %}"
+               style="font-size:12px; color:var(--ch-blue); font-weight:500; transition:opacity .15s;"
+               onmouseover="this.style.opacity='.7'"
+               onmouseout="this.style.opacity='1'">
+              Forgot password?
+            </a>
+          </div>
+          <div class="form-input-icon">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <input class="form-input"
+                   type="password" id="id_password" name="password"
+                   autocomplete="current-password"
+                   placeholder="Your password">
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary"
+                style="width:100%; justify-content:center; padding:13px; font-size:15px;">
           Sign In
         </button>
+
       </form>
     </div>
+
+    <!-- ── Footer note ────────────────────────────────────── -->
+    <p style="text-align:center; font-size:12px; color:var(--ch-text-3);
+              margin-top:20px; line-height:1.6;">
+      By signing in you agree to our
+      <a href="{% url 'pages:terms' %}"
+         style="color:var(--ch-blue); transition:opacity .15s;"
+         onmouseover="this.style.opacity='.7'"
+         onmouseout="this.style.opacity='1'">Terms</a>
+      and
+      <a href="{% url 'pages:privacy' %}"
+         style="color:var(--ch-blue); transition:opacity .15s;"
+         onmouseover="this.style.opacity='.7'"
+         onmouseout="this.style.opacity='1'">Privacy Policy</a>.
+    </p>
+
   </div>
 </div>
 {% endblock %}

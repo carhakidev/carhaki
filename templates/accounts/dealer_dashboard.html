@@ -2,119 +2,287 @@
 {% block title %}Dealer Dashboard — CarHaki{% endblock %}
 
 {% block content %}
-<div class="max-w-5xl mx-auto px-4 py-12">
+<div class="container" style="padding-top: 48px; padding-bottom: 64px;">
 
-  <div class="flex items-center justify-between mb-8">
+  <!-- ── Header ──────────────────────────────────────────── -->
+  <div style="display:flex; align-items:flex-start; justify-content:space-between;
+              margin-bottom:32px; gap:16px; flex-wrap:wrap;">
     <div>
-      <h1 class="font-heading font-bold text-3xl text-ch-green">Dealer Dashboard</h1>
+      <h1 class="font-display"
+          style="font-size:28px; font-weight:800; color:var(--ch-navy); margin-bottom:4px;">
+        Dealer Dashboard
+      </h1>
       {% if user.dealer_profile %}
-      <p class="text-gray-500 mt-1">{{ user.dealer_profile.business_name }}</p>
+      <p style="font-size:14px; color:var(--ch-text-3);">
+        {{ user.dealer_profile.business_name }}
+      </p>
       {% endif %}
     </div>
-    <a href="{% url 'vehicles:search' %}" class="btn-primary">Run a New Report</a>
+    <a href="{% url 'vehicles:search' %}" class="btn btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      Run a New Report
+    </a>
   </div>
 
   {% if user.dealer_profile %}
+
     {% if not user.dealer_profile.is_approved %}
-    <div class="bg-amber-50 border border-amber-300 rounded-xl p-5 mb-8">
-      <div class="flex items-start gap-3">
-        <svg class="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-        </svg>
-        <div>
-          <h3 class="font-semibold text-amber-800">Account Pending Approval</h3>
-          <p class="text-amber-700 text-sm mt-1">
-            Your dealer profile has been submitted and is under review. The CarHaki team will
-            approve it within 2 business days. You will receive an email notification once approved.
-          </p>
-        </div>
+    <!-- ── Pending approval banner ──────────────────────── -->
+    <div class="alert alert-warning" style="border-radius:var(--r-lg); margin-bottom:28px; align-items:flex-start;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round"
+           style="flex-shrink:0; margin-top:1px;" aria-hidden="true">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <div>
+        <p class="font-display" style="font-size:14px; font-weight:700; margin-bottom:4px;">
+          Account Pending Approval
+        </p>
+        <p style="font-size:13px; line-height:1.6;">
+          Your dealer profile has been submitted and is under review. The CarHaki team will
+          approve it within 2 business days. You will receive an email notification once approved.
+        </p>
       </div>
     </div>
+
     {% else %}
 
-    <!-- Stats -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      <div class="bg-white border border-gray-200 rounded-xl p-4 text-center">
-        <div class="text-3xl font-heading font-bold text-ch-gold">{{ user.dealer_credit_balance }}</div>
-        <div class="text-sm text-gray-500 mt-1">Report Credits</div>
+    <!-- ── Stats row ──────────────────────────────────────── -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+                gap:12px; margin-bottom:28px;">
+
+      <div class="report-metric" style="text-align:center;">
+        <div class="report-metric-label">Report Credits</div>
+        <div class="report-metric-value"
+             style="font-size:28px; color:var(--ch-blue);">
+          {{ user.dealer_credit_balance }}
+        </div>
       </div>
-      <div class="bg-white border border-gray-200 rounded-xl p-4 text-center">
-        <div class="text-3xl font-heading font-bold text-ch-green">{{ total_reports_count|default:"0" }}</div>
-        <div class="text-sm text-gray-500 mt-1">Total Reports</div>
+
+      <div class="report-metric" style="text-align:center;">
+        <div class="report-metric-label">Total Reports</div>
+        <div class="report-metric-value" style="font-size:28px;">
+          {{ total_reports_count|default:"0" }}
+        </div>
       </div>
-      <div class="bg-white border border-gray-200 rounded-xl p-4 text-center">
-        <div class="text-3xl font-heading font-bold text-ch-green">{{ completed_count|default:"0" }}</div>
-        <div class="text-sm text-gray-500 mt-1">Completed</div>
+
+      <div class="report-metric" style="text-align:center;">
+        <div class="report-metric-label">Completed</div>
+        <div class="report-metric-value status-ok" style="font-size:28px;">
+          {{ completed_count|default:"0" }}
+        </div>
       </div>
-      <div class="bg-white border border-gray-200 rounded-xl p-4 text-center">
-        <div class="text-3xl font-heading font-bold text-ch-green">{{ orders_count|default:"0" }}</div>
-        <div class="text-sm text-gray-500 mt-1">Orders</div>
+
+      <div class="report-metric" style="text-align:center;">
+        <div class="report-metric-label">Orders</div>
+        <div class="report-metric-value" style="font-size:28px;">
+          {{ orders_count|default:"0" }}
+        </div>
       </div>
+
     </div>
 
-    <!-- Buy More Credits -->
-    <div class="bg-ch-green text-white rounded-2xl p-6 mb-8">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <!-- ── Buy credits banner ─────────────────────────────── -->
+    <div style="background:var(--ch-navy); border-radius:var(--r-xl);
+                padding:28px 32px; margin-bottom:28px; position:relative; overflow:hidden;">
+      <!-- subtle grid texture -->
+      <div style="position:absolute; inset:0; opacity:.04;
+                  background-image:
+                    linear-gradient(rgba(96,165,250,1) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(96,165,250,1) 1px, transparent 1px);
+                  background-size:40px 40px; pointer-events:none;"></div>
+      <div style="position:relative; display:flex; align-items:center;
+                  justify-content:space-between; gap:20px; flex-wrap:wrap;">
         <div>
-          <h3 class="font-heading font-semibold text-lg">Need more report credits?</h3>
-          <p class="text-green-200 text-sm mt-1">Purchase bulk packs at reduced rates. Credits never expire.</p>
+          <p class="font-display"
+             style="font-size:16px; font-weight:700; color:white; margin-bottom:4px;">
+            Need more report credits?
+          </p>
+          <p style="font-size:13px; color:rgba(255,255,255,.55); line-height:1.5;">
+            Purchase bulk packs at reduced rates. Credits never expire.
+          </p>
         </div>
-        <a href="{% url 'vehicles:dealers' %}" class="flex-shrink-0 bg-ch-gold text-ch-dark font-semibold px-6 py-2.5 rounded-lg hover:bg-ch-gold-d transition-colors text-sm">
+        <a href="{% url 'vehicles:dealers' %}" class="btn btn-white btn-sm"
+           style="flex-shrink:0;">
           View Credit Packs
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
         </a>
       </div>
     </div>
 
-    {% endif %}
+    {% endif %}{% comment %}end is_approved{% endcomment %}
+
   {% else %}
-  <!-- No dealer profile yet -->
-  <div class="bg-white border border-gray-200 rounded-xl p-8 text-center">
-    <h2 class="font-heading font-semibold text-xl text-ch-green mb-2">Complete Your Dealer Profile</h2>
-    <p class="text-gray-600 mb-6">Set up your dealer profile to access bulk report credits and the full dealer dashboard.</p>
-    <a href="{% url 'accounts:dealer_register' %}" class="btn-primary">Set Up Dealer Profile</a>
+  <!-- ── No dealer profile ──────────────────────────────── -->
+  <div style="background:white; border:1px solid var(--ch-border);
+              border-radius:var(--r-xl); padding:48px 32px; text-align:center;
+              margin-bottom:28px;">
+    <div style="width:56px; height:56px; border-radius:50%;
+                background:var(--ch-blue-faint); border:1px solid var(--ch-blue-pale);
+                display:flex; align-items:center; justify-content:center;
+                margin:0 auto 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+           fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </div>
+    <h2 class="font-display"
+        style="font-size:18px; font-weight:700; color:var(--ch-navy); margin-bottom:8px;">
+      Complete Your Dealer Profile
+    </h2>
+    <p style="font-size:14px; color:var(--ch-text-3); margin-bottom:24px;
+              max-width:360px; margin-left:auto; margin-right:auto; line-height:1.6;">
+      Set up your dealer profile to access bulk report credits and the full dealer dashboard.
+    </p>
+    <a href="{% url 'accounts:dealer_register' %}" class="btn btn-primary">
+      Set Up Dealer Profile
+    </a>
   </div>
   {% endif %}
 
-  <!-- Recent Reports -->
-  <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-      <h2 class="font-heading font-semibold text-lg text-ch-green">Recent Reports</h2>
-      <a href="{% url 'accounts:dashboard' %}" class="text-ch-gold text-sm hover:underline">View all</a>
+  <!-- ── Recent Reports ─────────────────────────────────── -->
+  <div class="report-card">
+
+    <div style="padding:16px 20px; border-bottom:1px solid var(--ch-border);
+                display:flex; align-items:center; justify-content:space-between;">
+      <h2 class="font-display"
+          style="font-size:15px; font-weight:700; color:var(--ch-navy);">
+        Recent Reports
+      </h2>
+      <a href="{% url 'accounts:dashboard' %}"
+         style="font-size:13px; font-weight:600; color:var(--ch-blue);
+                transition:opacity .15s;"
+         onmouseover="this.style.opacity='.7'"
+         onmouseout="this.style.opacity='1'">
+        View all →
+      </a>
     </div>
+
     {% if reports %}
-    <div class="divide-y divide-gray-100">
+    <div>
       {% for report in reports %}
-      <div class="px-6 py-4 flex items-center gap-4">
-        <!-- Grade -->
-        <div class="w-10 h-10 rounded-lg flex items-center justify-center font-heading font-bold text-white flex-shrink-0"
-          style="background-color: {{ report.grade_colour }}">
-          {{ report.overall_grade|default:"?" }}
+      <div class="dash-report-row">
+
+        <!-- Grade circle -->
+        {% if report.overall_grade %}
+          <div class="grade-circle grade-{{ report.overall_grade }}"
+               title="Grade {{ report.overall_grade }}">
+            {{ report.overall_grade }}
+          </div>
+        {% else %}
+          <div class="grade-circle grade-pending" title="{{ report.status }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+        {% endif %}
+
+        <!-- Info -->
+        <div style="flex:1; min-width:0;">
+          <p class="font-display"
+             style="font-size:14px; font-weight:600; color:var(--ch-navy);
+                    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px;">
+            {{ report.search.identifier }}
+          </p>
+          <p style="font-size:12px; color:var(--ch-text-3);">
+            {{ report.search.source_country }}
+            &middot;
+            {{ report.get_report_type_display }}
+            &middot;
+            {{ report.created_at|date:"d M Y" }}
+          </p>
         </div>
-        <div class="flex-1 min-w-0">
-          <p class="font-medium text-gray-800 text-sm truncate">{{ report.search.identifier }}</p>
-          <p class="text-xs text-gray-500">{{ report.search.source_country }} &middot; {{ report.get_report_type_display }} &middot; {{ report.created_at|date:"d M Y" }}</p>
-        </div>
-        <span class="flex-shrink-0 text-xs font-semibold px-2 py-1 rounded-full
-          {% if report.status == 'COMPLETED' %}bg-green-100 text-green-700
-          {% elif report.status == 'PROCESSING' %}bg-blue-100 text-blue-700
-          {% elif report.status == 'FAILED' %}bg-red-100 text-red-700
-          {% else %}bg-gray-100 text-gray-600{% endif %}">
+
+        <!-- Status badge -->
+        <span class="badge
+          {% if report.status == 'COMPLETED' %}badge-ok
+          {% elif report.status == 'PROCESSING' or report.status == 'PENDING' %}badge-blue
+          {% elif report.status == 'FAILED' %}badge-danger
+          {% else %}badge-blue{% endif %}"
+          style="flex-shrink:0;">
+          <span class="badge-dot"></span>
           {{ report.get_status_display }}
         </span>
+
+        <!-- Actions -->
         {% if report.status == 'COMPLETED' %}
-        <a href="{% url 'vehicles:report_detail' pk=report.pk %}" class="text-ch-gold hover:underline text-xs flex-shrink-0">View</a>
-        <a href="{% url 'vehicles:report_pdf' pk=report.pk %}" class="text-gray-400 hover:text-ch-green text-xs flex-shrink-0" title="Download PDF">📥</a>
+        <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+          <a href="{% url 'vehicles:report_detail' pk=report.pk %}"
+             class="btn btn-secondary btn-sm">
+            View
+          </a>
+          <a href="{% url 'vehicles:report_pdf' pk=report.pk %}"
+             style="display:flex; align-items:center; justify-content:center;
+                    width:30px; height:30px; border-radius:var(--r-sm);
+                    color:var(--ch-text-3); transition:all .15s;"
+             onmouseover="this.style.background='var(--ch-blue-faint)'; this.style.color='var(--ch-blue)';"
+             onmouseout="this.style.background='transparent'; this.style.color='var(--ch-text-3)';"
+             title="Download PDF">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </a>
+        </div>
+        {% elif report.status == 'PROCESSING' or report.status == 'PENDING' %}
+        <span class="badge badge-warn" style="flex-shrink:0;">
+          <span class="spinner"
+                style="width:10px; height:10px; border-width:1.5px;
+                       border-color:rgba(217,119,6,.25);
+                       border-top-color:var(--ch-warn);"></span>
+          In progress
+        </span>
         {% endif %}
+
       </div>
       {% endfor %}
     </div>
+
     {% else %}
-    <div class="px-6 py-12 text-center">
-      <p class="text-gray-500 mb-4">No reports yet. Run your first vehicle history check.</p>
-      <a href="{% url 'vehicles:search' %}" class="btn-primary text-sm">Start a Search</a>
+    <!-- Empty state -->
+    <div style="padding:56px 24px; text-align:center;">
+      <div style="width:52px; height:52px; border-radius:50%;
+                  background:var(--ch-blue-faint); border:1px solid var(--ch-blue-pale);
+                  display:flex; align-items:center; justify-content:center;
+                  margin:0 auto 18px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+             fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="1" y="3" width="15" height="13"/>
+          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/>
+          <circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+      </div>
+      <p style="font-size:14px; color:var(--ch-text-3); margin-bottom:20px;">
+        No reports yet. Run your first vehicle history check.
+      </p>
+      <a href="{% url 'vehicles:search' %}" class="btn btn-primary btn-sm">
+        Start a Search
+      </a>
     </div>
     {% endif %}
-  </div>
 
-</div>
+  </div><!-- /report-card -->
+
+</div><!-- /container -->
 {% endblock %}

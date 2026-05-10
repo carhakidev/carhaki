@@ -1,0 +1,11 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CarHaki favicon">
+  <title>CarHaki</title>
+  <!-- Blue tile background -->
+  <rect width="32" height="32" rx="7" fill="#1D4ED8"/>
+  <!-- White shield (inverted for contrast) -->
+  <path d="M16 3.5L26 7.5V16C26 22.2 21.6 27.8 16 29.5C10.4 27.8 6 22.2 6 16V7.5L16 3.5Z"
+        fill="white"/>
+  <!-- Blue checkmark -->
+  <path d="M10.5 16L14 19.5L21.5 11"
+        stroke="#1D4ED8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

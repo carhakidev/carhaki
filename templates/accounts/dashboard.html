@@ -2,82 +2,198 @@
 {% block title %}My Dashboard — CarHaki{% endblock %}
 
 {% block content %}
-<div class="max-w-5xl mx-auto px-4 py-10">
+<div class="container" style="padding-top: 48px; padding-bottom: 64px;">
 
-  <div class="flex items-center justify-between mb-8">
+  <!-- ── Header ──────────────────────────────────────────── -->
+  <div class="flex items-center justify-between mb-8" style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:32px; gap:16px; flex-wrap:wrap;">
     <div>
-      <h1 class="font-heading font-bold text-3xl text-ch-green">My Dashboard</h1>
-      <p class="text-gray-500">Welcome back, {{ user.get_full_name }}!</p>
+      <h1 class="font-display" style="font-size:28px; font-weight:800; color:var(--ch-navy); margin-bottom:4px;">
+        My Dashboard
+      </h1>
+      <p style="font-size:14px; color:var(--ch-text-3);">
+        Welcome back, {{ user.get_full_name }}!
+      </p>
     </div>
-    <a href="{% url 'vehicles:home' %}" class="bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors">
-      + New Report
+    <a href="{% url 'vehicles:home' %}" class="btn btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      New Report
     </a>
   </div>
 
-  <!-- Reports list -->
-  <div class="bg-white rounded-2xl shadow-sm border border-gray-100">
-    <div class="p-6 border-b border-gray-100">
-      <h2 class="font-heading font-bold text-ch-green text-lg">My Reports</h2>
+  <!-- ── Stats row ───────────────────────────────────────── -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-bottom:28px;">
+    <div class="report-metric">
+      <div class="report-metric-label">Total reports</div>
+      <div class="report-metric-value" style="font-size:24px;">{{ reports|length }}</div>
+    </div>
+    <div class="report-metric">
+      <div class="report-metric-label">Completed</div>
+      <div class="report-metric-value status-ok" style="font-size:24px;">
+        {{ reports|dictsortreversed:"status"|length }}
+      </div>
+    </div>
+    <div class="report-metric">
+      <div class="report-metric-label">Processing</div>
+      <div class="report-metric-value status-warn" style="font-size:24px;">
+        {% with pending=reports|length %}—{% endwith %}
+      </div>
+    </div>
+    <div class="report-metric">
+      <div class="report-metric-label">Avg. grade</div>
+      <div class="report-metric-value" style="font-size:24px; color:var(--ch-blue);">—</div>
+    </div>
+  </div>
+
+  <!-- ── Reports list ────────────────────────────────────── -->
+  <div class="report-card">
+
+    <!-- Card header -->
+    <div style="padding:16px 20px; border-bottom:1px solid var(--ch-border);
+                display:flex; align-items:center; justify-content:space-between;">
+      <h2 class="font-display" style="font-size:15px; font-weight:700; color:var(--ch-navy);">
+        My Reports
+      </h2>
+      <span class="badge badge-blue">
+        {{ reports|length }} report{{ reports|length|pluralize }}
+      </span>
     </div>
 
     {% if reports %}
-    <div class="divide-y divide-gray-100">
+    <div>
       {% for report in reports %}
-      <div class="p-5 flex items-center justify-between hover:bg-ch-light/50 transition-colors">
-        <div class="flex items-center gap-4">
-          <!-- Grade badge -->
-          {% if report.overall_grade %}
-          <div class="w-12 h-12 rounded-full flex items-center justify-center text-lg font-heading font-black text-white flex-shrink-0"
-               style="background-color: {{ report.grade_colour }}">
+      <div class="dash-report-row">
+
+        <!-- Grade badge -->
+        {% if report.overall_grade %}
+          <div class="grade-circle grade-{{ report.overall_grade }}"
+               title="Grade {{ report.overall_grade }}">
             {{ report.overall_grade }}
           </div>
-          {% else %}
-          <div class="w-12 h-12 rounded-full flex items-center justify-center bg-gray-100 text-gray-400 text-xs font-semibold">
-            {{ report.status|slice:":3" }}
+        {% else %}
+          <div class="grade-circle grade-pending" title="{{ report.status }}">
+            <!-- Clock icon for pending/processing -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
           </div>
-          {% endif %}
+        {% endif %}
 
-          <div>
-            <div class="font-semibold text-ch-green text-sm">
-              {% if report.processed_data %}
-                {{ report.processed_data.vehicle.year }} {{ report.processed_data.vehicle.make }} {{ report.processed_data.vehicle.model }}
-              {% else %}
-                {{ report.search.identifier }}
-              {% endif %}
-            </div>
-            <div class="text-xs text-gray-400 font-mono">{{ report.search.identifier }}</div>
-            <div class="flex items-center gap-2 mt-1">
-              <span class="text-xs {% if report.status == 'COMPLETED' %}text-ch-success{% elif report.status == 'FAILED' %}text-ch-danger{% else %}text-ch-warn{% endif %}">
-                ● {{ report.status }}
-              </span>
-              <span class="text-xs text-gray-400">{{ report.created_at|date:"N j, Y" }}</span>
-              <span class="text-xs bg-ch-light px-2 py-0.5 rounded text-gray-500">{{ report.get_report_type_display }}</span>
-            </div>
+        <!-- Vehicle info -->
+        <div style="flex:1; min-width:0;">
+          <div class="font-display"
+               style="font-size:14px; font-weight:600; color:var(--ch-navy);
+                      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+            {% if report.processed_data %}
+              {{ report.processed_data.vehicle.year }}
+              {{ report.processed_data.vehicle.make }}
+              {{ report.processed_data.vehicle.model }}
+            {% else %}
+              {{ report.search.identifier }}
+            {% endif %}
+          </div>
+          <div class="font-mono"
+               style="font-size:11px; color:var(--ch-text-3); letter-spacing:.05em; margin-top:2px;">
+            {{ report.search.identifier }}
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:6px; flex-wrap:wrap;">
+            <!-- Status -->
+            <span style="display:inline-flex; align-items:center; gap:4px; font-size:12px;
+              {% if report.status == 'COMPLETED' %}color:var(--ch-ok);
+              {% elif report.status == 'FAILED' %}color:var(--ch-danger);
+              {% else %}color:var(--ch-warn);{% endif %}">
+              <span style="width:6px; height:6px; border-radius:50%; background:currentColor; display:inline-block;"></span>
+              {{ report.status|capfirst|lower|title }}
+            </span>
+            <!-- Date -->
+            <span style="font-size:12px; color:var(--ch-text-3);">
+              {{ report.created_at|date:"N j, Y" }}
+            </span>
+            <!-- Report type -->
+            <span style="font-size:11px; background:var(--ch-blue-faint);
+                         color:var(--ch-navy); padding:2px 8px;
+                         border-radius:4px; font-weight:500;">
+              {{ report.get_report_type_display }}
+            </span>
           </div>
         </div>
 
-        <div class="flex items-center gap-2 flex-shrink-0">
+        <!-- Actions -->
+        <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
           {% if report.status == 'COMPLETED' %}
-            <a href="{% url 'vehicles:report_detail' report.pk %}" class="text-ch-green hover:underline text-sm font-semibold">View</a>
-            <a href="{% url 'vehicles:report_pdf' report.pk %}" class="text-gray-400 hover:text-ch-green text-sm" title="Download PDF">📥</a>
+            <a href="{% url 'vehicles:report_detail' report.pk %}"
+               class="btn btn-secondary btn-sm">
+              View
+            </a>
+            <a href="{% url 'vehicles:report_pdf' report.pk %}"
+               style="display:flex; align-items:center; justify-content:center;
+                      width:32px; height:32px; border-radius:var(--r-md);
+                      color:var(--ch-text-3); transition:all .15s;"
+               onmouseover="this.style.background='var(--ch-blue-faint)'; this.style.color='var(--ch-blue)';"
+               onmouseout="this.style.background='transparent'; this.style.color='var(--ch-text-3)';"
+               title="Download PDF">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+            </a>
+
           {% elif report.status == 'PROCESSING' or report.status == 'PENDING' %}
-            <span class="text-xs text-ch-warn animate-pulse">Processing…</span>
+            <span class="badge badge-warn" style="animation: pulse-dot 2s ease-in-out infinite;">
+              <span class="spinner" style="width:10px; height:10px; border-width:1.5px;
+                                           border-color:rgba(217,119,6,.3);
+                                           border-top-color:var(--ch-warn);"></span>
+              In progress
+            </span>
+
+          {% elif report.status == 'FAILED' %}
+            <span class="badge badge-danger">Failed</span>
           {% endif %}
         </div>
+
       </div>
       {% endfor %}
     </div>
+
     {% else %}
-    <div class="p-12 text-center">
-      <div class="text-4xl mb-4">🚗</div>
-      <h3 class="font-heading font-semibold text-ch-green mb-2">No reports yet</h3>
-      <p class="text-gray-500 text-sm mb-6">Check the history of your first vehicle.</p>
-      <a href="{% url 'vehicles:home' %}" class="inline-block bg-ch-gold text-ch-dark font-semibold px-6 py-2.5 rounded-xl text-sm">
+    <!-- Empty state -->
+    <div style="padding:64px 24px; text-align:center;">
+      <div style="width:56px; height:56px; border-radius:50%;
+                  background:var(--ch-blue-faint); border:1px solid var(--ch-blue-pale);
+                  display:flex; align-items:center; justify-content:center;
+                  margin:0 auto 20px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+             fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="1" y="3" width="15" height="13"/>
+          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/>
+          <circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+      </div>
+      <h3 class="font-display"
+          style="font-size:17px; font-weight:700; color:var(--ch-navy); margin-bottom:8px;">
+        No reports yet
+      </h3>
+      <p style="font-size:14px; color:var(--ch-text-3); margin-bottom:24px; max-width:300px; margin-left:auto; margin-right:auto;">
+        Run your first vehicle history check to get started.
+      </p>
+      <a href="{% url 'vehicles:home' %}" class="btn btn-primary">
         Check a Car Now
       </a>
     </div>
     {% endif %}
-  </div>
 
-</div>
+  </div><!-- /report-card -->
+
+</div><!-- /container -->
 {% endblock %}

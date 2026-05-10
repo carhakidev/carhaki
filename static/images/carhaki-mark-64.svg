@@ -1,0 +1,33 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CarHaki icon">
+  <title>CarHaki</title>
+  <defs>
+    <linearGradient id="shGI" x1="32" y1="6" x2="32" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#93C5FD"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="bgGI" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#0C1F3F"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <filter id="gI" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background tile -->
+  <rect width="64" height="64" rx="14" fill="url(#bgGI)"/>
+  <!-- Subtle inner ring -->
+  <rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="rgba(96,165,250,0.15)" stroke-width="1"/>
+
+  <!-- Shield body -->
+  <path d="M32 7L50 13.5V30C50 40.4 42.4 49.6 32 52C21.6 49.6 14 40.4 14 30V13.5L32 7Z"
+        fill="url(#shGI)"/>
+  <!-- Shield inner border -->
+  <path d="M32 9.5L47.5 15.5V30C47.5 39.2 40.6 47.8 32 50C23.4 47.8 16.5 39.2 16.5 30V15.5L32 9.5Z"
+        fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.2"/>
+
+  <!-- Checkmark -->
+  <path d="M21 30L27.5 36.5L43 18"
+        stroke="white" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
