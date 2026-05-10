@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Sign In — CarHaki{% endblock %}
 
 {% block content %}
@@ -11,7 +12,6 @@
     <!-- ── Logo + heading ──────────────────────────────────── -->
     <div style="text-align:center; margin-bottom:28px;">
       <a href="{% url 'vehicles:home' %}" style="display:inline-block; margin-bottom:20px;">
-        <!-- carhaki-logo-dark.svg — dark version for light background -->
         <img src="{% static 'images/carhaki-logo-dark.svg' %}"
              alt="CarHaki" height="32" style="height:32px; width:auto;">
       </a>
@@ -114,12 +114,12 @@
     <p style="text-align:center; font-size:12px; color:var(--ch-text-3);
               margin-top:20px; line-height:1.6;">
       By signing in you agree to our
-      <a href="{% url 'pages:terms' %}"
+      <a href="{% url 'vehicles:terms' %}"
          style="color:var(--ch-blue); transition:opacity .15s;"
          onmouseover="this.style.opacity='.7'"
          onmouseout="this.style.opacity='1'">Terms</a>
       and
-      <a href="{% url 'pages:privacy' %}"
+      <a href="{% url 'vehicles:privacy' %}"
          style="color:var(--ch-blue); transition:opacity .15s;"
          onmouseover="this.style.opacity='.7'"
          onmouseout="this.style.opacity='1'">Privacy Policy</a>.

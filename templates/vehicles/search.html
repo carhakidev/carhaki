@@ -24,7 +24,7 @@
 <div style="background:var(--blue-deep);padding:0 24px 48px;">
   <div class="container-sm">
     <div style="background:white;border-radius:var(--r-xl);padding:32px;box-shadow:var(--shadow-lg);">
-      <form method="GET" action="{% url 'vehicle_search' %}" id="searchForm">
+      <form method="GET" action="{% url 'vehicles:search' %}" id="searchForm">
         <div class="form-group">
           <label class="form-label" for="chassis_number">
             Chassis Number / VIN
@@ -143,7 +143,7 @@
             </div>
           </div>
 
-          <form action="{% url 'create_order' %}" method="POST">
+          <form action="{% url 'vehicles:create_order' %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="chassis_number" value="{{ query }}">
             <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
@@ -172,7 +172,7 @@
       <div style="font-size:48px;margin-bottom:16px;">🔍</div>
       <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:700;color:var(--text-1);margin-bottom:10px;">Enter a chassis number to begin</h2>
       <p style="font-size:15px;color:var(--text-3);max-width:400px;margin:0 auto 28px;">Find the chassis number on the car's door sticker, dashboard, or seller documents.</p>
-      <a href="{% url 'sample_report' %}" class="btn btn-secondary">View a Sample Report First</a>
+      <a href="{% url 'vehicles:sample_report' %}" class="btn btn-secondary">View a Sample Report First</a>
     </div>
     {% endif %}
 

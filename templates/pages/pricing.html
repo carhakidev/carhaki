@@ -37,7 +37,7 @@
           <li class="pricing-feature" style="opacity:.4;"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#F3F4F6"/><path d="M6 12L12 6M6 6L12 12" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>Japan auction photos</li>
           <li class="pricing-feature" style="opacity:.4;"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#F3F4F6"/><path d="M6 12L12 6M6 6L12 12" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>PDF download</li>
         </ul>
-        <a href="{% url 'vehicle_search' %}?tier=basic" class="btn-pricing btn-pricing-outline">Get Basic Report</a>
+        <a href="{% url 'vehicles:search' %}?tier=basic" class="btn-pricing btn-pricing-outline">Get Basic Report</a>
       </div>
 
       <!-- Full (featured) -->
@@ -56,7 +56,7 @@
           <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#DBEAFE"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>URA import eligibility check</li>
           <li class="pricing-feature"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="#DBEAFE"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority support</li>
         </ul>
-        <a href="{% url 'vehicle_search' %}?tier=full" class="btn-pricing btn-pricing-primary">Get Full Report</a>
+        <a href="{% url 'vehicles:search' %}?tier=full" class="btn-pricing btn-pricing-primary">Get Full Report</a>
       </div>
 
       <!-- Dealer -->
@@ -74,7 +74,7 @@
           <li class="pricing-feature" style="color:rgba(255,255,255,.7);"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="rgba(96,165,250,.2)"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Custom branding on reports</li>
           <li class="pricing-feature" style="color:rgba(255,255,255,.7);"><svg class="pricing-feature-icon" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="rgba(96,165,250,.2)"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly analytics report</li>
         </ul>
-        <a href="{% url 'dealer_apply' %}" class="btn-pricing" style="background:var(--blue);color:white;">Apply as Dealer</a>
+        <a href="{% url 'accounts:dealer_register' %}" class="btn-pricing" style="background:var(--blue);color:white;">Apply as Dealer</a>
       </div>
 
     </div>
@@ -135,8 +135,8 @@
       <h2 class="cta-title">Ready to Check Your Car?</h2>
       <p class="cta-sub">Start with a free sample report, then check your actual vehicle.</p>
       <div class="cta-actions">
-        <a href="{% url 'vehicle_search' %}" class="btn btn-white btn-lg"><i class="fa-solid fa-magnifying-glass"></i> Check a Car</a>
-        <a href="{% url 'sample_report' %}" class="btn btn-lg" style="background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.2);">See Sample Report</a>
+        <a href="{% url 'vehicles:search' %}" class="btn btn-white btn-lg"><i class="fa-solid fa-magnifying-glass"></i> Check a Car</a>
+        <a href="{% url 'vehicles:sample_report' %}" class="btn btn-lg" style="background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.2);">See Sample Report</a>
       </div>
     </div>
   </div>
