@@ -6,7 +6,7 @@
   <meta name="description" content="{% block meta_desc %}CarHaki — Uganda's vehicle intelligence platform. Check any ex-Japan car history before you buy.{% endblock %}">
   <meta property="og:title" content="{% block og_title %}CarHaki — Know the Truth About Every Car{% endblock %}">
   <meta property="og:description" content="Uganda's #1 vehicle history check. Powered by Japan auction records.">
-  <meta property="og:image" content="{% static 'images/og-image.png' %}">
+  <meta property="og:image" content="https://carhaki.onrender.com/static/images/og-image.png">
   <meta property="og:type" content="website">
   <title>{% block title %}CarHaki — Vehicle Intelligence Uganda{% endblock %}</title>
 
@@ -23,12 +23,21 @@
 {% include "components/navbar.html" %}
 
 {% if messages %}
-<div style="max-width:1200px;margin:16px auto;padding:0 24px;">
+<div style="max-width:1200px; margin:16px auto; padding:0 24px;">
   {% for message in messages %}
   <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true">
-      {% if message.tags == 'success' %}<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-      {% else %}<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>{% endif %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round"
+         style="flex-shrink:0;" aria-hidden="true">
+      {% if message.tags == 'success' %}
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      {% else %}
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      {% endif %}
     </svg>
     {{ message }}
   </div>
@@ -41,51 +50,84 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-grid">
+
+      <!-- Brand -->
       <div>
         <a href="{% url 'vehicles:home' %}">
-          <img src="{% static 'images/carhaki-logo-light.svg' %}" alt="CarHaki" class="footer-logo">
+          <img src="{% static 'images/carhaki-logo-light.svg' %}"
+               alt="CarHaki" class="footer-logo">
         </a>
-        <p class="footer-brand-desc">Uganda's vehicle intelligence platform. Know the truth about every ex-Japan car before you buy.</p>
-        <div style="margin-top:16px;display:flex;align-items:center;gap:8px;">
-          <span style="width:8px;height:8px;border-radius:50%;background:#22C55E;display:inline-block;flex-shrink:0;"></span>
-          <span style="font-size:12px;color:rgba(255,255,255,.4);">All systems operational</span>
+        <p class="footer-brand-desc">
+          Uganda's vehicle intelligence platform. Know the truth about every
+          ex-Japan car before you buy.
+        </p>
+        <div style="margin-top:16px; display:flex; align-items:center; gap:8px;">
+          <span style="width:8px; height:8px; border-radius:50%; background:#22C55E;
+                       display:inline-block; flex-shrink:0;" aria-hidden="true"></span>
+          <span style="font-size:12px; color:rgba(255,255,255,.4);">All systems operational</span>
         </div>
       </div>
+
+      <!-- Product -->
       <div>
         <div class="footer-col-title">Product</div>
         <ul class="footer-links">
           <li><a href="{% url 'vehicles:search' %}" class="footer-link">Check a Car</a></li>
-          <li><a href="{% url 'vehicles:sample_report' %}" class="footer-link">Sample Report</a></li>
           <li><a href="{% url 'vehicles:pricing' %}" class="footer-link">Pricing</a></li>
           <li><a href="{% url 'vehicles:dealers' %}" class="footer-link">For Dealers</a></li>
         </ul>
       </div>
+
+      <!-- Support -->
       <div>
         <div class="footer-col-title">Support</div>
         <ul class="footer-links">
           <li><a href="{% url 'vehicles:faq' %}" class="footer-link">FAQ</a></li>
-          <li><a href="{% url 'vehicles:contact' %}" class="footer-link">Contact Us</a></li>
-          <li><a href="https://wa.me/256XXXXXXXX" target="_blank" rel="noopener" class="footer-link">WhatsApp</a></li>
           <li><a href="{% url 'vehicles:about' %}" class="footer-link">About CarHaki</a></li>
+          <li>
+            <a href="https://wa.me/256XXXXXXXX" target="_blank" rel="noopener"
+               class="footer-link">WhatsApp Us</a>
+          </li>
         </ul>
       </div>
+
+      <!-- Legal -->
       <div>
         <div class="footer-col-title">Legal</div>
         <ul class="footer-links">
           <li><a href="{% url 'vehicles:terms' %}" class="footer-link">Terms of Service</a></li>
           <li><a href="{% url 'vehicles:privacy' %}" class="footer-link">Privacy Policy</a></li>
-          <li><a href="{% url 'vehicles:refund_policy' %}" class="footer-link">Refund Policy</a></li>
         </ul>
       </div>
+
     </div>
+
     <div class="footer-bottom">
-      <p class="footer-copy">© {% now "Y" %} CarHaki Uganda. All rights reserved. Powered by Japan auction records.</p>
+      <p class="footer-copy">
+        © {% now "Y" %} CarHaki Uganda. All rights reserved.
+        Powered by Japan auction records.
+      </p>
       <div class="footer-socials">
-        <a href="https://instagram.com/carhakiug" target="_blank" rel="noopener" class="footer-social" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
-        <a href="https://twitter.com/carhakiug" target="_blank" rel="noopener" class="footer-social" aria-label="X/Twitter"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
-        <a href="https://facebook.com/carhaki" target="_blank" rel="noopener" class="footer-social" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
-        <a href="https://youtube.com/@carhaki" target="_blank" rel="noopener" class="footer-social" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
-        <a href="https://wa.me/256XXXXXXXX" target="_blank" rel="noopener" class="footer-social" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+        <a href="https://instagram.com/carhakiug" target="_blank" rel="noopener"
+           class="footer-social" aria-label="Instagram">
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        </a>
+        <a href="https://twitter.com/carhakiug" target="_blank" rel="noopener"
+           class="footer-social" aria-label="X/Twitter">
+          <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+        </a>
+        <a href="https://facebook.com/carhaki" target="_blank" rel="noopener"
+           class="footer-social" aria-label="Facebook">
+          <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+        </a>
+        <a href="https://youtube.com/@carhaki" target="_blank" rel="noopener"
+           class="footer-social" aria-label="YouTube">
+          <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+        </a>
+        <a href="https://wa.me/256XXXXXXXX" target="_blank" rel="noopener"
+           class="footer-social" aria-label="WhatsApp">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+        </a>
       </div>
     </div>
   </div>
@@ -93,7 +135,9 @@
 
 <script>
   document.querySelectorAll('.faq-question').forEach(function(q) {
-    q.addEventListener('click', function() { q.closest('.faq-item').classList.toggle('open'); });
+    q.addEventListener('click', function() {
+      q.closest('.faq-item').classList.toggle('open');
+    });
   });
 </script>
 {% block extra_scripts %}{% endblock %}
