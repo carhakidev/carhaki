@@ -6,27 +6,26 @@
 
 {% block extra_head %}
 <style>
-  .report-page { background: var(--surface); min-height: 100vh; }
-  .report-top-bar { background: var(--blue-deep); padding: 32px 24px; }
+  .report-page { background: var(--ch-surface); min-height: 100vh; }
+  .report-top-bar { background: var(--ch-navy); padding: 32px 24px; }
   .report-wrap { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
-  .report-section { background: white; border: 1px solid var(--border); border-radius: var(--r-xl); margin-bottom: 20px; overflow: hidden; }
-  .report-section-header { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .report-section-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; color: var(--text-1); display: flex; align-items: center; gap: 8px; }
+  .report-section { background: white; border: 1px solid var(--ch-border); border-radius: var(--r-xl); margin-bottom: 20px; overflow: hidden; }
+  .report-section-header { padding: 18px 24px; border-bottom: 1px solid var(--ch-border); display: flex; align-items: center; justify-content: space-between; }
+  .report-section-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; color: var(--ch-text-1); display: flex; align-items: center; gap: 8px; }
   .report-section-body { padding: 24px; }
   .data-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
   .data-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .data-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .data-cell { background: var(--surface); border-radius: var(--r-md); padding: 14px 16px; }
-  .data-cell-label { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--text-3); margin-bottom: 5px; }
-  .data-cell-value { font-size: 16px; font-weight: 700; color: var(--text-1); font-family: 'Plus Jakarta Sans', sans-serif; }
+  .data-cell { background: var(--ch-surface); border-radius: var(--r-md); padding: 14px 16px; }
+  .data-cell-label { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--ch-text-3); margin-bottom: 5px; }
+  .data-cell-value { font-size: 16px; font-weight: 700; color: var(--ch-text-1); font-family: 'Plus Jakarta Sans', sans-serif; }
   .data-cell-value.sm { font-size: 13px; }
-  .grade-ring { width: 100px; height: 100px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
   .overall-grade { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 800; }
   .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .photo-thumb { aspect-ratio: 4/3; border-radius: var(--r-md); background: var(--surface); overflow: hidden; cursor: pointer; }
+  .photo-thumb { aspect-ratio: 4/3; border-radius: var(--r-md); background: var(--ch-surface); overflow: hidden; cursor: pointer; }
   .photo-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .2s; }
   .photo-thumb:hover img { transform: scale(1.04); }
-  .share-bar { background: var(--blue-faint); border: 1px solid var(--blue-pale); border-radius: var(--r-lg); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .share-bar { background: var(--ch-blue-faint); border: 1px solid var(--ch-blue-pale); border-radius: var(--r-lg); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
   @media (max-width: 700px) {
     .data-grid-4 { grid-template-columns: repeat(2, 1fr); }
     .data-grid-3 { grid-template-columns: repeat(2, 1fr); }
@@ -41,49 +40,85 @@
 {% block content %}
 <div class="report-page">
 
-  <!-- Top bar -->
+  <!-- ── Top bar ────────────────────────────────────────── -->
   <div class="report-top-bar">
-    <div style="max-width:900px;margin:0 auto;">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+    <div style="max-width:900px; margin:0 auto;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between;
+                  flex-wrap:wrap; gap:16px;">
         <div>
-          <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-light);margin-bottom:8px;">Vehicle History Report</div>
-          <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(22px,4vw,32px);font-weight:800;color:white;letter-spacing:-.5px;line-height:1.1;">
+          <div style="font-size:11px; font-weight:600; letter-spacing:.08em;
+                      text-transform:uppercase; color:var(--ch-blue-light); margin-bottom:8px;">
+            Vehicle History Report
+          </div>
+          <h1 style="font-family:'Plus Jakarta Sans',sans-serif;
+                     font-size:clamp(22px,4vw,32px); font-weight:800;
+                     color:white; letter-spacing:-.5px; line-height:1.1;">
             {{ report.year }} {{ report.make }} {{ report.model }}
           </h1>
-          <div style="display:flex;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap;">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--blue-light);">{{ report.chassis_number }}</span>
-            <span style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.3);"></span>
-            <span style="font-size:12px;color:rgba(255,255,255,.5);">Generated {{ report.created_at|date:"M j, Y" }}</span>
+          <div style="display:flex; align-items:center; gap:12px; margin-top:8px; flex-wrap:wrap;">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:13px;
+                         color:var(--ch-blue-light);">
+              {{ report.chassis_number }}
+            </span>
+            <span style="width:4px; height:4px; border-radius:50%;
+                         background:rgba(255,255,255,.3);" aria-hidden="true"></span>
+            <span style="font-size:12px; color:rgba(255,255,255,.5);">
+              Generated {{ report.created_at|date:"M j, Y" }}
+            </span>
             <span class="badge badge-blue" style="font-size:10px;">
-              {% if report.overall_grade == 'A' %}🟢{% elif report.overall_grade == 'B' %}🟡{% else %}🔴{% endif %}
               Grade {{ report.overall_grade|default:"B" }}
             </span>
           </div>
         </div>
 
         <!-- Auction grade -->
-        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-lg);padding:16px 24px;text-align:center;flex-shrink:0;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:6px;">Japan Auction Grade</div>
-          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:40px;font-weight:800;line-height:1;
-            color:{% if report.auction_grade >= 4 %}#34D399{% elif report.auction_grade >= 3 %}#FCD34D{% else %}#F87171{% endif %};">
+        <div style="background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+                    border-radius:var(--r-lg); padding:16px 24px; text-align:center; flex-shrink:0;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.08em;
+                      color:rgba(255,255,255,.4); margin-bottom:6px;">
+            Japan Auction Grade
+          </div>
+          <div style="font-family:'Plus Jakarta Sans',sans-serif; font-size:40px;
+                      font-weight:800; line-height:1;
+                      color:{% if report.auction_grade >= 4 %}#34D399{% elif report.auction_grade >= 3 %}#FCD34D{% else %}#F87171{% endif %};">
             {{ report.auction_grade|default:"4.0" }}
           </div>
-          <div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:4px;">
-            {% if report.auction_grade >= 4 %}Excellent condition{% elif report.auction_grade >= 3 %}Good condition{% else %}Fair condition{% endif %}
+          <div style="font-size:11px; color:rgba(255,255,255,.35); margin-top:4px;">
+            {% if report.auction_grade >= 4 %}Excellent condition
+            {% elif report.auction_grade >= 3 %}Good condition
+            {% else %}Fair condition{% endif %}
           </div>
         </div>
       </div>
 
       <!-- Share bar -->
       <div style="margin-top:20px;" class="share-bar">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-size:13px;color:var(--blue-dark);font-weight:500;">📎 Share this report:</span>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--blue);background:white;padding:4px 10px;border-radius:6px;border:1px solid var(--blue-pale);" id="shareUrl">carhaki.ug/report/{{ report.share_token }}</span>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:13px; color:var(--ch-navy); font-weight:500;">
+            Share this report:
+          </span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:12px;
+                       color:var(--ch-blue); background:white; padding:4px 10px;
+                       border-radius:6px; border:1px solid var(--ch-blue-pale);">
+            carhaki.ug/report/{{ report.share_token }}
+          </span>
         </div>
-        <div style="display:flex;gap:8px;">
-          <button onclick="copyLink()" class="btn btn-secondary btn-sm"><i class="fa-solid fa-copy"></i> Copy Link</button>
-          <a href="https://wa.me/?text=Check%20this%20CarHaki%20report%3A%20https://carhaki.ug/report/{{ report.share_token }}" target="_blank" class="btn btn-sm" style="background:#25D366;color:white;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
-          <button onclick="window.print()" class="btn btn-secondary btn-sm"><i class="fa-solid fa-print"></i> Print</button>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button onclick="copyLink()" class="btn btn-secondary btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Copy Link
+          </button>
+          <a href="https://wa.me/?text=Check%20this%20CarHaki%20report%3A%20https://carhaki.ug/report/{{ report.share_token }}"
+             target="_blank" rel="noopener"
+             class="btn btn-sm" style="background:#25D366; color:white;">
+            WhatsApp
+          </a>
+          <button onclick="window.print()" class="btn btn-secondary btn-sm">Print</button>
         </div>
       </div>
     </div>
@@ -92,27 +127,40 @@
   <div class="report-wrap">
 
     <!-- ① Overall verdict -->
-    <div class="report-section" style="border-color:{% if report.overall_grade == 'A' %}#6EE7B7{% elif report.overall_grade == 'B' %}#FCD34D{% else %}#FCA5A5{% endif %};border-width:2px;">
-      <div class="report-section-body" style="padding:24px;">
-        <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
-          <div class="overall-grade" style="background:{% if report.overall_grade == 'A' %}var(--green-bg){% elif report.overall_grade == 'B' %}var(--amber-bg){% else %}var(--red-bg){% endif %};color:{% if report.overall_grade == 'A' %}var(--green-ok){% elif report.overall_grade == 'B' %}var(--amber-warn){% else %}var(--red-danger){% endif %};">
+    <div class="report-section"
+         style="border-color:{% if report.overall_grade == 'A' %}#6EE7B7{% elif report.overall_grade == 'B' %}#FCD34D{% else %}#FCA5A5{% endif %}; border-width:2px;">
+      <div class="report-section-body">
+        <div style="display:flex; align-items:flex-start; gap:20px; flex-wrap:wrap;">
+          <div class="overall-grade"
+               style="background:{% if report.overall_grade == 'A' %}var(--ch-ok-bg){% elif report.overall_grade == 'B' %}var(--ch-warn-bg){% else %}var(--ch-danger-bg){% endif %};
+                      color:{% if report.overall_grade == 'A' %}var(--ch-ok){% elif report.overall_grade == 'B' %}var(--ch-warn){% else %}var(--ch-danger){% endif %};">
             {{ report.overall_grade|default:"B" }}
           </div>
-          <div style="flex:1;">
-            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--text-1);margin-bottom:6px;">
-              {% if report.overall_grade == 'A' %}✅ Clean Vehicle — Recommended{% elif report.overall_grade == 'B' %}⚠️ Minor Issues Found — Inspect Before Buying{% else %}🚨 Significant Issues — Buy With Caution{% endif %}
-            </div>
-            <p style="font-size:14px;color:var(--text-3);line-height:1.7;margin:0;">
-              {{ report.ai_summary|default:"This vehicle was auctioned in Japan and has been imported to Uganda. Based on available Japan auction records, this vehicle shows no major red flags. Always conduct a physical inspection before finalising your purchase." }}
+          <div style="flex:1; min-width:200px;">
+            <p style="font-family:'Plus Jakarta Sans',sans-serif; font-size:18px;
+                      font-weight:800; color:var(--ch-text-1); margin-bottom:6px;">
+              {% if report.overall_grade == 'A' %}✅ Clean Vehicle — Recommended
+              {% elif report.overall_grade == 'B' %}⚠️ Minor Issues Found — Inspect Before Buying
+              {% else %}🚨 Significant Issues — Buy With Caution{% endif %}
+            </p>
+            <p style="font-size:14px; color:var(--ch-text-3); line-height:1.7; margin:0;">
+              {{ report.ai_summary|default:"This vehicle was auctioned in Japan and imported to Uganda. Based on available records, no major red flags have been identified. Always conduct a physical inspection before finalising your purchase." }}
             </p>
           </div>
         </div>
 
         {% if report.penalty_reasons %}
-        <div style="margin-top:16px;display:flex;flex-direction:column;gap:6px;">
+        <div style="margin-top:16px; display:flex; flex-direction:column; gap:6px;">
           {% for reason in report.penalty_reasons %}
-          <div style="background:var(--red-bg);border-radius:var(--r-md);padding:10px 14px;font-size:13px;color:var(--red-danger);display:flex;align-items:center;gap:8px;">
-            <i class="fa-solid fa-triangle-exclamation"></i> {{ reason }}
+          <div style="background:var(--ch-danger-bg); border-radius:var(--r-md); padding:10px 14px;
+                      font-size:13px; color:var(--ch-danger); display:flex; align-items:center; gap:8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            {{ reason }}
           </div>
           {% endfor %}
         </div>
@@ -124,44 +172,27 @@
     <div class="report-section">
       <div class="report-section-header">
         <div class="report-section-title">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="3" stroke="var(--blue)" stroke-width="1.4"/><path d="M5 4V3M13 4V3M2 8H16" stroke="var(--blue)" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="1" y="3" width="15" height="13"/>
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+            <circle cx="5.5" cy="18.5" r="2.5"/>
+            <circle cx="18.5" cy="18.5" r="2.5"/>
+          </svg>
           Vehicle Specifications
         </div>
       </div>
       <div class="report-section-body">
         <div class="data-grid-4">
-          <div class="data-cell">
-            <div class="data-cell-label">Make</div>
-            <div class="data-cell-value">{{ report.make|default:"Toyota" }}</div>
-          </div>
-          <div class="data-cell">
-            <div class="data-cell-label">Model</div>
-            <div class="data-cell-value">{{ report.model|default:"Corolla" }}</div>
-          </div>
-          <div class="data-cell">
-            <div class="data-cell-label">Year</div>
-            <div class="data-cell-value">{{ report.year|default:"2008" }}</div>
-          </div>
-          <div class="data-cell">
-            <div class="data-cell-label">Color</div>
-            <div class="data-cell-value">{{ report.color|default:"Silver" }}</div>
-          </div>
-          <div class="data-cell">
-            <div class="data-cell-label">Engine (cc)</div>
-            <div class="data-cell-value">{{ report.engine_cc|default:"1500" }}cc</div>
-          </div>
-          <div class="data-cell">
-            <div class="data-cell-label">Transmission</div>
-            <div class="data-cell-value sm">{{ report.transmission|default:"Automatic" }}</div>
-          </div>
-          <div class="data-cell">
-            <div class="data-cell-label">Drive</div>
-            <div class="data-cell-value">{{ report.drive_type|default:"2WD" }}</div>
-          </div>
-          <div class="data-cell">
-            <div class="data-cell-label">Fuel Type</div>
-            <div class="data-cell-value">{{ report.fuel_type|default:"Petrol" }}</div>
-          </div>
+          <div class="data-cell"><div class="data-cell-label">Make</div><div class="data-cell-value">{{ report.make|default:"Toyota" }}</div></div>
+          <div class="data-cell"><div class="data-cell-label">Model</div><div class="data-cell-value">{{ report.model|default:"Corolla" }}</div></div>
+          <div class="data-cell"><div class="data-cell-label">Year</div><div class="data-cell-value">{{ report.year|default:"2008" }}</div></div>
+          <div class="data-cell"><div class="data-cell-label">Color</div><div class="data-cell-value">{{ report.color|default:"Silver" }}</div></div>
+          <div class="data-cell"><div class="data-cell-label">Engine</div><div class="data-cell-value">{{ report.engine_cc|default:"1500" }}cc</div></div>
+          <div class="data-cell"><div class="data-cell-label">Transmission</div><div class="data-cell-value sm">{{ report.transmission|default:"Automatic" }}</div></div>
+          <div class="data-cell"><div class="data-cell-label">Drive</div><div class="data-cell-value">{{ report.drive_type|default:"2WD" }}</div></div>
+          <div class="data-cell"><div class="data-cell-label">Fuel</div><div class="data-cell-value">{{ report.fuel_type|default:"Petrol" }}</div></div>
         </div>
       </div>
     </div>
@@ -170,28 +201,34 @@
     <div class="report-section">
       <div class="report-section-header">
         <div class="report-section-title">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="var(--blue)" stroke-width="1.4"/><path d="M9 5V9.5L12 11" stroke="var(--blue)" stroke-width="1.4" stroke-linecap="round"/></svg>
-          Mileage & Condition
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Mileage &amp; Condition
         </div>
         <span class="badge {% if report.mileage_status == 'ok' %}badge-ok{% elif report.mileage_status == 'warn' %}badge-warn{% else %}badge-danger{% endif %}">
-          {% if report.mileage_status == 'ok' %}✓ Mileage Consistent{% elif report.mileage_status == 'warn' %}⚠ High Mileage{% else %}🚨 Possible Rollback{% endif %}
+          <span class="badge-dot"></span>
+          {% if report.mileage_status == 'ok' %}Mileage Consistent
+          {% elif report.mileage_status == 'warn' %}High Mileage
+          {% else %}Possible Rollback{% endif %}
         </span>
       </div>
       <div class="report-section-body">
-        <div class="data-grid-3" style="margin-bottom:20px;">
-          <div class="data-cell" style="{% if report.mileage_status == 'danger' %}background:var(--red-bg);{% elif report.mileage_status == 'warn' %}background:var(--amber-bg);{% endif %}">
-            <div class="data-cell-label">Recorded Mileage (Japan)</div>
+        <div class="data-grid-3">
+          <div class="data-cell {% if report.mileage_status == 'danger' %}status-danger{% elif report.mileage_status == 'warn' %}status-warn{% endif %}"
+               style="{% if report.mileage_status == 'danger' %}background:var(--ch-danger-bg);{% elif report.mileage_status == 'warn' %}background:var(--ch-warn-bg);{% endif %}">
+            <div class="data-cell-label">Mileage (Japan)</div>
             <div class="data-cell-value {% if report.mileage_status == 'danger' %}status-danger{% elif report.mileage_status == 'warn' %}status-warn{% else %}status-ok{% endif %}">
               {{ report.mileage_km|default:"87,400" }} km
             </div>
           </div>
           <div class="data-cell">
             <div class="data-cell-label">Frame Condition</div>
-            <div class="data-cell-value {% if report.frame_grade == 'A' %}status-ok{% elif report.frame_grade == 'B' %}{% else %}status-warn{% endif %}">
+            <div class="data-cell-value {% if report.frame_grade == 'A' %}status-ok{% endif %}">
               {{ report.frame_grade|default:"A" }}
-              <span style="font-size:12px;font-weight:400;color:var(--text-3);margin-left:4px;">
-                {% if report.frame_grade == 'A' %}Excellent{% elif report.frame_grade == 'B' %}Good{% elif report.frame_grade == 'C' %}Fair{% else %}Poor{% endif %}
-              </span>
             </div>
           </div>
           <div class="data-cell">
@@ -217,57 +254,96 @@
     </div>
 
     <!-- ④ Accident History -->
-    <div class="report-section" style="{% if report.accident_status == 'major' %}border-color:#FCA5A5;border-width:2px;{% endif %}">
+    <div class="report-section"
+         style="{% if report.accident_status == 'major' %}border-color:var(--ch-danger); border-width:2px;{% endif %}">
       <div class="report-section-header">
         <div class="report-section-title">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3L16 14H2L9 3Z" stroke="var(--blue)" stroke-width="1.4" stroke-linejoin="round"/><path d="M9 8V11M9 13V13.5" stroke="var(--blue)" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
           Accident History
         </div>
         <span class="badge {% if report.accident_status == 'none' %}badge-ok{% elif report.accident_status == 'minor' %}badge-warn{% else %}badge-danger{% endif %}">
-          {% if report.accident_status == 'none' %}✓ No Accidents{% elif report.accident_status == 'minor' %}⚠ Minor Accident{% else %}🚨 Major Accident{% endif %}
+          <span class="badge-dot"></span>
+          {% if report.accident_status == 'none' %}No Accidents
+          {% elif report.accident_status == 'minor' %}Minor Accident
+          {% else %}Major Accident{% endif %}
         </span>
       </div>
       <div class="report-section-body">
         {% if report.accident_status == 'none' %}
-        <div style="display:flex;align-items:center;gap:14px;background:var(--green-bg);border-radius:var(--r-md);padding:16px 20px;">
-          <span style="font-size:24px;">✅</span>
+        <div style="display:flex; align-items:center; gap:14px; background:var(--ch-ok-bg);
+                    border-radius:var(--r-md); padding:16px 20px;">
+          <span style="font-size:24px;" aria-hidden="true">✅</span>
           <div>
-            <div style="font-weight:600;color:var(--green-ok);font-size:15px;">No accident history found</div>
-            <div style="font-size:13px;color:var(--green-ok);opacity:.8;margin-top:2px;">This vehicle has no recorded accidents in Japan auction and insurance records.</div>
+            <p style="font-weight:600; color:var(--ch-ok); font-size:15px; margin-bottom:2px;">
+              No accident history found
+            </p>
+            <p style="font-size:13px; color:var(--ch-ok); opacity:.8; margin:0;">
+              This vehicle has no recorded accidents in Japan auction and insurance records.
+            </p>
           </div>
         </div>
         {% else %}
-        <div style="display:flex;align-items:center;gap:14px;background:{% if report.accident_status == 'minor' %}var(--amber-bg){% else %}var(--red-bg){% endif %};border-radius:var(--r-md);padding:16px 20px;margin-bottom:16px;">
-          <span style="font-size:24px;">{% if report.accident_status == 'minor' %}⚠️{% else %}🚨{% endif %}</span>
+        <div style="display:flex; align-items:center; gap:14px;
+                    background:{% if report.accident_status == 'minor' %}var(--ch-warn-bg){% else %}var(--ch-danger-bg){% endif %};
+                    border-radius:var(--r-md); padding:16px 20px; margin-bottom:16px;">
+          <span style="font-size:24px;" aria-hidden="true">
+            {% if report.accident_status == 'minor' %}⚠️{% else %}🚨{% endif %}
+          </span>
           <div>
-            <div style="font-weight:600;color:{% if report.accident_status == 'minor' %}var(--amber-warn){% else %}var(--red-danger){% endif %};font-size:15px;">
+            <p style="font-weight:600; margin-bottom:2px;
+                      color:{% if report.accident_status == 'minor' %}var(--ch-warn){% else %}var(--ch-danger){% endif %}; font-size:15px;">
               {% if report.accident_status == 'minor' %}Minor accident recorded{% else %}Major accident recorded{% endif %}
-            </div>
-            <div style="font-size:13px;opacity:.8;margin-top:2px;color:{% if report.accident_status == 'minor' %}var(--amber-warn){% else %}var(--red-danger){% endif %};">
+            </p>
+            <p style="font-size:13px; opacity:.85; margin:0;
+                      color:{% if report.accident_status == 'minor' %}var(--ch-warn){% else %}var(--ch-danger){% endif %};">
               {{ report.accident_description|default:"Repair work recorded in auction inspection sheet." }}
-            </div>
+            </p>
           </div>
         </div>
         {% endif %}
 
-        <!-- Structural check grid -->
+        <!-- Structural check grid — hardcoded parts, no |split -->
         <div style="margin-top:16px;">
-          <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);margin-bottom:10px;">Structural Inspection</div>
+          <div style="font-size:12px; font-weight:600; text-transform:uppercase;
+                      letter-spacing:.07em; color:var(--ch-text-3); margin-bottom:10px;">
+            Structural Inspection
+          </div>
+          {% if structural_checks %}
           <div class="data-grid-4">
             {% for part, status in structural_checks.items %}
-            <div style="background:var(--surface);border-radius:var(--r-md);padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
-              <span style="font-size:12px;color:var(--text-2);">{{ part }}</span>
-              <span style="font-size:14px;">{% if status == 'ok' %}✅{% elif status == 'warn' %}⚠️{% else %}❌{% endif %}</span>
+            <div style="background:var(--ch-surface); border-radius:var(--r-md); padding:10px 12px;
+                        display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:12px; color:var(--ch-text-2);">{{ part }}</span>
+              <span>{% if status == 'ok' %}✅{% elif status == 'warn' %}⚠️{% else %}❌{% endif %}</span>
             </div>
-            {% empty %}
-            {% for part in "Hood,Front Right,Front Left,Rear Right,Rear Left,Trunk,Roof,Pillars"|split:"," %}
-            <div style="background:var(--surface);border-radius:var(--r-md);padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
-              <span style="font-size:12px;color:var(--text-2);">{{ part }}</span>
-              <span style="font-size:14px;">✅</span>
-            </div>
-            {% endfor %}
             {% endfor %}
           </div>
+          {% else %}
+          <!-- Static fallback — NO |split filter -->
+          <div class="data-grid-4">
+            {% for part in structural_parts_list %}
+            <div style="background:var(--ch-surface); border-radius:var(--r-md); padding:10px 12px;
+                        display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:12px; color:var(--ch-text-2);">{{ part }}</span>
+              <span>✅</span>
+            </div>
+            {% empty %}
+            <div style="background:var(--ch-surface); border-radius:var(--r-md); padding:10px 12px; display:flex; align-items:center; justify-content:space-between;"><span style="font-size:12px; color:var(--ch-text-2);">Hood</span><span>✅</span></div>
+            <div style="background:var(--ch-surface); border-radius:var(--r-md); padding:10px 12px; display:flex; align-items:center; justify-content:space-between;"><span style="font-size:12px; color:var(--ch-text-2);">Front Right</span><span>✅</span></div>
+            <div style="background:var(--ch-surface); border-radius:var(--r-md); padding:10px 12px; display:flex; align-items:center; justify-content:space-between;"><span style="font-size:12px; color:var(--ch-text-2);">Front Left</span><span>✅</span></div>
+            <div style="background:var(--ch-surface); border-radius:var(--r-md); padding:10px 12px; display:flex; align-items:center; justify-content:space-between;"><span style="font-size:12px; color:var(--ch-text-2);">Rear Right</span><span>✅</span></div>
+            <div style="background:var(--ch-surface); border-radius:var(--r-md); padding:10px 12px; display:flex; align-items:center; justify-content:space-between;"><span style="font-size:12px; color:var(--ch-text-2);">Rear Left</span><span>✅</span></div>
+            <div style="background:var(--ch-surface); border-radius:var(--r-md); padding:10px 12px; display:flex; align-items:center; justify-content:space-between;"><span style="font-size:12px; color:var(--ch-text-2);">Trunk</span><span>✅</span></div>
+            <div style="background:var(--ch-surface); border-radius:var(--r-md); padding:10px 12px; display:flex; align-items:center; justify-content:space-between;"><span style="font-size:12px; color:var(--ch-text-2);">Roof</span><span>✅</span></div>
+            <div style="background:var(--ch-surface); border-radius:var(--r-md); padding:10px 12px; display:flex; align-items:center; justify-content:space-between;"><span style="font-size:12px; color:var(--ch-text-2);">Pillars</span><span>✅</span></div>
+            {% endfor %}
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -276,27 +352,23 @@
     <div class="report-section">
       <div class="report-section-header">
         <div class="report-section-title">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9H15M9 3L15 9L9 15" stroke="var(--blue)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
           Import Journey
         </div>
       </div>
       <div class="report-section-body">
         <div class="data-grid-2">
-          <div class="data-cell">
-            <div class="data-cell-label">Export Port (Japan)</div>
-            <div class="data-cell-value sm">{{ report.export_port|default:"Nagoya, Japan" }}</div>
-          </div>
-          <div class="data-cell">
-            <div class="data-cell-label">Import Port (Africa)</div>
-            <div class="data-cell-value sm">{{ report.import_port|default:"Mombasa, Kenya" }}</div>
-          </div>
-          <div class="data-cell">
-            <div class="data-cell-label">Uganda Clearance</div>
-            <div class="data-cell-value sm">{{ report.clearance_date|default:"June 2019" }}</div>
-          </div>
+          <div class="data-cell"><div class="data-cell-label">Export Port (Japan)</div><div class="data-cell-value sm">{{ report.export_port|default:"Nagoya, Japan" }}</div></div>
+          <div class="data-cell"><div class="data-cell-label">Import Port (Africa)</div><div class="data-cell-value sm">{{ report.import_port|default:"Mombasa, Kenya" }}</div></div>
+          <div class="data-cell"><div class="data-cell-label">Uganda Clearance</div><div class="data-cell-value sm">{{ report.clearance_date|default:"June 2019" }}</div></div>
           <div class="data-cell">
             <div class="data-cell-label">URA Eligibility</div>
-            <div class="data-cell-value {% if report.ura_eligible %}status-ok{% else %}status-warn{% endif %} sm">
+            <div class="data-cell-value sm {% if report.ura_eligible %}status-ok{% else %}status-warn{% endif %}">
               {% if report.ura_eligible %}✓ Eligible{% else %}⚠ Check with URA{% endif %}
             </div>
           </div>
@@ -304,11 +376,16 @@
       </div>
     </div>
 
-    <!-- ⑥ Vehicle History Timeline -->
+    <!-- ⑥ Timeline -->
     <div class="report-section">
       <div class="report-section-header">
         <div class="report-section-title">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V9L12.5 12.5" stroke="var(--blue)" stroke-width="1.4" stroke-linecap="round"/><circle cx="9" cy="9" r="7" stroke="var(--blue)" stroke-width="1.4"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
           History Timeline
         </div>
       </div>
@@ -358,12 +435,18 @@
       </div>
     </div>
 
-    <!-- ⑦ Photos (if full report) -->
+    <!-- ⑦ Photos -->
     {% if report.photos and report.report_tier == 'full' %}
     <div class="report-section">
       <div class="report-section-header">
         <div class="report-section-title">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="11" rx="3" stroke="var(--blue)" stroke-width="1.4"/><circle cx="9" cy="9.5" r="2.5" stroke="var(--blue)" stroke-width="1.4"/><path d="M6.5 4L7.5 2.5H10.5L11.5 4" stroke="var(--blue)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
           Original Japan Auction Photos
         </div>
         <span class="badge badge-blue">{{ report.photos|length }} photos</span>
@@ -371,7 +454,7 @@
       <div class="report-section-body">
         <div class="photo-grid">
           {% for photo in report.photos %}
-          <div class="photo-thumb" onclick="openPhoto('{{ photo.url }}')">
+          <div class="photo-thumb" onclick="openPhoto('{{ photo.url }}')" role="button" tabindex="0">
             <img src="{{ photo.url }}" alt="Japan auction photo {{ forloop.counter }}" loading="lazy">
           </div>
           {% endfor %}
@@ -380,39 +463,79 @@
     </div>
     {% elif report.report_tier == 'basic' %}
     <div class="report-section" style="border-style:dashed;">
-      <div class="report-section-body" style="text-align:center;padding:32px;">
-        <div style="font-size:32px;margin-bottom:12px;">📸</div>
-        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--text-1);margin-bottom:6px;">Original Japan Auction Photos</div>
-        <p style="font-size:13px;color:var(--text-3);margin-bottom:20px;">Upgrade to Full Report to see the original auction photos from Japan — exactly what the inspector saw.</p>
-        <a href="{% url 'vehicles:upgrade_report' report.id %}" class="btn btn-primary">Upgrade to Full — UGX 25,000 more</a>
+      <div class="report-section-body" style="text-align:center; padding:32px;">
+        <div style="font-size:32px; margin-bottom:12px;" aria-hidden="true">📸</div>
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-size:16px; font-weight:700;
+                   color:var(--ch-text-1); margin-bottom:6px;">
+          Original Japan Auction Photos
+        </h3>
+        <p style="font-size:13px; color:var(--ch-text-3); margin-bottom:20px; max-width:400px; margin-left:auto; margin-right:auto;">
+          Upgrade to Full Report to see the original auction photos from Japan.
+        </p>
+        <a href="{% url 'vehicles:upgrade_report' report.id %}" class="btn btn-primary">
+          Upgrade to Full — UGX 25,000 more
+        </a>
       </div>
     </div>
     {% endif %}
 
     <!-- ⑧ Disclaimer -->
-    <div style="background:var(--blue-faint);border:1px solid var(--blue-pale);border-radius:var(--r-lg);padding:16px 20px;margin-top:8px;">
-      <div style="display:flex;gap:10px;align-items:flex-start;">
-        <i class="fa-solid fa-circle-info" style="color:var(--blue);margin-top:2px;flex-shrink:0;"></i>
-        <div>
-          <div style="font-size:13px;font-weight:600;color:var(--blue-dark);margin-bottom:4px;">Report Disclaimer</div>
-          <p style="font-size:12px;color:var(--text-3);line-height:1.65;margin:0;">This report is generated from Japan auction records, insurance databases, and import records. CarHaki provides this information in good faith but cannot guarantee completeness. Always conduct a physical inspection by a qualified mechanic before purchasing any vehicle.</p>
-        </div>
+    <div class="alert alert-info" style="margin-top:8px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round"
+           style="flex-shrink:0; margin-top:1px;" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="16" x2="12" y2="12"/>
+        <line x1="12" y1="8" x2="12.01" y2="8"/>
+      </svg>
+      <div>
+        <p style="font-size:13px; font-weight:600; color:var(--ch-navy); margin-bottom:4px;">
+          Report Disclaimer
+        </p>
+        <p style="font-size:12px; color:var(--ch-text-3); line-height:1.65; margin:0;">
+          This report is generated from Japan auction records, insurance databases, and import records.
+          CarHaki provides this information in good faith but cannot guarantee completeness.
+          Always conduct a physical inspection by a qualified mechanic before purchasing any vehicle.
+        </p>
       </div>
     </div>
 
     <!-- Actions -->
-    <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
-      <a href="{% url 'vehicles:search' %}" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Check Another Car</a>
-      <button onclick="window.print()" class="btn btn-secondary"><i class="fa-solid fa-print"></i> Print Report</button>
-      <a href="{% url 'vehicles:download_report' report.id %}" class="btn btn-primary" style="margin-left:auto;"><i class="fa-solid fa-download"></i> Download PDF</a>
+    <div style="display:flex; gap:12px; margin-top:24px; flex-wrap:wrap;">
+      <a href="{% url 'vehicles:search' %}" class="btn btn-secondary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Check Another Car
+      </a>
+      <button onclick="window.print()" class="btn btn-secondary">Print Report</button>
+      <a href="{% url 'vehicles:download_report' report.id %}"
+         class="btn btn-primary" style="margin-left:auto;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download PDF
+      </a>
     </div>
 
   </div>
 </div>
 
 <!-- Photo modal -->
-<div id="photoModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:999;align-items:center;justify-content:center;" onclick="this.style.display='none'">
-  <img id="modalImg" src="" alt="Auction photo" style="max-width:90vw;max-height:90vh;border-radius:8px;object-fit:contain;">
+<div id="photoModal"
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.9);
+            z-index:999; align-items:center; justify-content:center;"
+     onclick="this.style.display='none'" role="dialog" aria-modal="true">
+  <img id="modalImg" src="" alt="Auction photo"
+       style="max-width:90vw; max-height:90vh; border-radius:8px; object-fit:contain;">
 </div>
 
 {% endblock %}
@@ -421,15 +544,24 @@
 <script>
 function copyLink() {
   const url = 'https://carhaki.ug/report/{{ report.share_token }}';
-  navigator.clipboard.writeText(url).then(() => {
-    const btn = event.target.closest('button');
-    btn.textContent = '✓ Copied!';
-    setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-copy"></i> Copy Link', 2000);
+  navigator.clipboard.writeText(url).then(function() {
+    const btn = document.querySelector('[onclick="copyLink()"]');
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.textContent = '✓ Copied!';
+      setTimeout(function() { btn.innerHTML = orig; }, 2000);
+    }
   });
 }
 function openPhoto(url) {
   document.getElementById('modalImg').src = url;
-  document.getElementById('photoModal').style.display = 'flex';
+  const modal = document.getElementById('photoModal');
+  modal.style.display = 'flex';
 }
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.getElementById('photoModal').style.display = 'none';
+  }
+});
 </script>
 {% endblock %}
