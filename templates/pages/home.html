@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}CarHaki — Know the Truth About Every Car | Uganda{% endblock %}
-{% block meta_desc %}Before buying that ex-Japan car in Uganda, check its full history. Accidents, mileage tampering, auction grade, original Japan photos.{% endblock %}
+{% block meta_desc %}Before buying that ex-Japan car in Uganda, check its full history. Accidents, mileage tampering, auction grade, original Japan photos. Powered by official Japan auction records.{% endblock %}
 
 {% block content %}
 
@@ -28,10 +28,12 @@
 
     <form action="{% url 'vehicles:search' %}" method="GET"
           class="hero-search animate-fade-up delay-3">
-      <input type="text" name="q" id="chassisInput"
-             placeholder="Enter chassis number e.g. ZZE122-0093241"
-             autocomplete="off" spellcheck="false" maxlength="20"
-             value="{{ request.GET.q|default:'' }}">
+      <input
+        type="text" name="q" id="chassisInput"
+        placeholder="Enter chassis number e.g. ZZE122-0093241"
+        autocomplete="off" spellcheck="false" maxlength="20"
+        value="{{ request.GET.q|default:'' }}"
+      >
       <button type="submit" class="hero-search-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
              fill="none" stroke="currentColor" stroke-width="2.5"
@@ -45,32 +47,21 @@
 
     <div class="hero-samples animate-fade-up delay-3">
       Try a sample:
-      <span class="hero-sample-chip"
-            onclick="document.getElementById('chassisInput').value='ZZE122-0093241'">
-        ZZE122-0093241
-      </span>
-      <span class="hero-sample-chip"
-            onclick="document.getElementById('chassisInput').value='GD1-1234567'">
-        GD1-1234567
-      </span>
-      <span class="hero-sample-chip"
-            onclick="document.getElementById('chassisInput').value='SG5-456789'">
-        SG5-456789
-      </span>
+      <span class="hero-sample-chip" onclick="document.getElementById('chassisInput').value='ZZE122-0093241'">ZZE122-0093241</span>
+      <span class="hero-sample-chip" onclick="document.getElementById('chassisInput').value='GD1-1234567'">GD1-1234567</span>
+      <span class="hero-sample-chip" onclick="document.getElementById('chassisInput').value='SG5-456789'">SG5-456789</span>
     </div>
 
     <div class="hero-trust animate-fade-up delay-4">
       <div class="trust-item">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M8 1.5L10.5 4H14.5V8L11.5 10L13 14L8 12L3 14L4.5 10L1.5 8V4H5.5L8 1.5Z"
-                stroke="#60A5FA" stroke-width="1.2" fill="none"/>
+          <path d="M8 2L10 5.5H14V9L11 11L12.5 15L8 13L3.5 15L5 11L2 9V5.5H6L8 2Z" stroke="#60A5FA" stroke-width="1.2" fill="none"/>
         </svg>
         <span><span class="trust-num">500+</span> auction houses</span>
       </div>
       <div class="trust-item">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M3 8L6.5 11.5L13 4.5" stroke="#60A5FA" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 8L6.5 11.5L13 4.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <span><span class="trust-num">1M+</span> Japan records</span>
       </div>
@@ -83,8 +74,8 @@
       </div>
       <div class="trust-item">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <rect x="2" y="2" width="12" height="12" rx="2" stroke="#60A5FA" stroke-width="1.2"/>
-          <path d="M5 8H11M8 5V11" stroke="#60A5FA" stroke-width="1.2" stroke-linecap="round"/>
+          <rect x="2" y="3" width="12" height="10" rx="2" stroke="#60A5FA" stroke-width="1.2"/>
+          <path d="M2 7H14" stroke="#60A5FA" stroke-width="1.2"/>
         </svg>
         <span><span class="trust-num">UGX 25K</span> per report</span>
       </div>
@@ -97,9 +88,7 @@
 <div style="background:var(--ch-blue-faint);border-bottom:1px solid var(--ch-blue-pale);">
   <div class="container" style="padding:20px 24px;display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;">
     <div style="text-align:center;">
-      <div class="font-display" style="font-size:24px;font-weight:800;color:var(--ch-blue);">
-        {{ total_reports|default:"1,247" }}+
-      </div>
+      <div class="font-display" style="font-size:24px;font-weight:800;color:var(--ch-blue);">{{ total_reports|default:"1,247" }}+</div>
       <div style="font-size:12px;color:var(--ch-text-3);margin-top:2px;">Reports Generated</div>
     </div>
     <div style="width:1px;height:36px;background:var(--ch-border);"></div>
@@ -126,42 +115,28 @@
     <div class="text-center" style="margin-bottom:48px;">
       <div class="section-label">Why it matters</div>
       <h2 class="section-title">The Risks Every Ugandan<br>Car Buyer Faces</h2>
-      <p class="section-sub" style="margin:12px auto 0;">
-        Dealers know the full history. Buyers know nothing. CarHaki closes that gap.
-      </p>
+      <p class="section-sub" style="margin:12px auto 0;">Dealers know the full history. Buyers know nothing. CarHaki closes that gap.</p>
     </div>
     <div class="problems">
       <div class="problem-card">
         <div class="problem-icon" style="background:var(--ch-danger-bg);">🔢</div>
         <div class="problem-title">Mileage Rollback Fraud</div>
-        <p class="problem-desc">
-          Odometers are wound back before export from Japan. A car showing 60,000 km may have
-          actually done 200,000 km. CarHaki shows the real mileage recorded at auction.
-        </p>
+        <p class="problem-desc">Odometers are wound back before export from Japan. A car showing 60,000 km may have actually done 200,000 km. CarHaki shows the real mileage recorded at auction.</p>
       </div>
       <div class="problem-card">
         <div class="problem-icon" style="background:var(--ch-warn-bg);">💥</div>
         <div class="problem-title">Hidden Accident Damage</div>
-        <p class="problem-desc">
-          Repaired crash damage is repainted and resold. Structural damage is invisible to the
-          naked eye but deadly on the road. Our reports reveal the full accident history.
-        </p>
+        <p class="problem-desc">Repaired crash damage is repainted and resold as clean. Structural damage is invisible to the naked eye but deadly on the road. Our reports reveal the full accident history.</p>
       </div>
       <div class="problem-card">
         <div class="problem-icon" style="background:var(--ch-danger-bg);">🌊</div>
         <div class="problem-title">Flood &amp; Fire Damage</div>
-        <p class="problem-desc">
-          Flood-damaged cars are dried out and sold as clean. Electrical problems appear months
-          later. Japan auction grades and inspection notes reveal water damage.
-        </p>
+        <p class="problem-desc">Flood-damaged cars are dried out and sold as clean. Electrical problems appear months later. Japan auction grades and inspection notes clearly reveal water and fire damage.</p>
       </div>
       <div class="problem-card">
         <div class="problem-icon" style="background:var(--ch-blue-pale);">📸</div>
         <div class="problem-title">No Original Photos</div>
-        <p class="problem-desc">
-          Sellers control what you see. CarHaki provides original Japan auction photos —
-          showing the car's real condition before it left Japan.
-        </p>
+        <p class="problem-desc">Sellers control what you see. CarHaki provides original Japan auction photos — showing the car's real condition before it left Japan, exactly as the inspector recorded it.</p>
       </div>
     </div>
   </div>
@@ -178,97 +153,71 @@
       <div class="step">
         <div class="step-num">01</div>
         <div class="step-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-               fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </div>
         <div class="step-title">Enter Chassis Number</div>
-        <p class="step-desc">
-          Find the chassis number on the car's dash, door sticker, or seller documents.
-          Works for all Japanese chassis formats.
-        </p>
+        <p class="step-desc">Find the chassis number on the car's dashboard, door sticker, or seller documents. Works for all Japanese chassis formats.</p>
       </div>
       <div class="step">
         <div class="step-num">02</div>
         <div class="step-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-               fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-            <line x1="1" y1="10" x2="23" y2="10"/>
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
         </div>
         <div class="step-title">Pay Securely</div>
-        <p class="step-desc">
-          Pay via MTN Mobile Money, Airtel Money, or card. UGX 25,000 per report.
-          Money-back guarantee if no data is found.
-        </p>
+        <p class="step-desc">Pay via MTN Mobile Money, Airtel Money, or card. UGX 25,000 per basic report. Money-back guarantee if no data is found.</p>
       </div>
       <div class="step">
         <div class="step-num">03</div>
         <div class="step-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-               fill="none" stroke="var(--ch-blue)" stroke-width="1.5"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-            <polyline points="10 9 9 9 8 9"/>
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
         <div class="step-title">Get Your Report</div>
-        <p class="step-desc">
-          Instant full report: auction grade, real mileage, accident history, frame &amp;
-          engine condition, import route, and original Japan photos.
-        </p>
+        <p class="step-desc">Instant full report: auction grade, real mileage, accident history, frame and engine condition, import route, and original Japan photos.</p>
       </div>
     </div>
     <div style="text-align:center;margin-top:36px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
       <a href="{% url 'vehicles:search' %}" class="btn btn-primary btn-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2.5"
-             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         Check a Car Now
       </a>
-      <a href="{% url 'vehicles:sample_report' %}" class="btn btn-secondary btn-lg">
-        See Sample Report
-      </a>
+      <a href="{% url 'vehicles:sample_report' %}" class="btn btn-secondary btn-lg">See Sample Report</a>
     </div>
   </div>
 </section>
 
-<!-- ── Sample report preview ─────────────────────────────── -->
+<!-- ── What's In a Report ─────────────────────────────────── -->
 <section class="section" style="background:var(--ch-surface);">
   <div class="container">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;">
+
       <div>
         <div class="section-label">What you get</div>
         <h2 class="section-title">A Complete Picture.<br>No Surprises.</h2>
-        <p style="font-size:15px;color:var(--ch-text-3);margin:16px 0 28px;line-height:1.7;">
-          Our reports pull from Japan auction records, MLIT databases, insurance records,
-          and auction inspection sheets — combined into one clear report.
-        </p>
+        <p style="font-size:15px;color:var(--ch-text-3);margin:16px 0 28px;line-height:1.7;">Our reports pull from Japan auction records, MLIT databases, insurance records, and auction inspection sheets — combined into one clear report.</p>
+
         <div style="display:flex;flex-direction:column;gap:10px;">
-          {% for feature in "Japan auction grade (3–5),Real mileage at auction,Full accident history,Frame & engine grade,Interior condition,Original auction photos,Import route & dates,Mileage fraud detection,AI plain-English summary,Shareable report link"|split:"," %}
+          {% for item in report_features %}
           <div style="display:flex;align-items:center;gap:10px;">
             <div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
-                <path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5"
-                      stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              </svg>
+              <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             </div>
-            <span style="font-size:14px;color:var(--ch-text-2);">{{ feature }}</span>
+            <span style="font-size:14px;color:var(--ch-text-2);">{{ item }}</span>
           </div>
+          {% empty %}
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Japan auction grade (3–5 scale)</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Real mileage at time of auction</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Full accident history</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Frame &amp; engine condition grades</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Interior condition grade</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Original Japan auction photos</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Import route &amp; clearance date</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Mileage fraud detection flag</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">AI plain-English summary</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Shareable report link</span></div>
           {% endfor %}
         </div>
       </div>
 
-      <!-- Report card preview -->
       <div class="report-card"
            style="transform:perspective(1000px) rotateY(-3deg);transition:transform .3s;"
            onmouseover="this.style.transform='perspective(1000px) rotateY(0deg)'"
@@ -285,36 +234,18 @@
         </div>
         <div class="report-body">
           <div class="report-metrics">
-            <div class="report-metric">
-              <div class="report-metric-label">Mileage</div>
-              <div class="report-metric-value">87,400 km</div>
-            </div>
-            <div class="report-metric">
-              <div class="report-metric-label">Accidents</div>
-              <div class="report-metric-value status-ok">None ✓</div>
-            </div>
-            <div class="report-metric">
-              <div class="report-metric-label">Frame</div>
-              <div class="report-metric-value status-ok">Grade A</div>
-            </div>
-            <div class="report-metric">
-              <div class="report-metric-label">Engine</div>
-              <div class="report-metric-value status-ok">Grade A</div>
-            </div>
-            <div class="report-metric">
-              <div class="report-metric-label">Interior</div>
-              <div class="report-metric-value">Grade B</div>
-            </div>
-            <div class="report-metric">
-              <div class="report-metric-label">Auction</div>
-              <div class="report-metric-value" style="font-size:13px;">USS Osaka</div>
-            </div>
+            <div class="report-metric"><div class="report-metric-label">Mileage</div><div class="report-metric-value">87,400 km</div></div>
+            <div class="report-metric"><div class="report-metric-label">Accidents</div><div class="report-metric-value status-ok">None ✓</div></div>
+            <div class="report-metric"><div class="report-metric-label">Frame</div><div class="report-metric-value status-ok">Grade A</div></div>
+            <div class="report-metric"><div class="report-metric-label">Engine</div><div class="report-metric-value status-ok">Grade A</div></div>
+            <div class="report-metric"><div class="report-metric-label">Interior</div><div class="report-metric-value">Grade B</div></div>
+            <div class="report-metric"><div class="report-metric-label">Auction</div><div class="report-metric-value" style="font-size:13px;">USS Osaka</div></div>
           </div>
           <div style="background:var(--ch-ok-bg);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;">
             <span style="font-size:18px;" aria-hidden="true">✅</span>
             <div>
               <div style="font-size:13px;font-weight:600;color:var(--ch-ok);">Clean Vehicle — Safe to Buy</div>
-              <div style="font-size:12px;color:var(--ch-ok);opacity:.8;">No red flags in Japan records</div>
+              <div style="font-size:12px;color:var(--ch-ok);opacity:.8;">No red flags detected in Japan records</div>
             </div>
           </div>
         </div>
@@ -324,37 +255,27 @@
   </div>
 </section>
 
-<!-- ── Pricing teaser ─────────────────────────────────────── -->
+<!-- ── Pricing Teaser ─────────────────────────────────────── -->
 <section class="section">
   <div class="container-sm text-center">
     <div class="section-label">Pricing</div>
-    <h2 class="section-title">
-      Protect a UGX 15M Purchase<br>for Just UGX 25,000
-    </h2>
-    <p class="section-sub" style="margin:12px auto 40px;">
-      That's less than a lunch. The cost of not checking could be your entire car investment.
-    </p>
+    <h2 class="section-title">Protect a UGX 15M Purchase<br>for Just UGX 25,000</h2>
+    <p class="section-sub" style="margin:12px auto 40px;">That's less than a lunch. The cost of not checking could be your entire car investment.</p>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:0 auto 40px;">
       <div style="background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px 20px;text-align:center;">
         <div style="font-size:12px;font-weight:600;color:var(--ch-text-3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Basic</div>
-        <div class="font-display" style="font-size:28px;font-weight:800;color:var(--ch-text-1);">
-          25K <span style="font-size:14px;font-weight:500;color:var(--ch-text-3);">UGX</span>
-        </div>
+        <div class="font-display" style="font-size:28px;font-weight:800;color:var(--ch-text-1);">25K <span style="font-size:14px;font-weight:500;color:var(--ch-text-3);">UGX</span></div>
         <div style="font-size:13px;color:var(--ch-text-3);margin-top:4px;">Per report</div>
       </div>
       <div style="background:var(--ch-navy);border:2px solid var(--ch-blue);border-radius:var(--r-lg);padding:28px 20px;text-align:center;position:relative;">
-        <div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--ch-blue);color:white;font-size:10px;font-weight:700;padding:3px 12px;border-radius:99px;white-space:nowrap;">MOST POPULAR</div>
+        <div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--ch-blue);color:white;font-size:10px;font-weight:700;padding:3px 12px;border-radius:99px;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;">MOST POPULAR</div>
         <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Full Report</div>
-        <div class="font-display" style="font-size:28px;font-weight:800;color:white;">
-          50K <span style="font-size:14px;font-weight:500;color:rgba(255,255,255,.5);">UGX</span>
-        </div>
+        <div class="font-display" style="font-size:28px;font-weight:800;color:white;">50K <span style="font-size:14px;font-weight:500;color:rgba(255,255,255,.5);">UGX</span></div>
         <div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:4px;">+ auction photos</div>
       </div>
       <div style="background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px 20px;text-align:center;">
         <div style="font-size:12px;font-weight:600;color:var(--ch-text-3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Dealer Pack</div>
-        <div class="font-display" style="font-size:28px;font-weight:800;color:var(--ch-text-1);">
-          500K <span style="font-size:14px;font-weight:500;color:var(--ch-text-3);">UGX</span>
-        </div>
+        <div class="font-display" style="font-size:28px;font-weight:800;color:var(--ch-text-1);">500K <span style="font-size:14px;font-weight:500;color:var(--ch-text-3);">UGX</span></div>
         <div style="font-size:13px;color:var(--ch-text-3);margin-top:4px;">Unlimited / month</div>
       </div>
     </div>
@@ -371,51 +292,27 @@
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
       <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px;">
-        <div style="display:flex;gap:2px;margin-bottom:12px;">
-          <span style="color:#F59E0B;font-size:14px;" aria-label="5 stars">★★★★★</span>
-        </div>
-        <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">
-          "The car I was about to buy had its mileage rolled back from 180,000 km to 60,000 km.
-          CarHaki saved me millions. Every Ugandan should use this before buying."
-        </p>
+        <div style="color:#F59E0B;font-size:15px;margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
+        <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">"The car I was about to buy had its mileage rolled back from 180,000 km to 60,000 km. CarHaki saved me millions. Every Ugandan should use this before buying."</p>
         <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--ch-navy);flex-shrink:0;">DK</div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">David Kato</div>
-            <div style="font-size:12px;color:var(--ch-text-3);">Kampala, Uganda</div>
-          </div>
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--ch-navy);flex-shrink:0;">DK</div>
+          <div><div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">David Kato</div><div style="font-size:12px;color:var(--ch-text-3);">Kampala, Uganda</div></div>
         </div>
       </div>
       <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px;">
-        <div style="display:flex;gap:2px;margin-bottom:12px;">
-          <span style="color:#F59E0B;font-size:14px;" aria-label="5 stars">★★★★★</span>
-        </div>
-        <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">
-          "As a dealer, I now give every customer a CarHaki report. It's made my business
-          more trustworthy and I close more sales because customers trust me."
-        </p>
+        <div style="color:#F59E0B;font-size:15px;margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
+        <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">"As a dealer, I now give every customer a CarHaki report. It's made my business more trustworthy and I close more sales because customers trust me."</p>
         <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--ch-navy);flex-shrink:0;">JN</div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">James Nkurunziza</div>
-            <div style="font-size:12px;color:var(--ch-text-3);">Dealer, Ntinda</div>
-          </div>
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--ch-navy);flex-shrink:0;">JN</div>
+          <div><div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">James Nkurunziza</div><div style="font-size:12px;color:var(--ch-text-3);">Dealer, Ntinda</div></div>
         </div>
       </div>
       <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px;">
-        <div style="display:flex;gap:2px;margin-bottom:12px;">
-          <span style="color:#F59E0B;font-size:14px;" aria-label="5 stars">★★★★★</span>
-        </div>
-        <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">
-          "I paid via MTN Mobile Money, it was instant. The report came in under a minute.
-          The auction grade and original photos were exactly what I needed."
-        </p>
+        <div style="color:#F59E0B;font-size:15px;margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
+        <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">"I paid via MTN Mobile Money, it was instant. The report came in under a minute. The auction grade and original photos were exactly what I needed."</p>
         <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--ch-navy);flex-shrink:0;">SA</div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">Sarah Auma</div>
-            <div style="font-size:12px;color:var(--ch-text-3);">Entebbe, Uganda</div>
-          </div>
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--ch-navy);flex-shrink:0;">SA</div>
+          <div><div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">Sarah Auma</div><div style="font-size:12px;color:var(--ch-text-3);">Entebbe, Uganda</div></div>
         </div>
       </div>
     </div>
@@ -430,16 +327,10 @@
       <p class="cta-sub">One report. Full truth. UGX 25,000.</p>
       <div class="cta-actions">
         <a href="{% url 'vehicles:search' %}" class="btn btn-white btn-lg">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="2.5"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           Check a Car Now
         </a>
-        <a href="{% url 'vehicles:sample_report' %}" class="btn btn-lg btn-ghost">
-          See Sample Report
-        </a>
+        <a href="{% url 'vehicles:sample_report' %}" class="btn btn-ghost btn-lg">See Sample Report</a>
       </div>
     </div>
   </div>
