@@ -6,7 +6,6 @@
 
 {% block extra_head %}
 <style>
-  /* ── Home page responsive overrides ── */
   @media (max-width: 768px) {
     .home-2col   { grid-template-columns: 1fr !important; gap: 32px !important; }
     .home-3col   { grid-template-columns: 1fr !important; }
@@ -22,12 +21,21 @@
     .hero-trust        { gap: 12px !important; }
     .trust-item        { font-size: 12px !important; }
   }
+  /* Feature check icon */
+  .feat-row { display:flex; align-items:center; gap:10px; }
+  .feat-dot {
+    width:20px; height:20px; border-radius:50%;
+    background:var(--ch-blue-pale);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .feat-dot svg { display:block; }
+  .feat-label { font-size:14px; color:var(--ch-text-2); }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- ── Hero ───────────────────────────────────────────────── -->
+<!-- ═══════════════ HERO ═══════════════ -->
 <section class="hero">
   <div class="hero-grid" aria-hidden="true"></div>
   <div class="hero-inner">
@@ -103,7 +111,7 @@
   </div>
 </section>
 
-<!-- ── Stats bar ──────────────────────────────────────────── -->
+<!-- ═══════════════ STATS BAR ═══════════════ -->
 <div style="background:var(--ch-blue-faint);border-bottom:1px solid var(--ch-blue-pale);">
   <div class="container" style="padding:20px 24px;display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;">
     <div style="text-align:center;">
@@ -128,7 +136,7 @@
   </div>
 </div>
 
-<!-- ── Problems We Solve ──────────────────────────────────── -->
+<!-- ═══════════════ PROBLEMS ═══════════════ -->
 <section class="section" style="background:var(--ch-surface);">
   <div class="container">
     <div class="text-center" style="margin-bottom:48px;">
@@ -161,7 +169,7 @@
   </div>
 </section>
 
-<!-- ── How It Works ───────────────────────────────────────── -->
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
 <section class="section">
   <div class="container">
     <div class="text-center" style="margin-bottom:48px;">
@@ -200,12 +208,12 @@
   </div>
 </section>
 
-<!-- ── What you get ───────────────────────────────────────── -->
+<!-- ═══════════════ WHAT YOU GET ═══════════════ -->
 <section class="section" style="background:var(--ch-surface);">
   <div class="container">
     <div class="home-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;">
 
-      <!-- Features list -->
+      <!-- Features list — fully hardcoded, zero template filters needed -->
       <div class="home-features-solo">
         <div class="section-label">What you get</div>
         <h2 class="section-title">A Complete Picture.<br>No Surprises.</h2>
@@ -213,32 +221,68 @@
           Our reports pull from Japan auction records, MLIT databases, insurance records,
           and auction inspection sheets — combined into one clear report.
         </p>
+
         <div style="display:flex;flex-direction:column;gap:10px;">
 
-          {% for feat in "Japan auction grade (3–5)|Real mileage at auction|Full accident history|Frame & engine grade|Interior condition|Original auction photos|Import route & dates|Mileage fraud detection|AI plain-English summary|Shareable report link"|split:"|" %}
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <span style="font-size:14px;color:var(--ch-text-2);">{{ feat }}</span>
+          <div class="feat-row">
+            <div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="feat-label">Japan auction grade (3–5)</span>
           </div>
-          {% empty %}
-          <!-- Static fallback -->
-          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Japan auction grade (3–5)</span></div>
-          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Real mileage at auction</span></div>
-          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Full accident history</span></div>
-          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Frame &amp; engine grade</span></div>
-          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Original auction photos</span></div>
-          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">AI plain-English summary</span></div>
-          <div style="display:flex;align-items:center;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><span style="font-size:14px;color:var(--ch-text-2);">Shareable report link</span></div>
-          {% endfor %}
+
+          <div class="feat-row">
+            <div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="feat-label">Real mileage at auction</span>
+          </div>
+
+          <div class="feat-row">
+            <div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="feat-label">Full accident history</span>
+          </div>
+
+          <div class="feat-row">
+            <div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="feat-label">Frame &amp; engine grade</span>
+          </div>
+
+          <div class="feat-row">
+            <div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="feat-label">Interior condition</span>
+          </div>
+
+          <div class="feat-row">
+            <div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="feat-label">Original auction photos</span>
+          </div>
+
+          <div class="feat-row">
+            <div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="feat-label">Import route &amp; dates</span>
+          </div>
+
+          <div class="feat-row">
+            <div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="feat-label">Mileage fraud detection</span>
+          </div>
+
+          <div class="feat-row">
+            <div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="feat-label">AI plain-English summary</span>
+          </div>
+
+          <div class="feat-row">
+            <div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="feat-label">Shareable report link</span>
+          </div>
 
         </div>
       </div>
 
       <!-- Report card preview — hidden on mobile -->
       <div class="report-card-preview">
-        <div class="report-card" style="transform:perspective(1000px) rotateY(-3deg);transition:transform .3s;" onmouseover="this.style.transform='perspective(1000px) rotateY(0deg)'" onmouseout="this.style.transform='perspective(1000px) rotateY(-3deg)'">
+        <div class="report-card"
+             style="transform:perspective(1000px) rotateY(-3deg);transition:transform .3s;"
+             onmouseover="this.style.transform='perspective(1000px) rotateY(0deg)'"
+             onmouseout="this.style.transform='perspective(1000px) rotateY(-3deg)'">
           <div class="report-card-header">
             <div>
               <div class="report-vehicle-name">2008 Toyota Corolla</div>
@@ -273,7 +317,7 @@
   </div>
 </section>
 
-<!-- ── Pricing teaser ─────────────────────────────────────── -->
+<!-- ═══════════════ PRICING TEASER ═══════════════ -->
 <section class="section">
   <div class="container-sm text-center">
     <div class="section-label">Pricing</div>
@@ -301,7 +345,7 @@
   </div>
 </section>
 
-<!-- ── Testimonials ───────────────────────────────────────── -->
+<!-- ═══════════════ TESTIMONIALS ═══════════════ -->
 <section class="section" style="background:var(--ch-surface);">
   <div class="container">
     <div class="text-center" style="margin-bottom:40px;">
@@ -309,35 +353,48 @@
       <h2 class="section-title">What Our Users Say</h2>
     </div>
     <div class="home-3col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+
       <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px;">
         <div style="color:#F59E0B;font-size:14px;margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
         <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">"The car I was about to buy had its mileage rolled back from 180,000 km to 60,000 km. CarHaki saved me millions. Every Ugandan should use this before buying."</p>
         <div style="display:flex;align-items:center;gap:10px;">
           <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--ch-navy);flex-shrink:0;">DK</div>
-          <div><div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">David Kato</div><div style="font-size:12px;color:var(--ch-text-3);">Kampala, Uganda</div></div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">David Kato</div>
+            <div style="font-size:12px;color:var(--ch-text-3);">Kampala, Uganda</div>
+          </div>
         </div>
       </div>
+
       <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px;">
         <div style="color:#F59E0B;font-size:14px;margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
         <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">"As a dealer, I now give every customer a CarHaki report. It's made my business more trustworthy and I close more sales because customers trust me."</p>
         <div style="display:flex;align-items:center;gap:10px;">
           <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--ch-navy);flex-shrink:0;">JN</div>
-          <div><div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">James Nkurunziza</div><div style="font-size:12px;color:var(--ch-text-3);">Dealer, Ntinda</div></div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">James Nkurunziza</div>
+            <div style="font-size:12px;color:var(--ch-text-3);">Dealer, Ntinda</div>
+          </div>
         </div>
       </div>
+
       <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px;">
         <div style="color:#F59E0B;font-size:14px;margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
         <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">"I paid via MTN Mobile Money, it was instant. The report came in under a minute. The auction grade and original photos were exactly what I needed."</p>
         <div style="display:flex;align-items:center;gap:10px;">
           <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--ch-navy);flex-shrink:0;">SA</div>
-          <div><div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">Sarah Auma</div><div style="font-size:12px;color:var(--ch-text-3);">Entebbe, Uganda</div></div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">Sarah Auma</div>
+            <div style="font-size:12px;color:var(--ch-text-3);">Entebbe, Uganda</div>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- ── CTA ────────────────────────────────────────────────── -->
+<!-- ═══════════════ CTA ═══════════════ -->
 <section class="section">
   <div class="container">
     <div class="cta-section">
