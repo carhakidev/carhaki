@@ -3,58 +3,50 @@
 <nav class="nav">
   <div class="nav-inner">
 
-    <!-- ── Logo ──────────────────────────────────────────── -->
-    <a href="{% url 'vehicles:home' %}" class="nav-logo" aria-label="CarHaki home">
-      {# Full horizontal lockup — hidden below 421px #}
-      <img src="{% static 'images/carhaki-logo-nav.svg' %}"
-           alt="CarHaki" class="nav-logo-img">
-      {# Icon-only mark — shown below 421px #}
+    <!-- ── Logo — always shows icon + "CarHaki" text ───────── -->
+    <a href="{% url 'vehicles:home' %}" class="nav-logo" aria-label="CarHaki home"
+       style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+
+      <!-- Icon mark — always visible -->
       <img src="{% static 'images/carhaki-mark-40.svg' %}"
-           alt="CarHaki" class="nav-logo-mark">
+           alt="" aria-hidden="true"
+           style="width:32px;height:32px;display:block;flex-shrink:0;">
+
+      <!-- "CarHaki" wordmark — always visible on all screen sizes -->
+      <span class="font-display"
+            style="font-size:18px;font-weight:800;color:white;letter-spacing:-.3px;white-space:nowrap;">
+        Car<span style="color:var(--ch-blue-light);">Haki</span>
+      </span>
     </a>
 
-    <!-- ── Desktop links ─────────────────────────────────── -->
+    <!-- ── Desktop links ─────────────────────────────────────── -->
     <div class="nav-links">
-      <a href="{% url 'vehicles:pricing' %}" class="nav-link
-        {% if request.resolver_match.url_name == 'pricing' %}active{% endif %}">
-        Pricing
-      </a>
-      <a href="{% url 'vehicles:dealers' %}" class="nav-link
-        {% if request.resolver_match.url_name == 'dealers' %}active{% endif %}">
-        Dealers
-      </a>
-      <a href="{% url 'vehicles:faq' %}" class="nav-link
-        {% if request.resolver_match.url_name == 'faq' %}active{% endif %}">
-        FAQ
-      </a>
-      <a href="{% url 'vehicles:about' %}" class="nav-link
-        {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
-        About
-      </a>
+      <a href="{% url 'vehicles:pricing' %}" class="nav-link {% if request.resolver_match.url_name == 'pricing' %}active{% endif %}">Pricing</a>
+      <a href="{% url 'vehicles:dealers' %}" class="nav-link {% if request.resolver_match.url_name == 'dealers' %}active{% endif %}">Dealers</a>
+      <a href="{% url 'vehicles:faq' %}"     class="nav-link {% if request.resolver_match.url_name == 'faq'     %}active{% endif %}">FAQ</a>
+      <a href="{% url 'vehicles:about' %}"   class="nav-link {% if request.resolver_match.url_name == 'about'   %}active{% endif %}">About</a>
     </div>
 
-    <!-- ── Desktop actions ───────────────────────────────── -->
+    <!-- ── Desktop actions ───────────────────────────────────── -->
     <div class="nav-actions">
       {% if user.is_authenticated %}
         {% if user.is_dealer %}
-          <a href="{% url 'accounts:dealer_dashboard' %}" class="nav-link
-            {% if request.resolver_match.url_name == 'dealer_dashboard' %}active{% endif %}">
+          <a href="{% url 'accounts:dealer_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dealer_dashboard' %}active{% endif %}">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2"
                  stroke-linecap="round" stroke-linejoin="round"
-                 style="display:inline; vertical-align:-2px; margin-right:4px;" aria-hidden="true">
+                 style="display:inline;vertical-align:-2px;margin-right:4px;" aria-hidden="true">
               <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
               <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
             </svg>
             Dealer Dashboard
           </a>
         {% else %}
-          <a href="{% url 'accounts:dashboard' %}" class="nav-link
-            {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+          <a href="{% url 'accounts:dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2"
                  stroke-linecap="round" stroke-linejoin="round"
-                 style="display:inline; vertical-align:-2px; margin-right:4px;" aria-hidden="true">
+                 style="display:inline;vertical-align:-2px;margin-right:4px;" aria-hidden="true">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
@@ -63,17 +55,15 @@
         {% endif %}
         <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
           {% csrf_token %}
-          <button type="submit" class="nav-btn-ghost" style="cursor:pointer;">
-            Sign Out
-          </button>
+          <button type="submit" class="nav-btn-ghost" style="cursor:pointer;">Sign Out</button>
         </form>
       {% else %}
-        <a href="{% url 'accounts:login' %}" class="nav-btn-ghost">Sign In</a>
+        <a href="{% url 'accounts:login' %}"    class="nav-btn-ghost">Sign In</a>
         <a href="{% url 'accounts:register' %}" class="nav-btn-primary">Get Started</a>
       {% endif %}
     </div>
 
-    <!-- ── Mobile toggle ─────────────────────────────────── -->
+    <!-- ── Mobile toggle ─────────────────────────────────────── -->
     <button id="nav-toggle" class="nav-toggle" aria-label="Open menu" aria-expanded="false">
       <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -91,46 +81,34 @@
       </svg>
     </button>
 
-  </div><!-- /nav-inner -->
+  </div>
 </nav>
 
-<!-- ── Mobile menu ─────────────────────────────────────── -->
+<!-- ── Mobile menu ─────────────────────────────────────────── -->
 <div id="nav-mobile" class="nav-mobile" role="navigation" aria-label="Mobile menu">
 
   <a href="{% url 'vehicles:pricing' %}" class="nav-link">Pricing</a>
   <a href="{% url 'vehicles:dealers' %}" class="nav-link">Dealers</a>
-  <a href="{% url 'vehicles:faq' %}" class="nav-link">FAQ</a>
-  <a href="{% url 'vehicles:about' %}" class="nav-link">About</a>
+  <a href="{% url 'vehicles:faq' %}"     class="nav-link">FAQ</a>
+  <a href="{% url 'vehicles:about' %}"   class="nav-link">About</a>
 
   <div class="nav-mobile-divider"></div>
 
   <div class="nav-mobile-actions">
     {% if user.is_authenticated %}
       {% if user.is_dealer %}
-        <a href="{% url 'accounts:dealer_dashboard' %}" class="nav-link">
-          Dealer Dashboard
-        </a>
+        <a href="{% url 'accounts:dealer_dashboard' %}" class="nav-link">Dealer Dashboard</a>
       {% else %}
-        <a href="{% url 'accounts:dashboard' %}" class="nav-link">
-          Dashboard
-        </a>
+        <a href="{% url 'accounts:dashboard' %}" class="nav-link">Dashboard</a>
       {% endif %}
       <form method="post" action="{% url 'accounts:logout' %}">
         {% csrf_token %}
         <button type="submit" class="btn btn-ghost btn-sm"
-                style="width:100%; justify-content:center; cursor:pointer;">
-          Sign Out
-        </button>
+                style="width:100%;justify-content:center;cursor:pointer;">Sign Out</button>
       </form>
     {% else %}
-      <a href="{% url 'accounts:login' %}" class="btn btn-ghost btn-sm"
-         style="justify-content:center;">
-        Sign In
-      </a>
-      <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm"
-         style="justify-content:center;">
-        Get Started
-      </a>
+      <a href="{% url 'accounts:login' %}"    class="btn btn-ghost btn-sm"    style="justify-content:center;">Sign In</a>
+      <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm"  style="justify-content:center;">Get Started</a>
     {% endif %}
   </div>
 
@@ -150,7 +128,6 @@
       toggle.setAttribute('aria-expanded', isOpen);
     });
 
-    /* Close mobile menu on outside click */
     document.addEventListener('click', function (e) {
       if (!toggle.contains(e.target) && !menu.contains(e.target)) {
         menu.classList.remove('open');
@@ -160,7 +137,6 @@
       }
     });
 
-    /* Close on Escape */
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && menu.classList.contains('open')) {
         menu.classList.remove('open');

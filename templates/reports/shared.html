@@ -1,207 +1,118 @@
 {% extends "base.html" %}
-{% block title %}{% if report.processed_data %}{{ report.processed_data.vehicle.year }} {{ report.processed_data.vehicle.make }} {{ report.processed_data.vehicle.model }} — CarHaki{% else %}Shared Report — CarHaki{% endif %}{% endblock %}
-{% block meta_description %}Vehicle history report shared from a verified CarHaki account. View the full history including grade, accidents, title records, and recalls.{% endblock %}
-
-{% block extra_head %}
-<meta name="robots" content="noindex, nofollow">
-{% endblock %}
+{% load static %}
+{% block title %}{{ report.year }} {{ report.make }} {{ report.model }} — CarHaki Report{% endblock %}
+{% block meta_desc %}CarHaki vehicle history report for {{ report.chassis_number }}. Auction grade: {{ report.auction_grade }}. View the full history report.{% endblock %}
 
 {% block content %}
+<div style="background:var(--ch-surface);min-height:100vh;padding-bottom:80px;">
 
-<!-- Shared Report Banner -->
-<div class="bg-amber-50 border-b border-amber-200 py-3">
-  <div class="max-w-5xl mx-auto px-4">
-    <div class="flex items-center gap-2 text-amber-800 text-sm">
-      <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-      </svg>
-      <span>
-        This report was shared from a verified CarHaki account. The original purchaser paid for this report.
-        Verify authenticity at <strong>carhaki.ug</strong>.
-      </span>
+  <!-- Shared report banner -->
+  <div style="background:var(--ch-blue-faint);border-bottom:1px solid var(--ch-blue-pale);padding:12px 24px;">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ch-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <span style="font-size:13px;color:var(--ch-blue);font-weight:500;">This report was shared with you by CarHaki</span>
+      </div>
+      <a href="{% url 'vehicles:search' %}" class="btn btn-primary btn-sm">Check Your Own Car →</a>
     </div>
+  </div>
+
+  <!-- Report header -->
+  <div style="background:var(--ch-navy);padding:32px 24px;">
+    <div class="container" style="max-width:900px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ch-blue-light);margin-bottom:8px;">Vehicle History Report</div>
+          <h1 class="font-display" style="font-size:clamp(20px,4vw,30px);font-weight:800;color:white;letter-spacing:-.3px;margin-bottom:8px;">
+            {{ report.year }} {{ report.make }} {{ report.model }}
+          </h1>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ch-blue-light);">{{ report.chassis_number }}</span>
+            <span style="font-size:11px;color:rgba(255,255,255,.4);">·</span>
+            <span style="font-size:12px;color:rgba(255,255,255,.45);">Generated {{ report.created_at|date:"M j, Y" }}</span>
+          </div>
+        </div>
+        {% if report.auction_grade %}
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-lg);padding:14px 20px;text-align:center;flex-shrink:0;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:5px;">Auction Grade</div>
+          <div class="font-display" style="font-size:36px;font-weight:800;line-height:1;color:{% if report.auction_grade >= 4 %}#34D399{% elif report.auction_grade >= 3 %}#FCD34D{% else %}#F87171{% endif %};">{{ report.auction_grade }}</div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:900px;margin:0 auto;padding:28px 24px;">
+
+    <!-- Verdict -->
+    <div style="background:white;border:1px solid {% if report.overall_grade == 'A' %}#6EE7B7{% elif report.overall_grade == 'B' %}var(--ch-blue-pale){% else %}#FCA5A5{% endif %};border-width:2px;border-radius:var(--r-xl);padding:24px;margin-bottom:20px;">
+      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;flex-shrink:0;background:{% if report.overall_grade == 'A' %}var(--ch-ok-bg){% elif report.overall_grade == 'B' %}var(--ch-blue-faint){% else %}var(--ch-danger-bg){% endif %};color:{% if report.overall_grade == 'A' %}var(--ch-ok){% elif report.overall_grade == 'B' %}var(--ch-blue){% else %}var(--ch-danger){% endif %};">
+          {{ report.overall_grade|default:"B" }}
+        </div>
+        <div style="flex:1;">
+          <div class="font-display" style="font-size:17px;font-weight:800;color:var(--ch-text-1);margin-bottom:6px;">
+            {% if report.overall_grade == 'A' %}✅ Clean Vehicle — Recommended
+            {% elif report.overall_grade == 'B' %}⚠️ Minor Issues — Inspect Before Buying
+            {% else %}🚨 Significant Issues — Buy With Caution{% endif %}
+          </div>
+          <p style="font-size:14px;color:var(--ch-text-3);line-height:1.7;margin:0;">{{ report.ai_summary|default:"Based on available Japan auction records, this vehicle's history has been reviewed. Always conduct a physical inspection before finalising your purchase." }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metrics grid -->
+    <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-xl);padding:24px;margin-bottom:20px;">
+      <div class="font-display" style="font-size:14px;font-weight:700;color:var(--ch-navy);margin-bottom:16px;">Key Findings</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Mileage (Japan)</div>
+          <div class="font-display" style="font-size:16px;font-weight:700;color:{% if report.mileage_status == 'danger' %}var(--ch-danger){% elif report.mileage_status == 'warn' %}var(--ch-warn){% else %}var(--ch-text-1){% endif %};">{{ report.mileage_km|default:"—" }} km</div>
+        </div>
+        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Accidents</div>
+          <div class="font-display" style="font-size:16px;font-weight:700;color:{% if report.accident_status == 'none' %}var(--ch-ok){% elif report.accident_status == 'minor' %}var(--ch-warn){% else %}var(--ch-danger){% endif %};">
+            {% if report.accident_status == 'none' %}None ✓{% elif report.accident_status == 'minor' %}Minor{% else %}Major{% endif %}
+          </div>
+        </div>
+        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Frame Grade</div>
+          <div class="font-display" style="font-size:16px;font-weight:700;color:{% if report.frame_grade == 'A' %}var(--ch-ok){% else %}var(--ch-text-1){% endif %};">{{ report.frame_grade|default:"—" }}</div>
+        </div>
+        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Engine Grade</div>
+          <div class="font-display" style="font-size:16px;font-weight:700;color:var(--ch-text-1);">{{ report.engine_grade|default:"—" }}</div>
+        </div>
+        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Auction House</div>
+          <div class="font-display" style="font-size:13px;font-weight:600;color:var(--ch-text-1);">{{ report.auction_house|default:"—" }}</div>
+        </div>
+        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Auction Date</div>
+          <div class="font-display" style="font-size:13px;font-weight:600;color:var(--ch-text-1);">{{ report.auction_date|default:"—" }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA for new visitors -->
+    <div class="cta-section" style="padding:40px 32px;">
+      <h2 class="cta-title" style="font-size:22px;">Check Your Car's History Too</h2>
+      <p class="cta-sub" style="font-size:14px;margin-bottom:24px;">Don't buy any ex-Japan car without a CarHaki report. UGX 25,000 per report.</p>
+      <div class="cta-actions">
+        <a href="{% url 'vehicles:search' %}" class="btn btn-white">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Check a Car
+        </a>
+        <a href="{% url 'vehicles:pricing' %}" class="btn btn-ghost">View Pricing</a>
+      </div>
+    </div>
+
+    <div style="background:var(--ch-blue-faint);border:1px solid var(--ch-blue-pale);border-radius:var(--r-lg);padding:14px 18px;margin-top:16px;">
+      <p style="font-size:12px;color:var(--ch-text-3);line-height:1.65;margin:0;">
+        This report is generated from Japan auction records and import data. CarHaki provides this information in good faith but cannot guarantee completeness. Always inspect the vehicle physically before purchase.
+      </p>
+    </div>
+
   </div>
 </div>
-
-{% with data=report.processed_data %}
-{% if data %}
-
-<!-- Header -->
-<section class="bg-ch-green text-white py-10">
-  <div class="max-w-5xl mx-auto px-4">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-      <div>
-        <p class="text-green-300 text-sm mb-1">
-          {% if data.meta.source_country == 'USA' %}&#127482;&#127480;{% else %}&#127471;&#127477;{% endif %}
-          {{ data.meta.source_country }} Import &middot; {{ data.meta.identifier_type }}
-        </p>
-        <h1 class="font-heading font-bold text-3xl">
-          {{ data.vehicle.year }} {{ data.vehicle.make }} {{ data.vehicle.model }}
-        </h1>
-        <p class="text-green-200 font-mono mt-1">{{ report.search.identifier }}</p>
-        <p class="text-green-300 text-xs mt-2">
-          Report generated {{ report.completed_at|date:"d F Y" }}
-          &middot; Report ID: {{ report.id|truncatechars:8 }}
-        </p>
-      </div>
-      <div class="flex-shrink-0 text-center">
-        <div class="w-20 h-20 rounded-2xl flex items-center justify-center font-heading font-bold text-4xl shadow-lg"
-          style="background-color: {{ report.grade_colour }}; color: white;">
-          {{ report.overall_grade }}
-        </div>
-        <p class="text-green-200 text-xs mt-2">{{ report.grade_label }}</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="max-w-5xl mx-auto px-4 py-10 space-y-8">
-
-  <!-- Open Recalls Banner -->
-  {% if data.recalls %}
-  {% with open_recalls=data.recalls %}
-  {% if open_recalls %}
-  <div class="bg-red-50 border-l-4 border-red-500 rounded-r-xl p-5">
-    <div class="flex items-center gap-2 mb-2">
-      <svg class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-      </svg>
-      <h3 class="font-heading font-semibold text-red-700">{{ open_recalls|length }} Open Safety Recall{{ open_recalls|length|pluralize }}</h3>
-    </div>
-    {% for recall in open_recalls %}
-    <p class="text-red-700 text-sm">{{ recall.component }} &mdash; {{ recall.summary|truncatewords:15 }}</p>
-    {% endfor %}
-  </div>
-  {% endif %}
-  {% endwith %}
-  {% endif %}
-
-  <!-- AI Summary -->
-  {% if report.ai_summary %}
-  <div class="bg-ch-light border border-gray-200 rounded-2xl p-6">
-    <div class="flex items-center gap-2 mb-3">
-      <div class="w-8 h-8 bg-ch-green rounded-lg flex items-center justify-center">
-        <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-        </svg>
-      </div>
-      <h3 class="font-heading font-semibold text-ch-green">CarHaki Analysis</h3>
-    </div>
-    <p class="text-gray-700 leading-relaxed">{{ report.ai_summary }}</p>
-  </div>
-  {% endif %}
-
-  <!-- Traffic Light Grid -->
-  {% if data.title_history or data.accidents or data.theft %}
-  <div>
-    <h2 class="font-heading font-bold text-xl text-ch-green mb-4">Quick Summary</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-
-      {% with has_salvage=False %}
-      {% for brand in data.brands %}
-      {% if 'SALVAGE' in brand or 'REBUILT' in brand %}
-      <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
-        <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-2">
-          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-        </div>
-        <p class="text-xs font-semibold text-red-700">Title Status</p>
-        <p class="text-xs text-red-600 mt-0.5">{{ brand }}</p>
-      </div>
-      {% endif %}
-      {% endfor %}
-      {% endwith %}
-
-      <div class="{% if data.accidents %}bg-red-50 border-red-200{% else %}bg-green-50 border-green-200{% endif %} border rounded-xl p-4 text-center">
-        <div class="w-8 h-8 {% if data.accidents %}bg-red-500{% else %}bg-green-500{% endif %} rounded-full flex items-center justify-center mx-auto mb-2">
-          {% if data.accidents %}
-          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-          {% else %}
-          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-          {% endif %}
-        </div>
-        <p class="text-xs font-semibold {% if data.accidents %}text-red-700{% else %}text-green-700{% endif %}">Accidents</p>
-        <p class="text-xs {% if data.accidents %}text-red-600{% else %}text-green-600{% endif %} mt-0.5">
-          {% if data.accidents %}{{ data.accidents|length }} recorded{% else %}None recorded{% endif %}
-        </p>
-      </div>
-
-      <div class="{% if data.theft %}bg-red-50 border-red-200{% else %}bg-green-50 border-green-200{% endif %} border rounded-xl p-4 text-center">
-        <div class="w-8 h-8 {% if data.theft %}bg-red-500{% else %}bg-green-500{% endif %} rounded-full flex items-center justify-center mx-auto mb-2">
-          {% if data.theft %}
-          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-          {% else %}
-          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-          {% endif %}
-        </div>
-        <p class="text-xs font-semibold {% if data.theft %}text-red-700{% else %}text-green-700{% endif %}">Theft</p>
-        <p class="text-xs {% if data.theft %}text-red-600{% else %}text-green-600{% endif %} mt-0.5">
-          {% if data.theft %}Theft recorded{% else %}No record{% endif %}
-        </p>
-      </div>
-
-      {% with elig=data.uganda_eligibility %}
-      <div class="{% if elig.eligible %}bg-green-50 border-green-200{% else %}bg-red-50 border-red-200{% endif %} border rounded-xl p-4 text-center">
-        <div class="w-8 h-8 {% if elig.eligible %}bg-green-500{% else %}bg-red-500{% endif %} rounded-full flex items-center justify-center mx-auto mb-2">
-          {% if elig.eligible %}
-          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-          {% else %}
-          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-          {% endif %}
-        </div>
-        <p class="text-xs font-semibold {% if elig.eligible %}text-green-700{% else %}text-red-700{% endif %}">URA Eligible</p>
-        <p class="text-xs {% if elig.eligible %}text-green-600{% else %}text-red-600{% endif %} mt-0.5">{{ elig.note|truncatewords:4 }}</p>
-      </div>
-      {% endwith %}
-
-    </div>
-  </div>
-  {% endif %}
-
-  <!-- Vehicle Specs -->
-  <div>
-    <h2 class="font-heading font-bold text-xl text-ch-green mb-4">Vehicle Specifications</h2>
-    <div class="bg-white border border-gray-200 rounded-xl p-5">
-      <dl class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-        {% if data.vehicle.make %}<div><dt class="text-gray-500 text-xs">Make</dt><dd class="font-medium text-gray-800">{{ data.vehicle.make }}</dd></div>{% endif %}
-        {% if data.vehicle.model %}<div><dt class="text-gray-500 text-xs">Model</dt><dd class="font-medium text-gray-800">{{ data.vehicle.model }}</dd></div>{% endif %}
-        {% if data.vehicle.year %}<div><dt class="text-gray-500 text-xs">Year</dt><dd class="font-medium text-gray-800">{{ data.vehicle.year }}</dd></div>{% endif %}
-        {% if data.vehicle.trim %}<div><dt class="text-gray-500 text-xs">Trim</dt><dd class="font-medium text-gray-800">{{ data.vehicle.trim }}</dd></div>{% endif %}
-        {% if data.vehicle.engine %}<div><dt class="text-gray-500 text-xs">Engine</dt><dd class="font-medium text-gray-800">{{ data.vehicle.engine }}</dd></div>{% endif %}
-        {% if data.vehicle.body_type %}<div><dt class="text-gray-500 text-xs">Body Type</dt><dd class="font-medium text-gray-800">{{ data.vehicle.body_type }}</dd></div>{% endif %}
-        {% if data.vehicle.fuel_type %}<div><dt class="text-gray-500 text-xs">Fuel Type</dt><dd class="font-medium text-gray-800">{{ data.vehicle.fuel_type }}</dd></div>{% endif %}
-        {% if data.vehicle.transmission %}<div><dt class="text-gray-500 text-xs">Transmission</dt><dd class="font-medium text-gray-800">{{ data.vehicle.transmission }}</dd></div>{% endif %}
-        {% if data.vehicle.drive_type %}<div><dt class="text-gray-500 text-xs">Drive Type</dt><dd class="font-medium text-gray-800">{{ data.vehicle.drive_type }}</dd></div>{% endif %}
-      </dl>
-    </div>
-  </div>
-
-  <!-- Disclaimer -->
-  <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 text-xs text-gray-500">
-    {% if data.meta.source_country == 'USA' %}
-    <p>
-      <strong>NMVTIS Consumer Notice:</strong> Not all states, insurance companies, and salvage yards
-      are required to report to NMVTIS. A vehicle that has been declared a total loss may not appear
-      in NMVTIS data if not reported. This report may not reflect every event in the vehicle history.
-    </p>
-    {% else %}
-    <p>
-      Data sourced from MLIT Japan, Japanese vehicle auction records, and associated inspection
-      databases. Data completeness depends on records reported to those official systems.
-    </p>
-    {% endif %}
-    <p class="mt-2">
-      This report is sourced from official government databases. It is not a guarantee of vehicle
-      condition. Always conduct an independent physical inspection before purchase.
-    </p>
-  </div>
-
-</div>
-
-{% else %}
-<div class="max-w-3xl mx-auto px-4 py-16 text-center">
-  <p class="text-gray-500">Report data is not available for this shared link.</p>
-</div>
-{% endif %}
-{% endwith %}
-
 {% endblock %}

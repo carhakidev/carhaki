@@ -1,151 +1,134 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}My Profile — CarHaki{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 py-12">
+<div style="background:var(--ch-surface);min-height:100vh;padding-bottom:80px;">
 
-  <div class="mb-8">
-    <h1 class="font-heading font-bold text-3xl text-ch-green">My Profile</h1>
-    <p class="text-gray-500 mt-1">Manage your account details and preferences</p>
+  <!-- Header -->
+  <div style="background:var(--ch-navy);padding:40px 24px;">
+    <div class="container-sm">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div style="width:56px;height:56px;border-radius:50%;background:var(--ch-blue);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:white;flex-shrink:0;">
+          {{ user.get_full_name|make_list|first|upper|default:user.email|make_list|first|upper }}
+        </div>
+        <div>
+          <h1 class="font-display" style="font-size:22px;font-weight:800;color:white;margin-bottom:2px;">My Profile</h1>
+          <p style="font-size:13px;color:rgba(255,255,255,.5);">{{ user.email }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="grid md:grid-cols-3 gap-8">
+  <div class="container-sm" style="padding-top:32px;padding-bottom:32px;">
 
-    <!-- Sidebar -->
-    <div class="space-y-4">
-      <!-- Avatar + Account Type -->
-      <div class="bg-ch-green rounded-2xl p-6 text-center text-white">
-        <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-          <span class="font-heading font-bold text-2xl">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</span>
-        </div>
-        <p class="font-heading font-semibold text-lg">{{ user.get_full_name }}</p>
-        <p class="text-green-200 text-sm">{{ user.email }}</p>
-        <span class="mt-2 inline-block bg-ch-gold/20 text-ch-gold text-xs font-semibold px-3 py-1 rounded-full">
-          {{ user.get_account_type_display }}
-        </span>
-        {% if user.is_dealer and user.dealer_profile.is_approved %}
-        <div class="mt-3 bg-white/10 rounded-lg p-3">
-          <p class="text-xs text-green-200">Report Credits</p>
-          <p class="font-heading font-bold text-2xl text-ch-gold">{{ user.dealer_credit_balance }}</p>
-        </div>
-        {% endif %}
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" style="margin-bottom:20px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        {{ message }}
       </div>
-      <!-- Nav Links -->
-      <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
-        <a href="{% url 'accounts:dashboard' %}" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-ch-light border-b border-gray-100 text-sm">
-          <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2z"/></svg>
-          My Dashboard
-        </a>
-        <a href="{% url 'accounts:profile' %}" class="flex items-center gap-3 px-4 py-3 bg-ch-light text-ch-green font-semibold border-b border-gray-100 text-sm">
-          <svg class="w-4 h-4 text-ch-green" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-          Edit Profile
-        </a>
-        {% if user.is_dealer %}
-        <a href="{% url 'accounts:dealer_dashboard' %}" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-ch-light border-b border-gray-100 text-sm">
-          <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg>
-          Dealer Dashboard
-        </a>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Profile form -->
+    <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-xl);padding:36px;margin-bottom:20px;">
+      <h2 class="font-display" style="font-size:16px;font-weight:700;color:var(--ch-navy);margin-bottom:24px;">Personal Information</h2>
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger" style="margin-bottom:20px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          {{ form.non_field_errors|join:", " }}
+        </div>
         {% endif %}
-        <a href="{% url 'accounts:logout' %}" class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 text-sm">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-          Log Out
-        </a>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+          <div>
+            <label class="form-label" for="id_first_name">First Name</label>
+            <input class="form-input {% if form.first_name.errors %}error{% endif %}"
+                   type="text" id="id_first_name" name="first_name"
+                   value="{{ form.first_name.value|default:'' }}"
+                   autocomplete="given-name">
+            {% if form.first_name.errors %}<p class="form-error">{{ form.first_name.errors|join:", " }}</p>{% endif %}
+          </div>
+          <div>
+            <label class="form-label" for="id_last_name">Last Name</label>
+            <input class="form-input {% if form.last_name.errors %}error{% endif %}"
+                   type="text" id="id_last_name" name="last_name"
+                   value="{{ form.last_name.value|default:'' }}"
+                   autocomplete="family-name">
+            {% if form.last_name.errors %}<p class="form-error">{{ form.last_name.errors|join:", " }}</p>{% endif %}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="id_email">Email Address</label>
+          <input class="form-input {% if form.email.errors %}error{% endif %}"
+                 type="email" id="id_email" name="email"
+                 value="{{ form.email.value|default:user.email }}"
+                 autocomplete="email">
+          {% if form.email.errors %}<p class="form-error">{{ form.email.errors|join:", " }}</p>{% endif %}
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="id_phone">Phone Number <span style="font-weight:400;color:var(--ch-text-3);">(optional)</span></label>
+          <input class="form-input"
+                 type="tel" id="id_phone" name="phone"
+                 value="{{ form.phone.value|default:'' }}"
+                 placeholder="+256 7XX XXX XXX"
+                 autocomplete="tel">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;">
+          Save Changes
+        </button>
+      </form>
+    </div>
+
+    <!-- Account info -->
+    <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-xl);padding:36px;margin-bottom:20px;">
+      <h2 class="font-display" style="font-size:16px;font-weight:700;color:var(--ch-navy);margin-bottom:20px;">Account Details</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Account Type</div>
+          <div class="font-display" style="font-size:15px;font-weight:600;color:var(--ch-text-1);">{{ user.account_type|title|default:"Individual" }}</div>
+        </div>
+        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Member Since</div>
+          <div class="font-display" style="font-size:15px;font-weight:600;color:var(--ch-text-1);">{{ user.date_joined|date:"M Y" }}</div>
+        </div>
+        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Total Reports</div>
+          <div class="font-display" style="font-size:15px;font-weight:600;color:var(--ch-text-1);">{{ total_reports|default:"0" }}</div>
+        </div>
+        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Account Status</div>
+          <div class="font-display" style="font-size:15px;font-weight:600;color:var(--ch-ok);">Active ✓</div>
+        </div>
       </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="md:col-span-2 space-y-6">
-
-      <!-- Edit Profile Form -->
-      <div class="bg-white border border-gray-200 rounded-2xl p-6">
-        <h2 class="font-heading font-semibold text-xl text-ch-green mb-5">Personal Information</h2>
-
-        {% if messages %}
-        {% for message in messages %}
-        <div class="mb-4 p-3 rounded-lg {% if message.tags == 'success' %}bg-green-50 text-green-800 border border-green-200{% else %}bg-red-50 text-red-800 border border-red-200{% endif %} text-sm">
-          {{ message }}
+    <!-- Password + danger zone -->
+    <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-xl);padding:36px;">
+      <h2 class="font-display" style="font-size:16px;font-weight:700;color:var(--ch-navy);margin-bottom:20px;">Security</h2>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--ch-surface);border-radius:var(--r-md);margin-bottom:12px;">
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">Password</div>
+          <div style="font-size:12px;color:var(--ch-text-3);">Change your account password</div>
         </div>
-        {% endfor %}
-        {% endif %}
-
-        <form method="post" novalidate>
-          {% csrf_token %}
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-              <input type="text" name="first_name" value="{{ form.first_name.value|default:user.first_name }}"
-                class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ch-gold">
-              {% if form.first_name.errors %}<p class="text-red-500 text-xs mt-1">{{ form.first_name.errors|join:", " }}</p>{% endif %}
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-              <input type="text" name="last_name" value="{{ form.last_name.value|default:user.last_name }}"
-                class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ch-gold">
-              {% if form.last_name.errors %}<p class="text-red-500 text-xs mt-1">{{ form.last_name.errors|join:", " }}</p>{% endif %}
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-              <input type="tel" name="phone_number" value="{{ form.phone_number.value|default:user.phone_number }}"
-                placeholder="+256 7XX XXX XXX"
-                class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ch-gold">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Country</label>
-              <input type="text" name="country" value="{{ form.country.value|default:user.country }}"
-                class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ch-gold">
-            </div>
-          </div>
-          <div class="mt-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-            <input type="email" value="{{ user.email }}" disabled
-              class="w-full border border-gray-200 bg-gray-50 rounded-lg px-4 py-2.5 text-sm text-gray-500 cursor-not-allowed">
-            <p class="text-xs text-gray-400 mt-1">Email address cannot be changed. Contact support if you need to update it.</p>
-          </div>
-          <div class="mt-5">
-            <button type="submit" class="btn-primary">Save Changes</button>
-          </div>
-        </form>
+        <a href="{% url 'accounts:password_change' %}" class="btn btn-secondary btn-sm">Change Password</a>
       </div>
-
-      <!-- Change Password -->
-      <div class="bg-white border border-gray-200 rounded-2xl p-6">
-        <h2 class="font-heading font-semibold text-xl text-ch-green mb-2">Change Password</h2>
-        <p class="text-gray-500 text-sm mb-4">Use the link below to set a new password.</p>
-        <a href="{% url 'accounts:password_reset' %}" class="inline-block text-ch-gold font-medium text-sm hover:underline">
-          Send me a password reset link
-        </a>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--ch-surface);border-radius:var(--r-md);">
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">Dashboard</div>
+          <div style="font-size:12px;color:var(--ch-text-3);">View your reports and history</div>
+        </div>
+        <a href="{% url 'accounts:dashboard' %}" class="btn btn-secondary btn-sm">Go to Dashboard</a>
       </div>
-
-      <!-- Account Info -->
-      <div class="bg-ch-light rounded-2xl p-6">
-        <h2 class="font-heading font-semibold text-lg text-ch-green mb-4">Account Details</h2>
-        <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
-          <div>
-            <dt class="text-gray-500">Member Since</dt>
-            <dd class="font-medium text-gray-800">{{ user.created_at|date:"d F Y" }}</dd>
-          </div>
-          <div>
-            <dt class="text-gray-500">Account Type</dt>
-            <dd class="font-medium text-gray-800">{{ user.get_account_type_display }}</dd>
-          </div>
-          <div>
-            <dt class="text-gray-500">Email Verified</dt>
-            <dd class="font-medium {% if user.is_verified %}text-green-600{% else %}text-red-500{% endif %}">
-              {% if user.is_verified %}Yes{% else %}No{% endif %}
-            </dd>
-          </div>
-          {% if user.is_dealer and user.dealer_profile %}
-          <div>
-            <dt class="text-gray-500">Dealer Status</dt>
-            <dd class="font-medium {% if user.dealer_profile.is_approved %}text-green-600{% else %}text-amber-600{% endif %}">
-              {% if user.dealer_profile.is_approved %}Approved{% else %}Pending Approval{% endif %}
-            </dd>
-          </div>
-          {% endif %}
-        </dl>
-      </div>
-
     </div>
+
   </div>
 </div>
 {% endblock %}

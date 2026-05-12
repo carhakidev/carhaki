@@ -1,17 +1,66 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Payment Failed — CarHaki{% endblock %}
 
 {% block content %}
-<div class="max-w-xl mx-auto px-4 py-16 text-center">
-  <div class="text-6xl mb-6">❌</div>
-  <h1 class="font-heading font-bold text-3xl text-ch-green mb-3">Payment Not Completed</h1>
-  <p class="text-gray-600 mb-8">Your payment was not confirmed. You have not been charged. Please try again.</p>
+<div style="background:var(--ch-surface);min-height:100vh;padding:80px 24px;">
+  <div class="container-sm" style="max-width:480px;text-align:center;">
 
-  <a href="{% url 'payments:checkout' order.pk %}"
-     class="inline-block bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold px-8 py-3.5 rounded-xl transition-colors text-base">
-    Try Again
-  </a>
-  <br>
-  <a href="{% url 'vehicles:home' %}" class="text-ch-green text-sm hover:underline mt-4 inline-block">Back to Home</a>
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--ch-danger-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--ch-danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+    </div>
+
+    <h1 class="font-display" style="font-size:28px;font-weight:800;color:var(--ch-navy);margin-bottom:10px;">Payment Failed</h1>
+    <p style="font-size:16px;color:var(--ch-text-3);line-height:1.7;margin-bottom:12px;">
+      Your payment could not be processed. You have not been charged.
+    </p>
+
+    {% if error_message %}
+    <div class="alert alert-danger" style="text-align:left;margin-bottom:24px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      {{ error_message }}
+    </div>
+    {% else %}
+    <div style="margin-bottom:24px;"></div>
+    {% endif %}
+
+    <!-- Common reasons -->
+    <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-xl);padding:24px;text-align:left;margin-bottom:28px;">
+      <div class="font-display" style="font-size:14px;font-weight:700;color:var(--ch-navy);margin-bottom:14px;">Common reasons for failure:</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ch-text-2);">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--ch-warn);flex-shrink:0;"></span>
+          Insufficient Mobile Money balance
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ch-text-2);">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--ch-warn);flex-shrink:0;"></span>
+          Wrong phone number entered
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ch-text-2);">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--ch-warn);flex-shrink:0;"></span>
+          Payment prompt expired or was cancelled
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ch-text-2);">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--ch-warn);flex-shrink:0;"></span>
+          Bank declined the card transaction
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      {% if order %}
+      <a href="{% url 'vehicles:checkout' order.id %}" class="btn btn-primary btn-lg">Try Again</a>
+      {% else %}
+      <a href="{% url 'vehicles:search' %}" class="btn btn-primary btn-lg">Start New Search</a>
+      {% endif %}
+      <a href="{% url 'accounts:dashboard' %}" class="btn btn-secondary btn-lg">My Dashboard</a>
+    </div>
+
+    <p style="font-size:13px;color:var(--ch-text-3);margin-top:24px;">
+      Still having trouble? Contact us on
+      <a href="https://wa.me/256XXXXXXXX" style="color:var(--ch-blue);font-weight:600;">WhatsApp</a>
+    </p>
+
+  </div>
 </div>
 {% endblock %}

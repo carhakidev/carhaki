@@ -1,25 +1,63 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Payment Successful — CarHaki{% endblock %}
 
 {% block content %}
-<div class="max-w-xl mx-auto px-4 py-16 text-center">
-  <div class="text-6xl mb-6">✅</div>
-  <h1 class="font-heading font-bold text-3xl text-ch-green mb-3">Payment Confirmed!</h1>
-  <p class="text-gray-600 mb-2">Your CarHaki report is now being generated.</p>
-  <p class="text-gray-500 text-sm mb-8">This usually takes 20–40 seconds. We'll also email it to <strong>{{ request.user.email }}</strong>.</p>
+<div style="background:var(--ch-surface);min-height:100vh;padding:80px 24px;">
+  <div class="container-sm" style="max-width:520px;text-align:center;">
 
-  {% if report %}
-  <a href="{% url 'vehicles:report_detail' report.pk %}"
-     class="inline-block bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold px-8 py-3.5 rounded-xl transition-colors text-base shadow">
-    View My Report →
-  </a>
-  {% else %}
-  <a href="{% url 'accounts:dashboard' %}"
-     class="inline-block bg-ch-gold hover:bg-ch-gold-d text-ch-dark font-heading font-bold px-8 py-3.5 rounded-xl transition-colors text-base">
-    Go to Dashboard
-  </a>
-  {% endif %}
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--ch-ok-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--ch-ok)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    </div>
 
-  <p class="text-gray-400 text-xs mt-6">Order {{ order.id }}</p>
+    <h1 class="font-display" style="font-size:28px;font-weight:800;color:var(--ch-navy);margin-bottom:10px;">Payment Successful!</h1>
+    <p style="font-size:16px;color:var(--ch-text-3);line-height:1.7;margin-bottom:32px;">
+      Your report is being generated now. This usually takes under 30 seconds.
+      You'll receive an email when it's ready.
+    </p>
+
+    {% if report %}
+    <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-xl);padding:24px;margin-bottom:28px;text-align:left;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--ch-border);">
+        <div style="width:10px;height:10px;border-radius:50%;background:{% if report.status == 'COMPLETED' %}var(--ch-ok){% else %}var(--ch-warn){% endif %};flex-shrink:0;"></div>
+        <span style="font-size:13px;font-weight:600;color:var(--ch-text-1);">
+          Report status: <span style="color:{% if report.status == 'COMPLETED' %}var(--ch-ok){% else %}var(--ch-warn){% endif %};">{{ report.get_status_display }}</span>
+        </span>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--ch-navy);font-weight:500;margin-bottom:4px;">{{ report.search.identifier }}</div>
+      <div style="font-size:12px;color:var(--ch-text-3);">{{ report.get_report_type_display }} · Ordered {{ report.created_at|date:"M j, Y" }}</div>
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      {% if report.status == 'COMPLETED' %}
+      <a href="{% url 'vehicles:report_detail' pk=report.pk %}" class="btn btn-primary btn-lg">View Report →</a>
+      {% else %}
+      <a href="{% url 'accounts:dashboard' %}" class="btn btn-primary btn-lg">
+        <span class="spinner" style="width:14px;height:14px;border-width:2px;margin-right:6px;"></span>
+        Generating Report...
+      </a>
+      {% endif %}
+      <a href="{% url 'accounts:dashboard' %}" class="btn btn-secondary btn-lg">My Dashboard</a>
+    </div>
+    {% else %}
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="{% url 'accounts:dashboard' %}" class="btn btn-primary btn-lg">Go to Dashboard →</a>
+    </div>
+    {% endif %}
+
+    <p style="font-size:13px;color:var(--ch-text-3);margin-top:24px;">
+      Questions? WhatsApp us at
+      <a href="https://wa.me/256XXXXXXXX" style="color:var(--ch-blue);font-weight:600;">+256 XX XXX XXXX</a>
+    </p>
+
+  </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+{% if report and report.status != 'COMPLETED' %}
+<script>
+  setTimeout(function() { location.reload(); }, 10000);
+</script>
+{% endif %}
 {% endblock %}
