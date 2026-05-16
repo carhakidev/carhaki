@@ -6,6 +6,7 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.contrib import messages
 from django.urls import reverse
 from django.utils import timezone
+from django.conf import settings
 from .models import VehicleSearch, VehicleReport
 from .forms import VehicleSearchForm
 from apps.integrations.nhtsa import NHTSAProvider
@@ -20,7 +21,9 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['search_form'] = VehicleSearchForm()
-        ctx['total_reports'] = VehicleReport.objects.filter(status=VehicleReport.COMPLETED).count()
+        ctx['total_reports'] = VehicleReport.objects.filter(
+            status=VehicleReport.COMPLETED
+        ).count()
         return ctx
 
 
@@ -29,22 +32,34 @@ class SearchView(FormView):
     form_class = VehicleSearchForm
 
     def get(self, request, *args, **kwargs):
-        identifier = request.GET.get('identifier', '').upper().strip()
+        # Accept both ?q= (from homepage hero) and ?identifier= (from form)
+        identifier = (
+            request.GET.get('q', '') or
+            request.GET.get('identifier', '')
+        ).upper().strip()
+
         if identifier:
-            country = request.GET.get('source_country', 'USA')
-            preview_url = reverse('vehicles:preview', kwargs={'identifier': identifier})
-            return redirect(f'{preview_url}?country={country}')
+            source_country = request.GET.get('source_country', 'AUTO')
+            preview_url = reverse(
+                'vehicles:preview',
+                kwargs={'identifier': identifier}
+            )
+            return redirect(f'{preview_url}?country={source_country}')
+
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         identifier = form.cleaned_data['identifier'].upper().strip()
-        source_country = form.cleaned_data['source_country']
-        preview_url = reverse('vehicles:preview', kwargs={'identifier': identifier})
+        source_country = form.cleaned_data.get('source_country', 'AUTO')
+        preview_url = reverse(
+            'vehicles:preview',
+            kwargs={'identifier': identifier}
+        )
         return redirect(f'{preview_url}?country={source_country}')
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['source_country'] = self.request.GET.get('source_country', 'USA')
+        ctx['source_country'] = self.request.GET.get('source_country', 'AUTO')
         if self.request.user.is_authenticated:
             ctx['recent_searches'] = VehicleSearch.objects.filter(
                 user=self.request.user
@@ -55,36 +70,116 @@ class SearchView(FormView):
 class PreviewView(TemplateView):
     template_name = 'vehicles/preview.html'
 
+    def _is_usa_vin(self, identifier):
+        """Return True if identifier looks like a standard 17-char USA VIN."""
+        return bool(re.match(r'^[A-HJ-NPR-Z0-9]{17}$', identifier))
+
+    def _fetch_japan_preview(self, identifier):
+        """
+        Call OtoFacts check endpoint (free, no credits deducted).
+        Returns a dict ready for the template context.
+        """
+        import requests as req
+
+        api_key = getattr(settings, 'OTOFACTS_API_KEY', '')
+        if not api_key:
+            return {
+                'is_japan': True,
+                'identifier': identifier,
+                'available': False,
+                'error': 'OtoFacts API key not configured.',
+            }
+
+        try:
+            resp = req.get(
+                'https://api.otofacts.com/v3/report/check/basic/jp',
+                params={'query': identifier},
+                headers={
+                    'X-API-Key': api_key,
+                    'Accept': 'application/json',
+                },
+                timeout=10,
+            )
+
+            if resp.status_code == 200:
+                data = resp.json()
+                return {
+                    'is_japan':   True,
+                    'identifier': identifier,
+                    'available':  data.get('available', False),
+                    'make':       data.get('make', ''),
+                    'model':      data.get('model', ''),
+                    'year':       data.get('year', ''),
+                    'grade':      data.get('grade', ''),
+                    'mileage':    data.get('mileage', ''),
+                    'color':      data.get('color', ''),
+                    'raw':        data,
+                }
+
+            # API returned non-200 — data not found or error
+            return {
+                'is_japan':   True,
+                'identifier': identifier,
+                'available':  False,
+                'api_status': resp.status_code,
+            }
+
+        except req.exceptions.Timeout:
+            return {
+                'is_japan':   True,
+                'identifier': identifier,
+                'available':  False,
+                'error':      'OtoFacts timed out. Please try again.',
+            }
+        except Exception as exc:
+            return {
+                'is_japan':   True,
+                'identifier': identifier,
+                'available':  False,
+                'error':      str(exc),
+            }
+
+    def _fetch_usa_preview(self, identifier):
+        """
+        Check Redis cache first, then fall back to NHTSA (free).
+        Returns a dict ready for the template context.
+        """
+        cache = VehicleDataCache()
+        cached = cache.get_preview(identifier)
+        if cached:
+            return cached
+
+        try:
+            nhtsa = NHTSAProvider()
+            data = nhtsa.get_basic_info(identifier)
+            cache.set_preview(identifier, data)
+            return data
+        except Exception as exc:
+            return {'error': str(exc)}
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        identifier = self.kwargs['identifier'].upper()
-        source_country = self.request.GET.get('country', 'USA')
+        identifier    = self.kwargs['identifier'].upper()
+        source_country = self.request.GET.get('country', 'AUTO').upper()
 
-        is_usa_vin = bool(re.match(r'^[A-HJ-NPR-Z0-9]{17}$', identifier))
-        if not is_usa_vin:
-            source_country = 'JAPAN'
+        # Auto-detect source country when not explicitly provided
+        if source_country == 'AUTO':
+            source_country = 'USA' if self._is_usa_vin(identifier) else 'JAPAN'
 
-        ctx['identifier'] = identifier
+        ctx['identifier']    = identifier
         ctx['source_country'] = source_country
-        ctx['search_form'] = VehicleSearchForm(initial={'identifier': identifier})
+        ctx['is_japan_preview'] = (source_country == 'JAPAN')
+        ctx['search_form']   = VehicleSearchForm(
+            initial={'identifier': identifier}
+        )
 
         if source_country == 'JAPAN':
-            ctx['vehicle_data'] = {'is_japan': True, 'identifier': identifier}
-            ctx['is_japan_preview'] = True
+            ctx['vehicle_data'] = self._fetch_japan_preview(identifier)
         else:
-            cache = VehicleDataCache()
-            cached = cache.get_preview(identifier)
-            if cached:
-                ctx['vehicle_data'] = cached
-            else:
-                try:
-                    nhtsa = NHTSAProvider()
-                    data = nhtsa.get_basic_info(identifier)
-                    cache.set_preview(identifier, data)
-                    ctx['vehicle_data'] = data
-                except Exception as e:
-                    ctx['error'] = str(e)
-                    ctx['vehicle_data'] = None
+            ctx['vehicle_data'] = self._fetch_usa_preview(identifier)
+            if ctx['vehicle_data'] and 'error' in ctx['vehicle_data']:
+                ctx['error'] = ctx['vehicle_data']['error']
+                ctx['vehicle_data'] = None
 
         return ctx
 
@@ -99,9 +194,8 @@ class ReportDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        report = self.object
-        if report.processed_data:
-            ctx['data'] = report.processed_data
+        if self.object.processed_data:
+            ctx['data'] = self.object.processed_data
         return ctx
 
 
@@ -112,22 +206,30 @@ class SharedReportView(DetailView):
 
     def get_object(self):
         token = self.kwargs['token']
-        report = get_object_or_404(VehicleReport, share_token=token, status=VehicleReport.COMPLETED)
+        report = get_object_or_404(
+            VehicleReport,
+            share_token=token,
+            status=VehicleReport.COMPLETED,
+        )
         if not report.is_public:
             raise Http404
         return report
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        report = self.object
-        if report.processed_data:
-            ctx['data'] = report.processed_data
+        if self.object.processed_data:
+            ctx['data'] = self.object.processed_data
         return ctx
 
 
 class ShareReportView(LoginRequiredMixin, View):
     def post(self, request, pk):
-        report = get_object_or_404(VehicleReport, pk=pk, user=request.user, status=VehicleReport.COMPLETED)
+        report = get_object_or_404(
+            VehicleReport,
+            pk=pk,
+            user=request.user,
+            status=VehicleReport.COMPLETED,
+        )
         report.is_public = True
         report.save(update_fields=['is_public'])
         share_url = request.build_absolute_uri(report.share_url)
@@ -139,16 +241,32 @@ class ShareReportView(LoginRequiredMixin, View):
 
 class ReportPDFView(LoginRequiredMixin, View):
     def get(self, request, pk):
-        report = get_object_or_404(VehicleReport, pk=pk, user=request.user, status=VehicleReport.COMPLETED)
+        report = get_object_or_404(
+            VehicleReport,
+            pk=pk,
+            user=request.user,
+            status=VehicleReport.COMPLETED,
+        )
         if not report.pdf_file:
             from apps.reports.generators import generate_pdf
             generate_pdf(report)
             report.refresh_from_db()
+
         if report.pdf_file:
-            response = HttpResponse(report.pdf_file.read(), content_type='application/pdf')
-            response['Content-Disposition'] = f'attachment; filename="carhaki-report-{report.search.identifier}.pdf"'
+            response = HttpResponse(
+                report.pdf_file.read(),
+                content_type='application/pdf',
+            )
+            response['Content-Disposition'] = (
+                f'attachment; filename="carhaki-report-'
+                f'{report.search.identifier}.pdf"'
+            )
             return response
-        messages.error(request, 'PDF could not be generated. Please contact support.')
+
+        messages.error(
+            request,
+            'PDF could not be generated. Please contact support.',
+        )
         return redirect('vehicles:report_detail', pk=pk)
 
 
@@ -185,17 +303,28 @@ class ContactView(FormView):
         msg = form.save()
         self._send_autoreply(msg)
         self._notify_admin(msg)
-        messages.success(self.request, 'Thank you for your message. We will respond within 4 business hours.')
+        messages.success(
+            self.request,
+            'Thank you for your message. We will respond within 4 business hours.',
+        )
         return super().form_valid(form)
 
     def _send_autoreply(self, msg):
         try:
             from django.core.mail import send_mail
             from django.template.loader import render_to_string
-            body = render_to_string('emails/contact_autoreply.html', {'message': msg})
+            body = render_to_string(
+                'emails/contact_autoreply.html',
+                {'message': msg},
+            )
             send_mail(
                 subject='We received your message - CarHaki',
-                message=f'Dear {msg.name},\n\nThank you for contacting CarHaki. We will respond within 4 business hours.\n\nCarHaki Support Team',
+                message=(
+                    f'Dear {msg.name},\n\n'
+                    'Thank you for contacting CarHaki. '
+                    'We will respond within 4 business hours.\n\n'
+                    'CarHaki Support Team'
+                ),
                 from_email=None,
                 recipient_list=[msg.email],
                 html_message=body,
@@ -209,7 +338,12 @@ class ContactView(FormView):
             from django.core.mail import mail_admins
             mail_admins(
                 subject=f'New contact: {msg.get_subject_display()} from {msg.name}',
-                message=f'Name: {msg.name}\nEmail: {msg.email}\nPhone: {msg.phone}\n\n{msg.message}',
+                message=(
+                    f'Name: {msg.name}\n'
+                    f'Email: {msg.email}\n'
+                    f'Phone: {msg.phone}\n\n'
+                    f'{msg.message}'
+                ),
                 fail_silently=True,
             )
         except Exception:
@@ -229,17 +363,30 @@ class DealersView(FormView):
     def form_valid(self, form):
         application = form.save()
         self._notify_applicant(application)
-        messages.success(self.request, 'Your dealer application has been received. We will be in touch within 2 business days.')
+        messages.success(
+            self.request,
+            'Your dealer application has been received. '
+            'We will be in touch within 2 business days.',
+        )
         return super().form_valid(form)
 
     def _notify_applicant(self, application):
         try:
             from django.core.mail import send_mail
             from django.template.loader import render_to_string
-            body = render_to_string('emails/dealer_application_email.html', {'application': application})
+            body = render_to_string(
+                'emails/dealer_application_email.html',
+                {'application': application},
+            )
             send_mail(
                 subject='Dealer Application Received - CarHaki',
-                message=f'Dear {application.contact_person},\n\nThank you for applying to become a CarHaki dealer partner. We have received your application for {application.business_name} and will review it within 2 business days.\n\nCarHaki Team',
+                message=(
+                    f'Dear {application.contact_person},\n\n'
+                    f'Thank you for applying to become a CarHaki dealer partner. '
+                    f'We have received your application for {application.business_name} '
+                    f'and will review it within 2 business days.\n\n'
+                    'CarHaki Team'
+                ),
                 from_email=None,
                 recipient_list=[application.email],
                 html_message=body,
