@@ -13,6 +13,9 @@ from apps.integrations.nhtsa import NHTSAProvider
 from apps.integrations.cache import VehicleDataCache
 from apps.core.models import FAQ, ContactMessage
 from apps.core.forms import ContactForm, DealerApplicationForm
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class HomeView(TemplateView):
@@ -26,13 +29,68 @@ class HomeView(TemplateView):
         ).count()
         return ctx
 
+    def post(self, request, *args, **kwargs):
+        """
+        Handles Buy Report form submissions from the preview page.
+        Both the Japan and USA preview cards POST here with:
+          identifier    — chassis number or VIN
+          source_country — JAPAN or USA
+          report_type   — BASIC or FULL
+        """
+        from apps.payments.models import Order
+        from apps.payments.services import create_order_and_report
+
+        identifier     = request.POST.get('identifier', '').upper().strip()
+        source_country = request.POST.get('source_country', 'JAPAN').upper()
+        report_type    = request.POST.get('report_type', 'FULL').upper()
+
+        if not identifier:
+            messages.error(request, 'No chassis number or VIN provided.')
+            return redirect('vehicles:home')
+
+        # Redirect to login, preserving the preview URL so they come back after
+        if not request.user.is_authenticated:
+            preview_url = reverse(
+                'vehicles:preview', kwargs={'identifier': identifier}
+            )
+            login_url = reverse('accounts:login')
+            return redirect(
+                f'{login_url}?next={preview_url}%3Fcountry%3D{source_country}'
+            )
+
+        # Normalise report_type to match Order model constants
+        if report_type not in (Order.BASIC, Order.FULL):
+            report_type = Order.FULL
+
+        try:
+            order = create_order_and_report(
+                user           = request.user,
+                identifier     = identifier,
+                source_country = source_country,
+                report_type    = report_type,
+            )
+            return redirect('payments:checkout', pk=order.pk)
+
+        except Exception as exc:
+            logger.exception(
+                f'create_order_and_report failed for {identifier}: {exc}'
+            )
+            messages.error(
+                request,
+                'Something went wrong creating your order. '
+                'Please try again or contact support.',
+            )
+            preview_url = reverse(
+                'vehicles:preview', kwargs={'identifier': identifier}
+            )
+            return redirect(f'{preview_url}?country={source_country}')
+
 
 class SearchView(FormView):
     template_name = 'vehicles/search.html'
     form_class = VehicleSearchForm
 
     def get(self, request, *args, **kwargs):
-        # Accept both ?q= (from homepage hero) and ?identifier= (from form)
         identifier = (
             request.GET.get('q', '') or
             request.GET.get('identifier', '')
@@ -71,14 +129,9 @@ class PreviewView(TemplateView):
     template_name = 'vehicles/preview.html'
 
     def _is_usa_vin(self, identifier):
-        """Return True if identifier looks like a standard 17-char USA VIN."""
         return bool(re.match(r'^[A-HJ-NPR-Z0-9]{17}$', identifier))
 
     def _fetch_japan_preview(self, identifier):
-        """
-        Call OtoFacts check endpoint (free, no credits deducted).
-        Returns a dict ready for the template context.
-        """
         import requests as req
 
         api_key = getattr(settings, 'OTOFACTS_API_KEY', '')
@@ -116,7 +169,6 @@ class PreviewView(TemplateView):
                     'raw':        data,
                 }
 
-            # API returned non-200 — data not found or error
             return {
                 'is_japan':   True,
                 'identifier': identifier,
@@ -140,10 +192,6 @@ class PreviewView(TemplateView):
             }
 
     def _fetch_usa_preview(self, identifier):
-        """
-        Check Redis cache first, then fall back to NHTSA (free).
-        Returns a dict ready for the template context.
-        """
         cache = VehicleDataCache()
         cached = cache.get_preview(identifier)
         if cached:
@@ -159,17 +207,16 @@ class PreviewView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        identifier    = self.kwargs['identifier'].upper()
+        identifier     = self.kwargs['identifier'].upper()
         source_country = self.request.GET.get('country', 'AUTO').upper()
 
-        # Auto-detect source country when not explicitly provided
         if source_country == 'AUTO':
             source_country = 'USA' if self._is_usa_vin(identifier) else 'JAPAN'
 
-        ctx['identifier']    = identifier
-        ctx['source_country'] = source_country
+        ctx['identifier']       = identifier
+        ctx['source_country']   = source_country
         ctx['is_japan_preview'] = (source_country == 'JAPAN')
-        ctx['search_form']   = VehicleSearchForm(
+        ctx['search_form']      = VehicleSearchForm(
             initial={'identifier': identifier}
         )
 
@@ -178,7 +225,7 @@ class PreviewView(TemplateView):
         else:
             ctx['vehicle_data'] = self._fetch_usa_preview(identifier)
             if ctx['vehicle_data'] and 'error' in ctx['vehicle_data']:
-                ctx['error'] = ctx['vehicle_data']['error']
+                ctx['error']        = ctx['vehicle_data']['error']
                 ctx['vehicle_data'] = None
 
         return ctx

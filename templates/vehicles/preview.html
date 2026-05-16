@@ -29,11 +29,28 @@
     <div style="background:var(--ch-deep);padding:28px 32px;">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
         <div>
-          <p style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">Japan Vehicle Detected</p>
-          <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:clamp(18px,3vw,26px);color:white;letter-spacing:-0.5px;margin-bottom:4px;">
-            Chassis: <span style="font-family:'JetBrains Mono',monospace;font-weight:500;">{{ identifier }}</span>
-          </h1>
-          <p style="font-size:13px;color:rgba(255,255,255,.4);">Japan import history available in full report</p>
+          {% if vehicle_data.make %}
+            {# OtoFacts returned vehicle data — show make / model / year #}
+            <p style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">Japan Vehicle</p>
+            <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:clamp(18px,3vw,26px);color:white;letter-spacing:-0.5px;margin-bottom:4px;">
+              {% if vehicle_data.year %}{{ vehicle_data.year }} {% endif %}{{ vehicle_data.make }}{% if vehicle_data.model %} {{ vehicle_data.model }}{% endif %}
+            </h1>
+            <p style="font-size:12px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace;letter-spacing:.04em;">{{ identifier }}</p>
+            {% if vehicle_data.mileage %}
+            <p style="font-size:12px;color:rgba(255,255,255,.35);margin-top:4px;">
+              {{ vehicle_data.mileage|floatformat:0 }} km
+              {% if vehicle_data.color %} · {{ vehicle_data.color }}{% endif %}
+              {% if vehicle_data.grade %} · Auction grade {{ vehicle_data.grade }}{% endif %}
+            </p>
+            {% endif %}
+          {% else %}
+            {# OtoFacts returned no make — show chassis number only #}
+            <p style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">Japan Vehicle Detected</p>
+            <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:clamp(18px,3vw,26px);color:white;letter-spacing:-0.5px;margin-bottom:4px;">
+              Chassis: <span style="font-family:'JetBrains Mono',monospace;font-weight:500;">{{ identifier }}</span>
+            </h1>
+            <p style="font-size:13px;color:rgba(255,255,255,.4);">Japan import history available in full report</p>
+          {% endif %}
         </div>
         <span style="background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.25);color:var(--ch-blue-light);border-radius:99px;padding:5px 14px;font-size:11px;font-weight:700;flex-shrink:0;">
           🇯🇵 JAPAN
