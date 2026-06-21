@@ -9,8 +9,6 @@ from .models import VehicleReport
 from .grading import calculate_grade, GRADE_COLOURS, GRADE_LABELS
 from apps.integrations.nhtsa import NHTSAProvider
 from apps.integrations.vinaudit import VinAuditProvider
-from apps.integrations.otofacts import OtoFactsProvider
-from apps.integrations.carcheck_jp import CarCheckJPProvider
 from apps.integrations.normalizer import ReportNormalizer
 from apps.integrations.anthropic_ai import generate_ai_summary
 from apps.integrations.cache import VehicleDataCache
@@ -39,18 +37,15 @@ def generate_report(self, report_id: str):
         if cached:
             processed = cached
         else:
-            if source_country == 'USA':
-                processed = _generate_usa_report(identifier, report.report_type)
-            else:
-                processed = _generate_japan_report(identifier, report.report_type)
+            processed = _generate_usa_report(identifier)
             cache.set_report(identifier, report.report_type, source_country, processed)
 
-        # Compute market value in UGX
+        # Compute market value in NGN
         from apps.core.models import SiteConfig
         config = SiteConfig.get_solo()
         mv = processed.get('market_value', {})
         if mv.get('estimate_usd'):
-            mv['estimate_ugx'] = int(mv['estimate_usd'] * float(config.usd_to_ugx_rate))
+            mv['estimate_ngn'] = int(mv['estimate_usd'] * float(config.usd_to_ngn_rate))
             processed['market_value'] = mv
 
         # Grade the vehicle
@@ -60,11 +55,10 @@ def generate_report(self, report_id: str):
         processed['grade_colour'] = GRADE_COLOURS.get(grade, '#6c757d')
         processed['grade_label'] = GRADE_LABELS.get(grade, 'Unknown')
 
-        # AI summary
-        if report.report_type == VehicleReport.FULL:
-            ai_summary = generate_ai_summary(processed)
-            report.ai_summary = ai_summary
-            processed['ai_summary'] = ai_summary
+        # AI summary for every US Vehicle Report
+        ai_summary = generate_ai_summary(processed)
+        report.ai_summary = ai_summary
+        processed['ai_summary'] = ai_summary
 
         report.processed_data = processed
         report.overall_grade = grade
@@ -74,10 +68,8 @@ def generate_report(self, report_id: str):
         report.is_public = True
         report.save()
 
-        # Generate PDF async
         generate_report_pdf.delay(str(report.pk))
 
-        # Send email notification
         if report.user and report.user.email:
             send_report_email.delay(str(report.pk))
 
@@ -88,34 +80,18 @@ def generate_report(self, report_id: str):
         raise self.retry(exc=exc)
 
 
-def _generate_usa_report(identifier: str, report_type: str) -> dict:
+def _generate_usa_report(identifier: str) -> dict:
     nhtsa = NHTSAProvider()
     basic_info = nhtsa.get_basic_info(identifier)
     recalls = []
     if basic_info.get('make') and basic_info.get('model') and basic_info.get('year'):
         recalls = nhtsa.get_recalls(basic_info['make'], basic_info['model'], basic_info['year'])
 
-    raw_data = {}
-    if report_type == VehicleReport.FULL:
-        vinaudit = VinAuditProvider()
-        raw_data = vinaudit.get_full_report(identifier)
+    vinaudit = VinAuditProvider()
+    raw_data = vinaudit.get_full_report(identifier)
 
     normalizer = ReportNormalizer()
     return normalizer.normalize(raw_data or {}, 'vinaudit', basic_info=basic_info, recalls=recalls)
-
-
-def _generate_japan_report(identifier: str, report_type: str) -> dict:
-    otofacts = OtoFactsProvider()
-    if otofacts.api_key:
-        raw_data = otofacts.get_full_report(identifier)
-        if not raw_data.get('error'):
-            normalizer = ReportNormalizer()
-            return normalizer.normalize(raw_data, 'otofacts')
-
-    carcheck = CarCheckJPProvider()
-    raw_data = carcheck.get_full_report(identifier)
-    normalizer = ReportNormalizer()
-    return normalizer.normalize(raw_data, 'carcheck_jp')
 
 
 @shared_task
@@ -135,7 +111,7 @@ def send_report_email(report_id: str):
         if not report.user or not report.user.email:
             return
 
-        site_url = getattr(settings, 'SITE_URL', 'https://carhaki.com')
+        site_url = getattr(settings, 'SITE_URL', 'https://carhaki.com.ng')
         report_url = f"{site_url}/reports/{report.pk}/"
         vehicle = report.processed_data.get('vehicle', {}) if report.processed_data else {}
 

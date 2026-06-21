@@ -27,8 +27,8 @@
               Hello {% if user %}{{ user.first_name }}{% endif %},
             </p>
             <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
-              Your payment has been confirmed and your vehicle history report is now being generated.
-              This usually takes 1 to 3 minutes.
+              Your payment has been confirmed and your US Vehicle History Report is now being generated.
+              This usually takes less than a minute.
             </p>
 
             {% if order %}
@@ -37,24 +37,24 @@
                 <td colspan="2" style="color:#1B4332;font-size:13px;font-weight:600;border-bottom:1px solid #e5e7eb;">Payment Receipt</td>
               </tr>
               <tr>
-                <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #f3f4f6;">Vehicle</td>
+                <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #f3f4f6;">Vehicle VIN</td>
                 <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f3f4f6;text-align:right;">{{ order.report.search.identifier }}</td>
               </tr>
               <tr>
                 <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #f3f4f6;">Report Type</td>
-                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f3f4f6;text-align:right;">{{ order.get_report_type_display }}</td>
+                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f3f4f6;text-align:right;">US Vehicle Report</td>
               </tr>
               <tr>
                 <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #f3f4f6;">Amount</td>
-                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f3f4f6;text-align:right;">UGX {{ order.amount_ugx|floatformat:0 }}</td>
+                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f3f4f6;text-align:right;">₦{{ order.amount_ngn|floatformat:0 }}</td>
               </tr>
               <tr>
                 <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #f3f4f6;">Payment Method</td>
-                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f3f4f6;text-align:right;">{{ order.get_payment_method_display }}</td>
+                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f3f4f6;text-align:right;">Paystack</td>
               </tr>
               <tr>
                 <td style="color:#6b7280;font-size:13px;">Reference</td>
-                <td style="color:#111827;font-size:12px;font-family:monospace;text-align:right;">{{ order.flutterwave_ref }}</td>
+                <td style="color:#111827;font-size:12px;font-family:monospace;text-align:right;">{{ order.paystack_reference }}</td>
               </tr>
             </table>
             {% endif %}
@@ -72,7 +72,7 @@
 
             <p style="margin:0;color:#6b7280;font-size:13px;line-height:1.5;border-top:1px solid #e5e7eb;padding-top:16px;">
               If you did not make this payment or have questions, contact us immediately at
-              <a href="mailto:support@carhaki.ug" style="color:#F4A81D;">support@carhaki.ug</a>
+              <a href="mailto:support@carhaki.com.ng" style="color:#F4A81D;">support@carhaki.com.ng</a>
               with your reference number.
             </p>
           </td>
@@ -81,8 +81,8 @@
         <tr>
           <td style="background-color:#f8f9fa;border-radius:0 0 12px 12px;padding:20px 32px;text-align:center;">
             <p style="margin:0;color:#9ca3af;font-size:12px;line-height:1.6;">
-              CarHaki Limited &bull; Plot 45, Kampala Road, Kampala, Uganda<br>
-              <a href="mailto:support@carhaki.ug" style="color:#9ca3af;">support@carhaki.ug</a>
+              CarHaki Limited &bull; Nigeria<br>
+              <a href="mailto:support@carhaki.com.ng" style="color:#9ca3af;">support@carhaki.com.ng</a>
             </p>
           </td>
         </tr>

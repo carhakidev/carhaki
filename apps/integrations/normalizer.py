@@ -1,9 +1,8 @@
-﻿"""
+"""
 Normalize API responses from different providers into a single standard schema.
 All callers work with the normalized dict -- never raw API data.
 """
 from datetime import datetime, timezone
-from apps.vehicles.validators import check_uganda_import_eligibility
 
 
 class ReportNormalizer:
@@ -12,10 +11,6 @@ class ReportNormalizer:
         source = source.lower()
         if source == 'vinaudit':
             return self._normalize_vinaudit(raw_data, basic_info or {}, recalls or [])
-        elif source in ('otofacts',):
-            return self._normalize_otofacts(raw_data, basic_info or {})
-        elif source == 'carcheck_jp':
-            return self._normalize_carcheck_jp(raw_data, basic_info or {})
         return raw_data
 
     def _normalize_vinaudit(self, data: dict, basic_info: dict, recalls: list) -> dict:
@@ -68,14 +63,13 @@ class ReportNormalizer:
         ]
         market_value = raw.get('marketValue', {})
         market_value_usd = market_value.get('above', 0) if isinstance(market_value, dict) else 0
-        uganda = check_uganda_import_eligibility(year) if year else {}
 
         return {
             'meta': {
                 'source_country': 'USA',
                 'identifier': raw.get('vin', basic_info.get('vin', '')),
                 'identifier_type': 'VIN',
-                'report_type': 'FULL',
+                'report_type': 'us_vehicle',
                 'generated_at': datetime.now(timezone.utc).isoformat(),
                 'data_providers': ['nhtsa', 'vinaudit'],
             },
@@ -104,60 +98,5 @@ class ReportNormalizer:
             'auction_history': None,
             'auction_grade': None,
             'shaken_expiry': None,
-            'market_value': {'estimate_usd': market_value_usd, 'estimate_ugx': 0, 'source': 'vinaudit'},
-            'uganda_eligibility': uganda,
-        }
-
-    def _normalize_otofacts(self, data: dict, basic_info: dict) -> dict:
-        raw = data.get('raw', {})
-        year = basic_info.get('year') or raw.get('year')
-        uganda = check_uganda_import_eligibility(int(year)) if year else {}
-        auction_history = raw.get('auction_history', [])
-        auction_grade = auction_history[0].get('grade') if auction_history else None
-        return {
-            'meta': {'source_country': 'JAPAN', 'identifier_type': 'CHASSIS',
-                     'report_type': 'FULL', 'data_providers': ['otofacts'],
-                     'generated_at': datetime.now(timezone.utc).isoformat()},
-            'vehicle': {
-                'make': raw.get('make', basic_info.get('make', '')),
-                'model': raw.get('model', basic_info.get('model', '')),
-                'year': year, 'trim': raw.get('grade_name', ''),
-                'body_type': raw.get('body_type', ''), 'engine': raw.get('engine_displacement', ''),
-                'fuel_type': raw.get('fuel_type', ''), 'drive_type': raw.get('drive', ''),
-                'transmission': raw.get('transmission', ''), 'doors': raw.get('doors'),
-                'country_of_manufacture': 'Japan', 'image_url': None,
-            },
-            'title_history': [], 'brands': [],
-            'odometer_records': [
-                {'date': r.get('date', ''), 'reading': r.get('mileage', 0), 'unit': 'km', 'source': 'OtoFacts'}
-                for r in raw.get('mileage_history', [])
-            ],
-            'accidents': [], 'total_loss': False, 'theft': [], 'insurance_records': [], 'recalls': [],
-            'auction_history': auction_history, 'auction_grade': auction_grade,
-            'shaken_expiry': raw.get('shaken_expiry'),
-            'market_value': {'estimate_usd': 0, 'estimate_ugx': 0, 'source': 'otofacts'},
-            'uganda_eligibility': uganda,
-        }
-
-    def _normalize_carcheck_jp(self, data: dict, basic_info: dict) -> dict:
-        raw = data.get('raw', {})
-        year = basic_info.get('year') or raw.get('year')
-        uganda = check_uganda_import_eligibility(int(year)) if year else {}
-        return {
-            'meta': {'source_country': 'JAPAN', 'identifier_type': 'CHASSIS',
-                     'report_type': 'FULL', 'data_providers': ['carcheck_jp'],
-                     'generated_at': datetime.now(timezone.utc).isoformat()},
-            'vehicle': {
-                'make': raw.get('make', ''), 'model': raw.get('model', ''), 'year': year,
-                'trim': raw.get('grade', ''), 'body_type': raw.get('body', ''),
-                'engine': raw.get('engine', ''), 'fuel_type': raw.get('fuel', ''),
-                'drive_type': raw.get('drive', ''), 'transmission': raw.get('transmission', ''),
-                'doors': None, 'country_of_manufacture': 'Japan', 'image_url': raw.get('image_url'),
-            },
-            'title_history': [], 'brands': [], 'odometer_records': [], 'accidents': [],
-            'total_loss': False, 'theft': [], 'insurance_records': [], 'recalls': [],
-            'auction_history': raw.get('auction_records', []), 'auction_grade': raw.get('auction_grade'),
-            'shaken_expiry': raw.get('shaken_expiry'),
-            'market_value': {'estimate_usd': 0, 'estimate_ugx': 0, 'source': 'carcheck_jp'},
-            'uganda_eligibility': uganda,
+            'market_value': {'estimate_usd': market_value_usd, 'estimate_ngn': 0, 'source': 'vinaudit'},
         }

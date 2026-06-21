@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}About CarHaki — Uganda Vehicle History Verification{% endblock %}
-{% block meta_desc %}Learn about CarHaki, Uganda's trusted vehicle history verification platform. We protect Ugandan car buyers from vehicles with hidden accidents, tampered odometers, and undisclosed damage.{% endblock %}
+{% block title %}About CarHaki — Nigeria Vehicle History Verification{% endblock %}
+{% block meta_desc %}Learn about CarHaki, Nigeria's trusted vehicle history verification platform for Tokunbo cars. We protect Nigerian buyers from hidden accidents, tampered odometers, and salvage titles.{% endblock %}
 
 {% block content %}
 
@@ -17,8 +17,8 @@
     </h1>
     <p style="font-size:17px; color:rgba(255,255,255,.6); max-width:600px;
               margin:0 auto; line-height:1.65;">
-      CarHaki was built with one mission: to protect Ugandan car buyers from purchasing
-      vehicles with hidden histories, tampered odometers, and undisclosed damage.
+      CarHaki was built with one mission: to protect Nigerian Tokunbo buyers from purchasing
+      vehicles with hidden histories, tampered odometers, salvage titles, and undisclosed damage.
     </p>
   </div>
 </section>
@@ -28,23 +28,23 @@
   <div class="container">
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start;">
       <div>
-        <p class="section-label">The Problem in Uganda</p>
-        <h2 class="section-title">Thousands of buyers get deceived every year</h2>
+        <p class="section-label">The Problem in Nigeria</p>
+        <h2 class="section-title">Thousands of Tokunbo buyers get deceived every year</h2>
         <p style="font-size:14px; color:var(--ch-text-3); line-height:1.7; margin-bottom:14px;">
-          Over 85% of vehicles on Ugandan roads are imported used cars, primarily from Japan
-          and the United States. Before CarHaki, there was no trusted local service that could
-          tell a buyer whether a car had been in a serious accident, declared a total loss,
-          had its mileage rolled back, or was still under a safety recall.
+          Nigeria imports hundreds of thousands of used vehicles from the United States every
+          year — Tokunbo cars that pass through Cotonou, Apapa, and Tin Can Island ports.
+          Before CarHaki, there was no trusted local service that could tell a buyer whether
+          a car had been in a serious accident, declared a total loss, had its mileage rolled
+          back, or was still under a safety recall.
         </p>
         <p style="font-size:14px; color:var(--ch-text-3); line-height:1.7; margin-bottom:14px;">
-          Thousands of buyers every year unknowingly paid good money for vehicles with
-          salvage titles, rebuilt structures, flooded interiors, or odometers that had been
-          tampered with.
+          The information to verify these vehicles has always existed in official US government
+          databases. The problem was that no one was making that information accessible and
+          affordable to the ordinary Nigerian buyer.
         </p>
         <p style="font-size:14px; color:var(--ch-text-3); line-height:1.7;">
-          The information to verify these vehicles has always existed in government databases
-          in Japan and the United States. The problem was that no one was making that
-          information accessible to the ordinary Ugandan buyer.
+          CarHaki connects directly to NMVTIS, NHTSA, and US insurance records to give you
+          the same information that US banks and insurance companies use — instantly, for ₦15,000.
         </p>
       </div>
       <div style="background:var(--ch-danger-bg); border:1px solid rgba(220,38,38,.15);
@@ -58,12 +58,12 @@
           <li style="display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--ch-text-2); line-height:1.6;">
             <span style="width:6px; height:6px; border-radius:50%; background:var(--ch-danger);
                          flex-shrink:0; margin-top:6px;" aria-hidden="true"></span>
-            {% if forloop.counter == 1 %}Salvage or rebuilt titles from insurance write-offs after major accidents
-            {% elif forloop.counter == 2 %}Odometers rolled back by tens of thousands of kilometres
+            {% if forloop.counter == 1 %}Salvage or rebuilt titles from US insurance write-offs
+            {% elif forloop.counter == 2 %}Odometers rolled back by tens of thousands of miles
             {% elif forloop.counter == 3 %}Flood damage repaired and concealed before export
-            {% elif forloop.counter == 4 %}Open safety recalls that have never been repaired
-            {% elif forloop.counter == 5 %}Vehicles too old to legally import under URA regulations
-            {% elif forloop.counter == 6 %}Stolen vehicles exported and sold with forged documents
+            {% elif forloop.counter == 4 %}Open NHTSA safety recalls never repaired in the USA
+            {% elif forloop.counter == 5 %}Total loss vehicles exported and sold without disclosure
+            {% elif forloop.counter == 6 %}Stolen vehicles exported with forged documents
             {% endif %}
           </li>
           {% endfor %}
@@ -78,7 +78,7 @@
   <div class="container">
     <div style="text-align:center; margin-bottom:48px;">
       <p class="section-label">How We Solve It</p>
-      <h2 class="section-title">The same data that banks and dealers use</h2>
+      <h2 class="section-title">The same data that US banks and insurers use</h2>
     </div>
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px;">
 
@@ -94,33 +94,12 @@
           </svg>
         </div>
         <h3 class="font-display" style="font-size:16px; font-weight:700; color:var(--ch-navy); margin-bottom:8px;">
-          USA Vehicles
+          USA Vehicle Records
         </h3>
         <p style="font-size:13px; color:var(--ch-text-3); line-height:1.65;">
           For 17-digit VIN numbers, we access NMVTIS (the US National Motor Vehicle Title
           Information System), NHTSA safety recalls, and full title and accident history
           from official state DMV records and insurance databases.
-        </p>
-      </div>
-
-      <div style="background:white; border:1px solid var(--ch-border);
-                  border-radius:var(--r-xl); padding:28px;">
-        <div style="width:44px; height:44px; border-radius:var(--r-md);
-                    background:var(--ch-danger-bg); display:flex; align-items:center;
-                    justify-content:center; margin-bottom:16px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-               fill="none" stroke="var(--ch-danger)" stroke-width="1.8"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-        </div>
-        <h3 class="font-display" style="font-size:16px; font-weight:700; color:var(--ch-navy); margin-bottom:8px;">
-          Japan Vehicles
-        </h3>
-        <p style="font-size:13px; color:var(--ch-text-3); line-height:1.65;">
-          For Japanese chassis numbers, we retrieve data from MLIT (the Ministry of Land,
-          Infrastructure, Transport and Tourism), Japanese vehicle auction records, and
-          inspection history including Shaken expiry dates.
         </p>
       </div>
 
@@ -139,9 +118,28 @@
           AI Analysis
         </h3>
         <p style="font-size:13px; color:var(--ch-text-3); line-height:1.65;">
-          Every report is summarised in plain English by an AI system trained to explain
-          vehicle history clearly. Instead of raw data tables, you get a direct answer:
-          should you buy this car or not?
+          Every report is summarised in plain English by an AI system. Instead of raw data
+          tables, you get a direct answer: should you buy this car or not?
+        </p>
+      </div>
+
+      <div style="background:white; border:1px solid var(--ch-border);
+                  border-radius:var(--r-xl); padding:28px;">
+        <div style="width:44px; height:44px; border-radius:var(--r-md);
+                    background:var(--ch-blue-faint); display:flex; align-items:center;
+                    justify-content:center; margin-bottom:16px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+               fill="none" stroke="var(--ch-blue)" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <h3 class="font-display" style="font-size:16px; font-weight:700; color:var(--ch-navy); margin-bottom:8px;">
+          ₦15,000 Flat
+        </h3>
+        <p style="font-size:13px; color:var(--ch-text-3); line-height:1.65;">
+          One simple price. No tiers, no subscriptions, no hidden fees. Pay per report
+          via Paystack. Money-back if no data found.
         </p>
       </div>
 
@@ -158,7 +156,7 @@
     </h2>
     <p style="font-size:16px; color:rgba(255,255,255,.6); line-height:1.7; margin-bottom:14px;">
       <strong style="color:white;">"Haki"</strong> is a Swahili word that means truth, right,
-      and genuineness. It carries weight across East Africa, from Uganda to Kenya to Tanzania.
+      and genuineness. It carries weight across Africa.
     </p>
     <p style="font-size:16px; color:rgba(255,255,255,.6); line-height:1.7;">
       <strong style="color:var(--ch-blue-light);">CarHaki</strong> means the genuine truth
@@ -174,36 +172,35 @@
 
       <div>
         <p class="section-label">Our Vision</p>
-        <h2 class="section-title">East Africa, starting in Uganda</h2>
+        <h2 class="section-title">Nigeria first, Africa next</h2>
         <p style="font-size:14px; color:var(--ch-text-3); line-height:1.7; margin-bottom:14px;">
-          CarHaki launched in Uganda because Uganda has one of the highest proportions of
-          imported used vehicles in East Africa and some of the least protection for buyers.
-          But the problem exists across the region.
+          CarHaki launched in Nigeria because Nigeria is the largest Tokunbo vehicle
+          market in Africa and buyers have historically had the least protection.
+          But the problem exists across the continent.
         </p>
         <p style="font-size:14px; color:var(--ch-text-3); line-height:1.7; margin-bottom:24px;">
-          Our roadmap includes expansion to Kenya, Tanzania, and Rwanda. The same databases,
-          the same grading system, the same AI analysis, and the same commitment to putting
-          buyers first.
+          Our roadmap includes expansion to Ghana, Kenya, and Tanzania — the same
+          databases, the same grading system, the same commitment to putting buyers first.
         </p>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <div style="background:var(--ch-blue-faint); border:1px solid var(--ch-blue-pale);
                       border-radius:var(--r-md); padding:16px; text-align:center;">
-            <p class="font-display" style="font-size:18px; font-weight:700; color:var(--ch-navy);">Uganda</p>
+            <p class="font-display" style="font-size:18px; font-weight:700; color:var(--ch-navy);">Nigeria</p>
             <p style="font-size:12px; color:var(--ch-ok); font-weight:600; margin-top:2px;">● Live now</p>
           </div>
           <div style="background:var(--ch-surface); border:1px dashed var(--ch-border);
                       border-radius:var(--r-md); padding:16px; text-align:center;">
+            <p class="font-display" style="font-size:18px; font-weight:700; color:var(--ch-text-3);">Ghana</p>
+            <p style="font-size:12px; color:var(--ch-text-3); margin-top:2px;">Coming soon</p>
+          </div>
+          <div style="background:var(--ch-surface); border:1px dashed var(--ch-border);
+                      border-radius:var(--r-md); padding:16px; text-align:center;">
             <p class="font-display" style="font-size:18px; font-weight:700; color:var(--ch-text-3);">Kenya</p>
-            <p style="font-size:12px; color:var(--ch-text-3); margin-top:2px;">Coming 2026</p>
+            <p style="font-size:12px; color:var(--ch-text-3); margin-top:2px;">Coming soon</p>
           </div>
           <div style="background:var(--ch-surface); border:1px dashed var(--ch-border);
                       border-radius:var(--r-md); padding:16px; text-align:center;">
             <p class="font-display" style="font-size:18px; font-weight:700; color:var(--ch-text-3);">Tanzania</p>
-            <p style="font-size:12px; color:var(--ch-text-3); margin-top:2px;">Coming 2026</p>
-          </div>
-          <div style="background:var(--ch-surface); border:1px dashed var(--ch-border);
-                      border-radius:var(--r-md); padding:16px; text-align:center;">
-            <p class="font-display" style="font-size:18px; font-weight:700; color:var(--ch-text-3);">Rwanda</p>
             <p style="font-size:12px; color:var(--ch-text-3); margin-top:2px;">Planned</p>
           </div>
         </div>
@@ -213,7 +210,7 @@
         <p class="section-label">Data Sources</p>
         <h3 class="font-display"
             style="font-size:20px; font-weight:700; color:var(--ch-navy); margin-bottom:20px;">
-          Official government databases
+          Official US government databases
         </h3>
         <div style="display:flex; flex-direction:column; gap:10px;">
           <div style="display:flex; align-items:center; gap:14px; background:var(--ch-surface);
@@ -238,22 +235,22 @@
           </div>
           <div style="display:flex; align-items:center; gap:14px; background:var(--ch-surface);
                       border-radius:var(--r-md); padding:14px 16px;">
-            <div style="width:36px; height:36px; border-radius:var(--r-sm); background:#DC2626;
+            <div style="width:36px; height:36px; border-radius:var(--r-sm); background:#1D4ED8;
                         display:flex; align-items:center; justify-content:center;
-                        font-size:10px; font-weight:700; color:white; flex-shrink:0;">JP</div>
+                        font-size:10px; font-weight:700; color:white; flex-shrink:0;">US</div>
             <div>
-              <p style="font-size:13px; font-weight:600; color:var(--ch-navy);">MLIT Japan</p>
-              <p style="font-size:11px; color:var(--ch-text-3);">Ministry of Land, Infrastructure, Transport and Tourism</p>
+              <p style="font-size:13px; font-weight:600; color:var(--ch-navy);">State DMV Records</p>
+              <p style="font-size:11px; color:var(--ch-text-3);">Title, odometer, and registration history from all 50 US states</p>
             </div>
           </div>
           <div style="display:flex; align-items:center; gap:14px; background:var(--ch-surface);
                       border-radius:var(--r-md); padding:14px 16px;">
-            <div style="width:36px; height:36px; border-radius:var(--r-sm); background:#DC2626;
+            <div style="width:36px; height:36px; border-radius:var(--r-sm); background:#1D4ED8;
                         display:flex; align-items:center; justify-content:center;
-                        font-size:10px; font-weight:700; color:white; flex-shrink:0;">JP</div>
+                        font-size:10px; font-weight:700; color:white; flex-shrink:0;">US</div>
             <div>
-              <p style="font-size:13px; font-weight:600; color:var(--ch-navy);">Japan Auction Records</p>
-              <p style="font-size:11px; color:var(--ch-text-3);">USS, TAA, JU, and other major auction houses</p>
+              <p style="font-size:13px; font-weight:600; color:var(--ch-navy);">US Insurance Records</p>
+              <p style="font-size:11px; color:var(--ch-text-3);">Accident, total loss, and salvage records from US insurers</p>
             </div>
           </div>
         </div>
@@ -269,7 +266,7 @@
     <div class="cta-section">
       <h2 class="cta-title">Ready to check your car?</h2>
       <p class="cta-sub">
-        Enter a VIN or chassis number and get the truth about any car before you buy.
+        Enter a VIN and get the truth about any Tokunbo car before you buy.
       </p>
       <div class="cta-actions">
         <a href="{% url 'vehicles:search' %}" class="btn btn-white btn-lg">

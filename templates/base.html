@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="{% block meta_desc %}CarHaki — Uganda's vehicle intelligence platform. Check any ex-Japan car history before you buy.{% endblock %}">
+  <meta name="description" content="{% block meta_desc %}CarHaki — Nigeria's vehicle intelligence platform. Check any Tokunbo car history before you buy.{% endblock %}">
   <meta property="og:title" content="{% block og_title %}CarHaki — Know the Truth About Every Car{% endblock %}">
-  <meta property="og:description" content="Uganda's #1 vehicle history check. Powered by Japan auction records.">
-  <meta property="og:image" content="https://carhaki.onrender.com/static/images/og-image.png">
+  <meta property="og:description" content="Nigeria's #1 vehicle history check for Tokunbo cars. Powered by USA government records.">
+  <meta property="og:image" content="https://carhaki.com/static/images/og-image.png">
   <meta property="og:type" content="website">
-  <title>{% block title %}CarHaki — Vehicle Intelligence Uganda{% endblock %}</title>
+  <title>{% block title %}CarHaki — Vehicle Intelligence Nigeria{% endblock %}</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,8 +58,8 @@
                alt="CarHaki" class="footer-logo">
         </a>
         <p class="footer-brand-desc">
-          Uganda's vehicle intelligence platform. Know the truth about every
-          ex-Japan car before you buy.
+          Nigeria's vehicle intelligence platform. Know the truth about every
+          Tokunbo car before you buy.
         </p>
         <div style="margin-top:16px; display:flex; align-items:center; gap:8px;">
           <span style="width:8px; height:8px; border-radius:50%; background:#22C55E;
@@ -74,7 +74,6 @@
         <ul class="footer-links">
           <li><a href="{% url 'vehicles:search' %}" class="footer-link">Check a Car</a></li>
           <li><a href="{% url 'vehicles:pricing' %}" class="footer-link">Pricing</a></li>
-          <li><a href="{% url 'vehicles:dealers' %}" class="footer-link">For Dealers</a></li>
         </ul>
       </div>
 
@@ -85,7 +84,8 @@
           <li><a href="{% url 'vehicles:faq' %}" class="footer-link">FAQ</a></li>
           <li><a href="{% url 'vehicles:about' %}" class="footer-link">About CarHaki</a></li>
           <li>
-            <a href="https://wa.me/256XXXXXXXX" target="_blank" rel="noopener"
+            {# FLAG: WhatsApp number below is a placeholder — replace with Nigerian number #}
+            <a href="https://wa.me/XXXXXXXXXX" target="_blank" rel="noopener"
                class="footer-link">WhatsApp Us</a>
           </li>
         </ul>
@@ -104,15 +104,15 @@
 
     <div class="footer-bottom">
       <p class="footer-copy">
-        © {% now "Y" %} CarHaki Uganda. All rights reserved.
-        Powered by Japan auction records.
+        © {% now "Y" %} CarHaki Nigeria. All rights reserved.
+        Powered by USA government records.
       </p>
       <div class="footer-socials">
-        <a href="https://instagram.com/carhakiug" target="_blank" rel="noopener"
+        <a href="https://instagram.com/carhakingeria" target="_blank" rel="noopener"
            class="footer-social" aria-label="Instagram">
           <i class="fa-brands fa-instagram" aria-hidden="true"></i>
         </a>
-        <a href="https://twitter.com/carhakiug" target="_blank" rel="noopener"
+        <a href="https://twitter.com/carhakingeria" target="_blank" rel="noopener"
            class="footer-social" aria-label="X/Twitter">
           <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
         </a>
@@ -124,7 +124,8 @@
            class="footer-social" aria-label="YouTube">
           <i class="fa-brands fa-youtube" aria-hidden="true"></i>
         </a>
-        <a href="https://wa.me/256XXXXXXXX" target="_blank" rel="noopener"
+        {# FLAG: WhatsApp number below is a placeholder — replace with Nigerian number #}
+        <a href="https://wa.me/XXXXXXXXXX" target="_blank" rel="noopener"
            class="footer-social" aria-label="WhatsApp">
           <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
         </a>
@@ -142,4 +143,4 @@
 </script>
 {% block extra_scripts %}{% endblock %}
 </body>
-</html>12/05/2026 05:49:42
+</html>

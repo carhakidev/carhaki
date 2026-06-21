@@ -17,140 +17,9 @@
       We couldn't find data for <strong style="font-family:'JetBrains Mono',monospace;">{{ identifier }}</strong>.
     </p>
     <p style="color:var(--ch-text-3);font-size:13px;margin-bottom:28px;">
-      Please check the number and try again. Make sure you've selected the correct origin (USA or Japan).
+      Please check the VIN and try again. A valid USA VIN is exactly 17 characters.
     </p>
     <a href="{% url 'vehicles:home' %}" class="btn btn-primary">Try Again</a>
-  </div>
-
-  {% elif is_japan_preview %}
-  <!-- ══ Japan Chassis Preview ══ -->
-  <div style="background:white;border-radius:var(--r-xl);border:1px solid var(--ch-border);overflow:hidden;box-shadow:var(--shadow-md);">
-
-    <!-- Header -->
-    <div style="background:var(--ch-navy);padding:28px 32px;">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-        <div>
-          <p style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">
-            Japan Vehicle
-          </p>
-
-          {% if vehicle_data.make %}
-            <!-- OtoFacts returned vehicle data -->
-            <h1 class="font-display" style="font-weight:800;font-size:clamp(18px,3vw,26px);color:white;letter-spacing:-0.5px;margin-bottom:4px;">
-              {% if vehicle_data.year %}{{ vehicle_data.year }} {% endif %}{{ vehicle_data.make }}{% if vehicle_data.model %} {{ vehicle_data.model }}{% endif %}
-            </h1>
-            <p style="font-size:12px;color:rgba(255,255,255,.45);font-family:'JetBrains Mono',monospace;letter-spacing:.04em;">
-              {{ identifier }}
-            </p>
-            {% if vehicle_data.mileage or vehicle_data.color or vehicle_data.grade %}
-            <p style="font-size:12px;color:rgba(255,255,255,.35);margin-top:6px;">
-              {% if vehicle_data.mileage %}{{ vehicle_data.mileage }} km{% endif %}
-              {% if vehicle_data.color %} · {{ vehicle_data.color }}{% endif %}
-              {% if vehicle_data.grade %} · Grade {{ vehicle_data.grade }}{% endif %}
-            </p>
-            {% endif %}
-
-          {% elif vehicle_data.available %}
-            <!-- OtoFacts confirmed data exists but no make/model in check response -->
-            <h1 class="font-display" style="font-weight:800;font-size:clamp(18px,3vw,26px);color:white;letter-spacing:-0.5px;margin-bottom:4px;">
-              Japan Import Found
-            </h1>
-            <p style="font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--ch-blue-light);margin-bottom:4px;">
-              {{ identifier }}
-            </p>
-            <p style="font-size:13px;color:rgba(255,255,255,.4);">
-              Full history available — purchase to unlock
-            </p>
-
-          {% else %}
-            <!-- No data found or API issue -->
-            <h1 class="font-display" style="font-weight:800;font-size:clamp(18px,3vw,26px);color:white;letter-spacing:-0.5px;margin-bottom:4px;">
-              Chassis: <span style="font-family:'JetBrains Mono',monospace;font-weight:500;">{{ identifier }}</span>
-            </h1>
-            <p style="font-size:13px;color:rgba(255,255,255,.4);">
-              Japan import — full report available on purchase
-            </p>
-          {% endif %}
-        </div>
-
-        <span style="background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.25);color:var(--ch-blue-light);border-radius:99px;padding:5px 14px;font-size:11px;font-weight:700;flex-shrink:0;white-space:nowrap;">
-          🇯🇵 JAPAN
-        </span>
-      </div>
-    </div>
-
-    <!-- Body -->
-    <div style="padding:28px 32px;">
-
-      <!-- Info banner -->
-      <div style="display:flex;align-items:flex-start;gap:12px;background:var(--ch-warn-bg);border:1px solid #FDE68A;border-radius:var(--r-lg);padding:14px 18px;margin-bottom:24px;">
-        <span style="font-size:18px;line-height:1.3;flex-shrink:0;" aria-hidden="true">ℹ️</span>
-        <p style="font-size:13px;color:var(--ch-warn);line-height:1.65;margin:0;">
-          Japan vehicle preview requires a paid report. The full report includes auction grade,
-          MLIT records, Shaken (MOT) validity, and complete condition details from Japan.
-        </p>
-      </div>
-
-      <h3 class="font-display" style="font-weight:700;font-size:14px;color:var(--ch-text-1);margin-bottom:12px;">
-        Your Full Japan Report Will Include:
-      </h3>
-
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
-          <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-          <span style="font-size:13px;color:var(--ch-text-3);">Auction grade (S / 4.5 / 4 / 3.5 / R etc.) + auction sheet details</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
-          <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-          <span style="font-size:13px;color:var(--ch-text-3);">MLIT Japan registration history + owner count</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
-          <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-          <span style="font-size:13px;color:var(--ch-text-3);">Accident &amp; flood damage records</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
-          <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-          <span style="font-size:13px;color:var(--ch-text-3);">Shaken (Japanese MOT) validity date</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
-          <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-          <span style="font-size:13px;color:var(--ch-text-3);">Uganda URA 15-year import eligibility check + AI summary</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- CTA footer -->
-    <div style="background:var(--ch-blue-faint);border-top:1px solid var(--ch-blue-pale);padding:28px 32px;text-align:center;">
-      <h3 class="font-display" style="font-weight:800;font-size:19px;color:var(--ch-navy);margin-bottom:6px;">
-        Unlock Japan History Report
-      </h3>
-      <p style="font-size:13px;color:var(--ch-text-3);margin-bottom:22px;">
-        Get the complete auction and MLIT history for chassis
-        <strong style="font-family:'JetBrains Mono',monospace;">{{ identifier }}</strong>.
-      </p>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:12px;">
-        <form method="post" action="{% url 'vehicles:home' %}">
-          {% csrf_token %}
-          <input type="hidden" name="identifier" value="{{ identifier }}">
-          <input type="hidden" name="source_country" value="JAPAN">
-          <input type="hidden" name="report_type" value="BASIC">
-          <button type="submit" class="btn btn-secondary">
-            Basic Report — UGX {{ BASIC_PRICE_UGX|default:"25,000" }}
-          </button>
-        </form>
-        <form method="post" action="{% url 'vehicles:home' %}">
-          {% csrf_token %}
-          <input type="hidden" name="identifier" value="{{ identifier }}">
-          <input type="hidden" name="source_country" value="JAPAN">
-          <input type="hidden" name="report_type" value="FULL">
-          <button type="submit" class="btn btn-primary">
-            Full Report — UGX {{ FULL_PRICE_UGX|default:"50,000" }} ⭐
-          </button>
-        </form>
-      </div>
-      <p style="font-size:12px;color:var(--ch-text-3);">MTN Mobile Money · Airtel Money · Visa/Mastercard</p>
-    </div>
-
   </div>
 
   {% elif vehicle_data %}
@@ -216,12 +85,6 @@
           <div class="report-metric-value">{{ vehicle_data.body_type }}</div>
         </div>
         {% endif %}
-        {% if vehicle_data.doors %}
-        <div class="report-metric">
-          <div class="report-metric-label">Doors</div>
-          <div class="report-metric-value">{{ vehicle_data.doors }}</div>
-        </div>
-        {% endif %}
         {% if vehicle_data.country_of_manufacture %}
         <div class="report-metric" style="grid-column:span 2;">
           <div class="report-metric-label">Country of Manufacture</div>
@@ -242,7 +105,7 @@
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
             <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-            <span style="font-size:13px;color:var(--ch-text-3);">Title brands (Salvage / Rebuilt / Not Actual Mileage)</span>
+            <span style="font-size:13px;color:var(--ch-text-3);">Title brands (Salvage / Rebuilt / Flood / Not Actual Mileage)</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
             <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
@@ -250,11 +113,11 @@
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
             <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-            <span style="font-size:13px;color:var(--ch-text-3);">Open recall alerts + AI plain-English summary</span>
+            <span style="font-size:13px;color:var(--ch-text-3);">Open NHTSA recall alerts + AI plain-English summary</span>
           </div>
           <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
             <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-            <span style="font-size:13px;color:var(--ch-text-3);">Uganda URA 15-year import eligibility check</span>
+            <span style="font-size:13px;color:var(--ch-text-3);">Theft records + overall grade (A–F) with risk score</span>
           </div>
         </div>
       </div>
@@ -266,29 +129,28 @@
         Unlock the Full Report
       </h3>
       <p style="font-size:13px;color:var(--ch-text-3);margin-bottom:22px;">
-        Know exactly what you're buying before paying millions of shillings.
+        Know exactly what you're buying before spending millions of naira.
       </p>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:12px;">
-        <form method="post" action="{% url 'vehicles:home' %}">
-          {% csrf_token %}
-          <input type="hidden" name="identifier" value="{{ identifier }}">
-          <input type="hidden" name="source_country" value="{{ source_country }}">
-          <input type="hidden" name="report_type" value="BASIC">
-          <button type="submit" class="btn btn-secondary">
-            Basic Report — UGX {{ BASIC_PRICE_UGX|default:"25,000" }}
-          </button>
-        </form>
-        <form method="post" action="{% url 'vehicles:home' %}">
-          {% csrf_token %}
-          <input type="hidden" name="identifier" value="{{ identifier }}">
-          <input type="hidden" name="source_country" value="{{ source_country }}">
-          <input type="hidden" name="report_type" value="FULL">
-          <button type="submit" class="btn btn-primary">
-            Full Report — UGX {{ FULL_PRICE_UGX|default:"50,000" }} ⭐
-          </button>
-        </form>
-      </div>
-      <p style="font-size:12px;color:var(--ch-text-3);">MTN Mobile Money · Airtel Money · Visa/Mastercard</p>
+
+      {% if user.is_authenticated %}
+      <form method="post" action="{% url 'vehicles:home' %}">
+        {% csrf_token %}
+        <input type="hidden" name="identifier" value="{{ identifier }}">
+        <button type="submit" class="btn btn-primary btn-lg">
+          Get Full Report — ₦{{ price_ngn|default:"15,000" }}
+        </button>
+      </form>
+      {% else %}
+      <a href="{% url 'accounts:login' %}?next={{ request.path }}"
+         class="btn btn-primary btn-lg">
+        Sign In to Get Report — ₦{{ price_ngn|default:"15,000" }}
+      </a>
+      <p style="font-size:12px;color:var(--ch-text-3);margin-top:10px;">
+        <a href="{% url 'accounts:register' %}" style="color:var(--ch-blue);">Create a free account</a> to purchase.
+      </p>
+      {% endif %}
+
+      <p style="font-size:12px;color:var(--ch-text-3);margin-top:14px;">Secured by Paystack · Visa / Mastercard / Bank Transfer / USSD</p>
     </div>
 
   </div>

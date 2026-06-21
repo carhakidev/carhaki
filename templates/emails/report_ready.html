@@ -15,7 +15,7 @@
         <tr>
           <td style="background-color:#1B4332;border-radius:12px 12px 0 0;padding:28px 32px;text-align:center;">
             <h1 style="margin:0;color:#F4A81D;font-family:'Poppins',Arial,sans-serif;font-size:24px;font-weight:700;">CarHaki</h1>
-            <p style="margin:6px 0 0;color:#a7c4b5;font-size:13px;">Uganda Vehicle History Verification</p>
+            <p style="margin:6px 0 0;color:#a7c4b5;font-size:13px;">Nigeria Vehicle History Verification</p>
           </td>
         </tr>
 
@@ -37,7 +37,7 @@
             </table>
             {% endif %}
 
-            <h2 style="margin:0 0 16px;color:#1B4332;font-family:'Poppins',Arial,sans-serif;font-size:20px;font-weight:600;">Your Report Is Ready</h2>
+            <h2 style="margin:0 0 16px;color:#1B4332;font-family:'Poppins',Arial,sans-serif;font-size:20px;font-weight:600;">Your US Vehicle Report Is Ready</h2>
             <p style="margin:0 0 12px;color:#4b5563;font-size:15px;line-height:1.6;">
               Hello {% if user %}{{ user.first_name }}{% endif %},
             </p>
@@ -49,16 +49,16 @@
             {% if report %}
             <table style="width:100%;background-color:#f8f9fa;border-radius:8px;margin:16px 0;" cellpadding="12" cellspacing="0">
               <tr>
-                <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #e5e7eb;">Vehicle</td>
+                <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #e5e7eb;">Vehicle VIN</td>
                 <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #e5e7eb;">{{ report.search.identifier }}</td>
               </tr>
               <tr>
                 <td style="color:#6b7280;font-size:13px;border-bottom:1px solid #e5e7eb;">Report Type</td>
-                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #e5e7eb;">{{ report.get_report_type_display }}</td>
+                <td style="color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #e5e7eb;">US Vehicle Report</td>
               </tr>
               <tr>
                 <td style="color:#6b7280;font-size:13px;">Grade</td>
-                <td style="font-size:13px;font-weight:700;color:{{ report.grade_colour }};">{{ report.overall_grade }} - {{ report.grade_label }}</td>
+                <td style="font-size:13px;font-weight:700;color:{{ report.grade_colour }};">{{ report.overall_grade }} — {{ report.grade_label }}</td>
               </tr>
             </table>
             {% endif %}
@@ -92,8 +92,8 @@
         <tr>
           <td style="background-color:#f8f9fa;border-radius:0 0 12px 12px;padding:20px 32px;text-align:center;">
             <p style="margin:0;color:#9ca3af;font-size:12px;line-height:1.6;">
-              CarHaki Limited &bull; Plot 45, Kampala Road, Kampala, Uganda<br>
-              <a href="mailto:support@carhaki.ug" style="color:#9ca3af;">support@carhaki.ug</a>
+              CarHaki Limited &bull; Nigeria<br>
+              <a href="mailto:support@carhaki.com.ng" style="color:#9ca3af;">support@carhaki.com.ng</a>
             </p>
           </td>
         </tr>

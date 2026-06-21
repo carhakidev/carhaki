@@ -5,7 +5,7 @@ from solo.models import SingletonModel
 
 
 class SiteConfig(SingletonModel):
-    usd_to_ugx_rate = models.DecimalField(max_digits=10, decimal_places=2, default=3720)
+    usd_to_ngn_rate = models.DecimalField(max_digits=10, decimal_places=2, default=1600)
     maintenance_mode = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -19,16 +19,14 @@ class SiteConfig(SingletonModel):
 class APILog(models.Model):
     NHTSA = 'NHTSA'
     VINAUDIT = 'VINAUDIT'
-    OTOFACTS = 'OTOFACTS'
-    CARCHECK_JP = 'CARCHECK_JP'
+    CLEARVIN = 'CLEARVIN'
     ANTHROPIC = 'ANTHROPIC'
     PAYSTACK = 'PAYSTACK'
 
     PROVIDER_CHOICES = [
         (NHTSA, 'NHTSA (Free)'),
         (VINAUDIT, 'VinAudit'),
-        (OTOFACTS, 'OtoFacts'),
-        (CARCHECK_JP, 'CarCheck.jp'),
+        (CLEARVIN, 'ClearVin'),
         (ANTHROPIC, 'Anthropic Claude'),
         (PAYSTACK, 'Paystack'),
     ]

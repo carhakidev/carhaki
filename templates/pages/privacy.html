@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block title %}Privacy Policy — CarHaki{% endblock %}
-{% block meta_description %}CarHaki Privacy Policy. How we collect, use, and protect your personal data in compliance with Uganda Data Protection and Privacy Act 2019.{% endblock %}
+{% block meta_description %}CarHaki Privacy Policy. How we collect, use, and protect your personal data in compliance with the Nigeria Data Protection Act 2023.{% endblock %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto px-4 py-16">
 
   <div class="mb-10">
     <h1 class="font-heading font-bold text-4xl text-ch-green mb-3">Privacy Policy</h1>
-    <p class="text-gray-500 text-sm">Last updated: 1 May 2025. This policy is effective as of 1 May 2025.</p>
+    <p class="text-gray-500 text-sm">Last updated: 1 June 2026. This policy is effective as of 1 June 2026.</p>
     <p class="text-gray-600 mt-3">
       This Privacy Policy explains how CarHaki Limited collects, uses, stores, and
-      protects your personal data. It is prepared in compliance with the Uganda Data
-      Protection and Privacy Act 2019.
+      protects your personal data. It is prepared in compliance with the Nigeria Data
+      Protection Act 2023 (NDPA).
     </p>
   </div>
 
@@ -21,8 +21,8 @@
       <h2 class="font-heading font-bold text-xl text-ch-green mb-3">1. Introduction and Scope</h2>
       <p>
         CarHaki Limited ("CarHaki", "we", "us") operates the vehicle history verification
-        platform at carhaki.ug. This policy applies to all users of the Platform, whether
-        registered or unregistered, including individual buyers, dealers, and businesses.
+        platform at carhaki.com. This policy applies to all users of the Platform, whether
+        registered or unregistered, including individual buyers and businesses.
       </p>
       <p class="mt-3">
         By using the Platform, you consent to the collection and use of your personal data
@@ -36,19 +36,19 @@
       <div class="mt-4 space-y-4">
         <div class="bg-ch-light rounded-lg p-4">
           <h4 class="font-semibold text-ch-green mb-2">Account and Identity Data</h4>
-          <p class="text-sm">First name, last name, email address, phone number, account type (individual, dealer, etc.), country of residence, and password (stored in encrypted form only).</p>
+          <p class="text-sm">First name, last name, email address, phone number, country of residence, and password (stored in encrypted form only).</p>
         </div>
         <div class="bg-ch-light rounded-lg p-4">
           <h4 class="font-semibold text-ch-green mb-2">Vehicle Search Data</h4>
-          <p class="text-sm">VIN numbers and chassis numbers you search for, the country of origin selected, and the date and time of each search. This data is linked to your account if you are logged in.</p>
+          <p class="text-sm">VIN numbers you search for and the date and time of each search. This data is linked to your account if you are logged in.</p>
         </div>
         <div class="bg-ch-light rounded-lg p-4">
           <h4 class="font-semibold text-ch-green mb-2">Payment Data</h4>
-          <p class="text-sm">Transaction references, payment amounts, payment methods (MTN, Airtel, or card type), phone numbers used for mobile money, and transaction timestamps. We do not store full card numbers. Card processing is handled by Flutterwave.</p>
+          <p class="text-sm">Transaction references, payment amounts, and transaction timestamps. We do not store full card numbers. Card processing is handled by Paystack.</p>
         </div>
         <div class="bg-ch-light rounded-lg p-4">
           <h4 class="font-semibold text-ch-green mb-2">Technical and Usage Data</h4>
-          <p class="text-sm">IP address, browser type, device type, operating system, pages visited, time spent on pages, and referring website. Collected automatically via server logs and cookies.</p>
+          <p class="text-sm">IP address, browser type, device type, operating system, pages visited, and time spent on pages. Collected automatically via server logs and cookies.</p>
         </div>
         <div class="bg-ch-light rounded-lg p-4">
           <h4 class="font-semibold text-ch-green mb-2">Communications</h4>
@@ -62,7 +62,7 @@
       <ul class="list-disc ml-6 space-y-2">
         <li>Directly from you when you register, purchase a report, or contact us</li>
         <li>Automatically when you visit the Platform via cookies and server logs</li>
-        <li>From payment processors (Flutterwave) confirming successful transactions</li>
+        <li>From payment processors (Paystack) confirming successful transactions</li>
         <li>From third-party vehicle data providers when processing your search</li>
       </ul>
     </section>
@@ -77,7 +77,7 @@
         <li>To send you reports, receipts, and service communications by email</li>
         <li>To respond to contact form enquiries and support requests</li>
         <li>To improve the Platform and diagnose technical issues</li>
-        <li>To comply with legal obligations under Ugandan law</li>
+        <li>To comply with legal obligations under Nigerian law</li>
       </ul>
       <p class="mt-3">
         We do not use your personal data for advertising or marketing purposes without
@@ -88,16 +88,16 @@
     <section>
       <h2 class="font-heading font-bold text-xl text-ch-green mb-3">5. How We Store and Protect It</h2>
       <p>
-        All personal data is stored on servers located within or accessible to Uganda.
-        We implement the following security measures:
+        All personal data is stored on servers in secure data centres. We implement the
+        following security measures:
       </p>
       <ul class="list-disc ml-6 mt-3 space-y-2">
         <li>All data transmitted between your browser and our servers is encrypted via HTTPS (TLS 1.2 or higher)</li>
         <li>Passwords are stored using industry-standard one-way hashing algorithms</li>
         <li>Access to production systems is restricted to authorised personnel only</li>
-        <li>Payment card data is processed entirely by Flutterwave and never stored on our servers</li>
-        <li>Vehicle query data sent to third-party APIs contains only the VIN or chassis number, never your personal details</li>
-        <li>PDF reports stored on our servers are private and accessible only to the account that generated them</li>
+        <li>Payment card data is processed entirely by Paystack and never stored on our servers</li>
+        <li>Vehicle query data sent to third-party APIs contains only the VIN, never your personal details</li>
+        <li>PDF reports are private and accessible only to the account that generated them</li>
       </ul>
     </section>
 
@@ -115,21 +115,26 @@
           </thead>
           <tbody class="divide-y divide-gray-200">
             <tr>
-              <td class="px-4 py-3 font-medium">Flutterwave</td>
+              <td class="px-4 py-3 font-medium">Paystack</td>
               <td class="px-4 py-3">Payment processing</td>
-              <td class="px-4 py-3">Name, email, phone, payment amount</td>
+              <td class="px-4 py-3">Name, email, payment amount</td>
             </tr>
             <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium">VinAudit / OtoFacts</td>
-              <td class="px-4 py-3">Vehicle data lookup</td>
-              <td class="px-4 py-3">VIN or chassis number only</td>
+              <td class="px-4 py-3 font-medium">ClearVin / NMVTIS</td>
+              <td class="px-4 py-3">Vehicle data lookup (USA)</td>
+              <td class="px-4 py-3">VIN number only</td>
             </tr>
             <tr>
+              <td class="px-4 py-3 font-medium">NHTSA</td>
+              <td class="px-4 py-3">Free vehicle identification and recall data</td>
+              <td class="px-4 py-3">VIN number only</td>
+            </tr>
+            <tr class="bg-gray-50">
               <td class="px-4 py-3 font-medium">Anthropic</td>
               <td class="px-4 py-3">AI report summary generation</td>
               <td class="px-4 py-3">Anonymised vehicle report data (no personal data)</td>
             </tr>
-            <tr class="bg-gray-50">
+            <tr>
               <td class="px-4 py-3 font-medium">SendGrid</td>
               <td class="px-4 py-3">Transactional email delivery</td>
               <td class="px-4 py-3">Name, email address</td>
@@ -139,14 +144,14 @@
       </div>
       <p class="mt-4">
         We do not share your personal data with any other third parties unless required
-        to do so by law or a valid court order from a Ugandan court.
+        to do so by law or a valid court order.
       </p>
     </section>
 
     <section>
-      <h2 class="font-heading font-bold text-xl text-ch-green mb-3">7. Your Rights Under Ugandan Law</h2>
+      <h2 class="font-heading font-bold text-xl text-ch-green mb-3">7. Your Rights Under the NDPA 2023</h2>
       <p>
-        Under the Uganda Data Protection and Privacy Act 2019, you have the following rights:
+        Under the Nigeria Data Protection Act 2023, you have the following rights:
       </p>
       <ul class="list-disc ml-6 mt-3 space-y-2">
         <li><strong>Right of access:</strong> You may request a copy of the personal data we hold about you</li>
@@ -155,7 +160,7 @@
         <li><strong>Right to object:</strong> You may object to the processing of your data for purposes other than providing the service you requested</li>
       </ul>
       <p class="mt-3">
-        To exercise any of these rights, email us at <strong>privacy@carhaki.ug</strong>.
+        To exercise any of these rights, email us at <strong>privacy@carhaki.com</strong>.
         We will respond within 14 days.
       </p>
     </section>
@@ -163,8 +168,8 @@
     <section>
       <h2 class="font-heading font-bold text-xl text-ch-green mb-3">8. Cookies</h2>
       <p>
-        We use cookies to maintain your session (so you stay logged in), to remember
-        your preferences, and to detect repeated failed login attempts for security.
+        We use cookies to maintain your session (so you stay logged in) and to detect
+        repeated failed login attempts for security.
       </p>
       <p class="mt-3">
         We do not use advertising or tracking cookies. The cookies we use are strictly
@@ -177,7 +182,7 @@
       <p>
         The CarHaki Platform is intended for users aged 18 and over. We do not knowingly
         collect personal data from anyone under 18. If you believe a child has submitted
-        personal data through the Platform, contact us at privacy@carhaki.ug so we can
+        personal data through the Platform, contact us at privacy@carhaki.com so we can
         delete it.
       </p>
     </section>
@@ -188,7 +193,7 @@
         We retain account data for as long as your account is active. If you delete your
         account, we will delete your personal data within 30 days, except where we are
         required to retain it by law (for example, payment transaction records for tax
-        purposes, which are retained for 7 years under Ugandan tax law).
+        purposes, retained for 6 years under Nigerian tax law).
       </p>
       <p class="mt-3">
         Vehicle search data is retained for 2 years to allow you to access past reports.
@@ -199,18 +204,17 @@
       <h2 class="font-heading font-bold text-xl text-ch-green mb-3">11. Changes to This Policy</h2>
       <p>
         We may update this Privacy Policy from time to time. We will notify registered
-        users by email when material changes are made. The date at the top of this page
-        reflects when it was last updated.
+        users by email when material changes are made.
       </p>
     </section>
 
     <section>
       <h2 class="font-heading font-bold text-xl text-ch-green mb-3">12. Contact Us</h2>
+      {# FLAG: Company address below is a placeholder — update with actual Nigerian registered address #}
       <div class="bg-ch-light rounded-lg p-4 mt-3">
         <p class="font-semibold text-ch-green">CarHaki Limited - Data Controller</p>
-        <p class="text-gray-600">Plot 45, Kampala Road, Kampala, Uganda</p>
-        <p class="text-gray-600">Privacy enquiries: privacy@carhaki.ug</p>
-        <p class="text-gray-600">Phone: +256 700 123 456</p>
+        <p class="text-gray-400 italic">Nigeria office address — to be updated</p>
+        <p class="text-gray-600">Privacy enquiries: privacy@carhaki.com</p>
       </div>
     </section>
 

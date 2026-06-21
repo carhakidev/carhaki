@@ -71,23 +71,18 @@
           </div>
         </div>
 
-        <!-- Auction grade -->
+        <!-- Risk score -->
         <div style="background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
                     border-radius:var(--r-lg); padding:16px 24px; text-align:center; flex-shrink:0;">
           <div style="font-size:10px; text-transform:uppercase; letter-spacing:.08em;
                       color:rgba(255,255,255,.4); margin-bottom:6px;">
-            Japan Auction Grade
+            Risk Score
           </div>
           <div style="font-family:'Plus Jakarta Sans',sans-serif; font-size:40px;
-                      font-weight:800; line-height:1;
-                      color:{% if report.auction_grade >= 4 %}#34D399{% elif report.auction_grade >= 3 %}#FCD34D{% else %}#F87171{% endif %};">
-            {{ report.auction_grade|default:"4.0" }}
+                      font-weight:800; line-height:1; color:#34D399;">
+            {{ report.risk_score|default:"100" }}
           </div>
-          <div style="font-size:11px; color:rgba(255,255,255,.35); margin-top:4px;">
-            {% if report.auction_grade >= 4 %}Excellent condition
-            {% elif report.auction_grade >= 3 %}Good condition
-            {% else %}Fair condition{% endif %}
-          </div>
+          <div style="font-size:11px; color:rgba(255,255,255,.35); margin-top:4px;">out of 100</div>
         </div>
       </div>
 
@@ -100,7 +95,7 @@
           <span style="font-family:'JetBrains Mono',monospace; font-size:12px;
                        color:var(--ch-blue); background:white; padding:4px 10px;
                        border-radius:6px; border:1px solid var(--ch-blue-pale);">
-            carhaki.ug/report/{{ report.share_token }}
+            carhaki.com/report/{{ report.share_token }}
           </span>
         </div>
         <div style="display:flex; gap:8px; flex-wrap:wrap;">
@@ -113,7 +108,7 @@
             </svg>
             Copy Link
           </button>
-          <a href="https://wa.me/?text=Check%20this%20CarHaki%20report%3A%20https://carhaki.ug/report/{{ report.share_token }}"
+          <a href="https://wa.me/?text=Check%20this%20CarHaki%20report%3A%20https://carhaki.com/report/{{ report.share_token }}"
              target="_blank" rel="noopener"
              class="btn btn-sm" style="background:#25D366; color:white;">
             WhatsApp
@@ -242,10 +237,6 @@
             <div class="data-cell-value">{{ report.interior_grade|default:"B" }}</div>
           </div>
           <div class="data-cell">
-            <div class="data-cell-label">Auction House</div>
-            <div class="data-cell-value sm">{{ report.auction_house|default:"USS Osaka" }}</div>
-          </div>
-          <div class="data-cell">
             <div class="data-cell-label">Auction Date</div>
             <div class="data-cell-value sm">{{ report.auction_date|default:"March 2019" }}</div>
           </div>
@@ -366,12 +357,6 @@
           <div class="data-cell"><div class="data-cell-label">Export Port (Japan)</div><div class="data-cell-value sm">{{ report.export_port|default:"Nagoya, Japan" }}</div></div>
           <div class="data-cell"><div class="data-cell-label">Import Port (Africa)</div><div class="data-cell-value sm">{{ report.import_port|default:"Mombasa, Kenya" }}</div></div>
           <div class="data-cell"><div class="data-cell-label">Uganda Clearance</div><div class="data-cell-value sm">{{ report.clearance_date|default:"June 2019" }}</div></div>
-          <div class="data-cell">
-            <div class="data-cell-label">URA Eligibility</div>
-            <div class="data-cell-value sm {% if report.ura_eligible %}status-ok{% else %}status-warn{% endif %}">
-              {% if report.ura_eligible %}✓ Eligible{% else %}⚠ Check with URA{% endif %}
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -412,8 +397,8 @@
           <div class="timeline-item">
             <div class="timeline-dot timeline-dot-ok">✓</div>
             <div class="timeline-content">
-              <div class="timeline-title">Japan auction inspection passed</div>
-              <div class="timeline-meta">March 2019 — Grade {{ report.auction_grade|default:"4.0" }} awarded at {{ report.auction_house|default:"USS Osaka" }}</div>
+              <div class="timeline-title">Title issued in USA</div>
+              <div class="timeline-meta">First registration recorded in US state DMV</div>
             </div>
           </div>
           <div class="timeline-item">
@@ -470,11 +455,8 @@
           Original Japan Auction Photos
         </h3>
         <p style="font-size:13px; color:var(--ch-text-3); margin-bottom:20px; max-width:400px; margin-left:auto; margin-right:auto;">
-          Upgrade to Full Report to see the original auction photos from Japan.
+          No auction photos are available for US-sourced vehicles.
         </p>
-        <a href="{% url 'vehicles:upgrade_report' report.id %}" class="btn btn-primary">
-          Upgrade to Full — UGX 25,000 more
-        </a>
       </div>
     </div>
     {% endif %}
@@ -494,7 +476,7 @@
           Report Disclaimer
         </p>
         <p style="font-size:12px; color:var(--ch-text-3); line-height:1.65; margin:0;">
-          This report is generated from Japan auction records, insurance databases, and import records.
+          This report is generated from NMVTIS, NHTSA, US state DMV records, and US insurance databases.
           CarHaki provides this information in good faith but cannot guarantee completeness.
           Always conduct a physical inspection by a qualified mechanic before purchasing any vehicle.
         </p>
@@ -513,7 +495,7 @@
         Check Another Car
       </a>
       <button onclick="window.print()" class="btn btn-secondary">Print Report</button>
-      <a href="{% url 'vehicles:download_report' report.id %}"
+      <a href="{% url 'vehicles:report_pdf' pk=report.id %}"
          class="btn btn-primary" style="margin-left:auto;">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
              fill="none" stroke="currentColor" stroke-width="2.5"
@@ -543,7 +525,7 @@
 {% block extra_scripts %}
 <script>
 function copyLink() {
-  const url = 'https://carhaki.ug/report/{{ report.share_token }}';
+  const url = 'https://carhaki.com/report/{{ report.share_token }}';
   navigator.clipboard.writeText(url).then(function() {
     const btn = document.querySelector('[onclick="copyLink()"]');
     if (btn) {

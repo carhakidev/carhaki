@@ -11,5 +11,5 @@ def site_config(request):
     return {
         'site_config': config,
         'REPORT_PRICE_NGN': f'{REPORT_PRICE_NGN:,}',
-        'site_url': getattr(settings, 'SITE_URL', 'https://carhaki.com.ng'),
+        'site_url': getattr(settings, 'SITE_URL', 'https://carhaki.com'),
     }

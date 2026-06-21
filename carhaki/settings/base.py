@@ -149,10 +149,13 @@ AXES_LOCKOUT_TEMPLATE = 'accounts/lockout.html'
 AXES_RESET_ON_SUCCESS = True
 
 # Third-party API keys (all from .env)
+SITE_URL = env('SITE_URL', default='https://carhaki.com')
+
 VINAUDIT_API_KEY = env('VINAUDIT_API_KEY', default='')
-OTOFACTS_API_KEY = env('OTOFACTS_API_KEY', default='')
-CARCHECK_JP_API_KEY = env('CARCHECK_JP_API_KEY', default='')
+CLEARVIN_EMAIL = env('CLEARVIN_EMAIL', default='')
+CLEARVIN_PASSWORD = env('CLEARVIN_PASSWORD', default='')
 ANTHROPIC_API_KEY = env('ANTHROPIC_API_KEY', default='')
+USD_TO_NGN_RATE = float(env('USD_TO_NGN_RATE', default='1600'))
 PAYSTACK_PUBLIC_KEY = env('PAYSTACK_PUBLIC_KEY', default='')
 PAYSTACK_SECRET_KEY = env('PAYSTACK_SECRET_KEY', default='')
 PAYSTACK_WEBHOOK_SECRET = env('PAYSTACK_SECRET_KEY', default='')

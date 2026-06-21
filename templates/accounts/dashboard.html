@@ -34,7 +34,7 @@
         </div>
         <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:16px 20px;">
           <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.4);margin-bottom:6px;">Total Spent</div>
-          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:white;">{{ total_spent|default:"0" }} <span style="font-size:14px;font-weight:500;color:rgba(255,255,255,.4);">UGX</span></div>
+          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:white;">₦{{ total_spent|default:"0" }}</div>
         </div>
       </div>
     </div>
@@ -82,7 +82,7 @@
             <span style="font-size:12px;color:var(--blue);">Processing...</span>
           </div>
           {% elif report.status == 'pending' %}
-          <a href="{% url 'vehicles:checkout' report.order.id %}" class="btn btn-primary btn-sm">Complete Payment</a>
+          {% if report.order %}<a href="{% url 'payments:initiate' order_id=report.order.id %}" class="btn btn-primary btn-sm">Complete Payment</a>{% endif %}
           {% endif %}
         </div>
       </div>
@@ -92,7 +92,7 @@
     <div style="text-align:center;padding:80px 20px;background:white;border:1px solid var(--border);border-radius:var(--r-xl);">
       <div style="font-size:48px;margin-bottom:16px;">🔍</div>
       <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;color:var(--text-1);margin-bottom:8px;">No reports yet</h3>
-      <p style="font-size:15px;color:var(--text-3);margin-bottom:24px;max-width:380px;margin-left:auto;margin-right:auto;">Start by checking any ex-Japan car. Enter the chassis number and get the full history report instantly.</p>
+      <p style="font-size:15px;color:var(--text-3);margin-bottom:24px;max-width:380px;margin-left:auto;margin-right:auto;">Start by checking any Tokunbo car. Enter the 17-character VIN and get the full USA history report instantly.</p>
       <a href="{% url 'vehicles:search' %}" class="btn btn-primary btn-lg"><i class="fa-solid fa-magnifying-glass"></i> Check Your First Car</a>
     </div>
     {% endif %}
@@ -121,9 +121,6 @@
       <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
         <a href="{% url 'accounts:profile' %}" class="btn btn-secondary btn-sm">Edit Profile</a>
         <a href="{% url 'accounts:change_password' %}" class="btn btn-secondary btn-sm">Change Password</a>
-        {% if not user.account_type == 'dealer' %}
-        <a href="{% url 'accounts:dealer_register' %}" class="btn btn-sm" style="background:var(--blue-faint);color:var(--blue-dark);border:1px solid var(--blue-pale);">Become a Dealer</a>
-        {% endif %}
       </div>
     </div>
 
