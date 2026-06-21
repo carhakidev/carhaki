@@ -1,5 +1,6 @@
 from django.conf import settings
 from .models import SiteConfig
+from .constants import REPORT_PRICE_NGN
 
 
 def site_config(request):
@@ -9,8 +10,6 @@ def site_config(request):
         return {}
     return {
         'site_config': config,
-        'BASIC_PRICE_UGX': f'{int(config.basic_report_ugx):,}',
-        'FULL_PRICE_UGX': f'{int(config.full_report_ugx):,}',
-        'DEALER_PACK_PRICE_UGX': f'{int(config.dealer_pack_10_ugx):,}',
-        'site_url': getattr(settings, 'SITE_URL', 'https://carhaki.ug'),
+        'REPORT_PRICE_NGN': f'{REPORT_PRICE_NGN:,}',
+        'site_url': getattr(settings, 'SITE_URL', 'https://carhaki.com.ng'),
     }

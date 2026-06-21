@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils import timezone
-from .models import SiteConfig, APILog, ContactMessage, DealerApplication, FAQ, SiteStatistic
+from .models import SiteConfig, APILog, ContactMessage, FAQ, SiteStatistic
 from solo.admin import SingletonModelAdmin
 
 
@@ -33,23 +33,6 @@ class ContactMessageAdmin(admin.ModelAdmin):
     def mark_as_replied(self, request, queryset):
         queryset.update(status=ContactMessage.REPLIED, replied_at=timezone.now(), replied_by=request.user)
     mark_as_replied.short_description = 'Mark selected messages as replied'
-
-
-@admin.register(DealerApplication)
-class DealerApplicationAdmin(admin.ModelAdmin):
-    list_display = ['business_name', 'contact_person', 'district', 'status', 'applied_at']
-    list_filter = ['status', 'district']
-    search_fields = ['business_name', 'contact_person', 'email']
-    readonly_fields = ['applied_at']
-    actions = ['approve_applications', 'reject_applications']
-
-    def approve_applications(self, request, queryset):
-        queryset.update(status=DealerApplication.APPROVED, reviewed_at=timezone.now(), reviewed_by=request.user)
-    approve_applications.short_description = 'Approve selected applications'
-
-    def reject_applications(self, request, queryset):
-        queryset.update(status=DealerApplication.REJECTED, reviewed_at=timezone.now(), reviewed_by=request.user)
-    reject_applications.short_description = 'Reject selected applications'
 
 
 @admin.register(FAQ)

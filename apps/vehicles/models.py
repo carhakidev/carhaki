@@ -34,11 +34,9 @@ class VehicleSearch(models.Model):
 
 
 class VehicleReport(models.Model):
-    BASIC = 'BASIC'
-    FULL = 'FULL'
+    US_VEHICLE = 'us_vehicle'
     REPORT_TYPE_CHOICES = [
-        (BASIC, 'Basic Report'),
-        (FULL, 'Full Report'),
+        (US_VEHICLE, 'US Vehicle Report'),
     ]
 
     PENDING = 'PENDING'
@@ -69,7 +67,7 @@ class VehicleReport(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
         null=True, blank=True, related_name='reports'
     )
-    report_type = models.CharField(max_length=10, choices=REPORT_TYPE_CHOICES, default=FULL)
+    report_type = models.CharField(max_length=20, choices=REPORT_TYPE_CHOICES, default=US_VEHICLE)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=PENDING)
     raw_data = models.JSONField(null=True, blank=True)
     processed_data = models.JSONField(null=True, blank=True)

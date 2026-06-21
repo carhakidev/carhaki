@@ -7,14 +7,14 @@ from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse, Http404, JsonResponse
 from django.contrib import messages
 from django.urls import reverse
-from django.conf import settings
 
 from .models import VehicleSearch, VehicleReport
 from .forms import VehicleSearchForm
 from apps.integrations.nhtsa import NHTSAProvider
 from apps.integrations.cache import VehicleDataCache
 from apps.core.models import FAQ
-from apps.core.forms import ContactForm, DealerApplicationForm
+from apps.core.forms import ContactForm
+from apps.core.constants import REPORT_PRICE_NGN
 
 logger = logging.getLogger(__name__)
 
@@ -33,84 +33,39 @@ class HomeView(TemplateView):
     def post(self, request, *args, **kwargs):
         """
         Handles Buy Report button POSTs from preview.html.
-        Fields: identifier, source_country, report_type
+        Fields: identifier (VIN or chassis number)
         """
-        from apps.payments.models import Order
+        from apps.payments.services import create_order_and_report
+        from apps.vehicles.validators import detect_identifier_type
 
-        identifier     = request.POST.get('identifier', '').upper().strip()
-        source_country = request.POST.get('source_country', 'JAPAN').upper()
-        report_type    = request.POST.get('report_type', 'FULL').upper()
+        identifier = request.POST.get('identifier', '').upper().strip()
 
         if not identifier:
-            messages.error(request, 'No chassis number provided.')
+            messages.error(request, 'No vehicle identifier provided.')
             return redirect('vehicles:home')
 
-        # Require login — send back to preview after login
         if not request.user.is_authenticated:
-            preview_url = reverse(
-                'vehicles:preview', kwargs={'identifier': identifier}
-            )
-            return redirect(
-                f"{reverse('accounts:login')}"
-                f"?next={preview_url}%3Fcountry%3D{source_country}"
-            )
+            preview_url = reverse('vehicles:preview', kwargs={'identifier': identifier})
+            return redirect(f"{reverse('accounts:login')}?next={preview_url}")
 
-        # Normalise report_type
-        valid_types = {Order.BASIC, Order.FULL}
-        if report_type not in valid_types:
-            report_type = Order.FULL
+        identifier_type = detect_identifier_type(identifier)
 
         try:
-            # Try the dedicated service first (may not exist yet)
-            try:
-                from apps.payments.services import create_order_and_report
-                order = create_order_and_report(
-                    user=request.user,
-                    identifier=identifier,
-                    source_country=source_country,
-                    report_type=report_type,
-                )
-            except ImportError:
-                # Service doesn't exist yet — create Order directly
-                search, _ = VehicleSearch.objects.get_or_create(
-                    identifier=identifier,
-                    source_country=source_country,
-                    defaults={'user': request.user},
-                )
-                order = Order.objects.create(
-                    user=request.user,
-                    search=search,
-                    report_type=report_type,
-                    status=Order.PENDING,
-                    amount=self._get_price(report_type),
-                    currency='UGX',
-                )
-
-            return redirect('payments:checkout', pk=order.pk)
-
-        except Exception as exc:
-            logger.exception(
-                f'Order creation failed for {identifier}: {exc}'
+            order = create_order_and_report(
+                user=request.user,
+                identifier=identifier,
+                identifier_type=identifier_type,
+                source_country='USA',
             )
+            return redirect('payments:initiate', order_id=order.pk)
+        except Exception as exc:
+            logger.exception(f'Order creation failed for {identifier}: {exc}')
             messages.error(
                 request,
-                'Something went wrong creating your order. '
-                'Please try again or contact support on WhatsApp.',
+                'Something went wrong creating your order. Please try again or contact support.',
             )
-            preview_url = reverse(
-                'vehicles:preview', kwargs={'identifier': identifier}
-            )
-            return redirect(f'{preview_url}?country={source_country}')
-
-    @staticmethod
-    def _get_price(report_type):
-        """Return price in UGX based on report type."""
-        from apps.payments.models import Order
-        prices = {
-            Order.BASIC: 25000,
-            Order.FULL:  50000,
-        }
-        return prices.get(report_type, 25000)
+            preview_url = reverse('vehicles:preview', kwargs={'identifier': identifier})
+            return redirect(preview_url)
 
 
 class SearchView(FormView):
@@ -157,75 +112,6 @@ class PreviewView(TemplateView):
     def _is_usa_vin(self, identifier):
         return bool(re.match(r'^[A-HJ-NPR-Z0-9]{17}$', identifier))
 
-    def _fetch_japan_preview(self, identifier):
-        """
-        Calls the OtoFacts /check endpoint (free — no credits deducted).
-        Returns dict for template context.
-        """
-        import requests as req
-
-        api_key = getattr(settings, 'OTOFACTS_API_KEY', '')
-        if not api_key:
-            return {
-                'is_japan':  True,
-                'identifier': identifier,
-                'available':  False,
-                'error':      'OtoFacts API key not configured.',
-            }
-
-        try:
-            resp = req.get(
-                'https://api.otofacts.com/v3/report/check/basic/jp',
-                params={'query': identifier},
-                headers={
-                    'X-API-Key': api_key,
-                    'Accept':    'application/json',
-                },
-                timeout=10,
-            )
-
-            if resp.status_code == 200:
-                data = resp.json()
-                return {
-                    'is_japan':   True,
-                    'identifier': identifier,
-                    'available':  data.get('available', False),
-                    'make':       data.get('make', ''),
-                    'model':      data.get('model', ''),
-                    'year':       data.get('year', ''),
-                    'grade':      data.get('grade', ''),
-                    'mileage':    data.get('mileage', ''),
-                    'color':      data.get('color', ''),
-                    'raw':        data,
-                }
-
-            logger.warning(
-                f'OtoFacts check returned {resp.status_code} for {identifier}'
-            )
-            return {
-                'is_japan':   True,
-                'identifier': identifier,
-                'available':  False,
-                'api_status': resp.status_code,
-            }
-
-        except req.exceptions.Timeout:
-            logger.warning(f'OtoFacts timeout for {identifier}')
-            return {
-                'is_japan':   True,
-                'identifier': identifier,
-                'available':  False,
-                'error':      'OtoFacts timed out. Please try again.',
-            }
-        except Exception as exc:
-            logger.exception(f'OtoFacts error for {identifier}: {exc}')
-            return {
-                'is_japan':   True,
-                'identifier': identifier,
-                'available':  False,
-                'error':      str(exc),
-            }
-
     def _fetch_usa_preview(self, identifier):
         """
         Checks Redis cache, then falls back to NHTSA (free, no credits).
@@ -245,33 +131,20 @@ class PreviewView(TemplateView):
             return {'error': str(exc)}
 
     def get_context_data(self, **kwargs):
-        ctx            = super().get_context_data(**kwargs)
-        identifier     = self.kwargs['identifier'].upper()
-        source_country = self.request.GET.get('country', 'AUTO').upper()
+        ctx        = super().get_context_data(**kwargs)
+        identifier = self.kwargs['identifier'].upper()
 
-        # Auto-detect: 17-char alphanumeric → USA VIN, anything else → Japan
-        if source_country == 'AUTO':
-            source_country = 'USA' if self._is_usa_vin(identifier) else 'JAPAN'
+        ctx['identifier']    = identifier
+        ctx['source_country'] = 'USA'
+        ctx['search_form']   = VehicleSearchForm(initial={'identifier': identifier})
+        ctx['price_ngn']     = REPORT_PRICE_NGN
 
-        ctx['identifier']       = identifier
-        ctx['source_country']   = source_country
-        ctx['is_japan_preview'] = (source_country == 'JAPAN')
-        ctx['search_form']      = VehicleSearchForm(
-            initial={'identifier': identifier}
-        )
-        # Pricing shown on preview CTA buttons
-        ctx['BASIC_PRICE_UGX']  = '25,000'
-        ctx['FULL_PRICE_UGX']   = '50,000'
-
-        if source_country == 'JAPAN':
-            ctx['vehicle_data'] = self._fetch_japan_preview(identifier)
+        vehicle_data = self._fetch_usa_preview(identifier)
+        if vehicle_data and 'error' in vehicle_data:
+            ctx['error']        = vehicle_data['error']
+            ctx['vehicle_data'] = None
         else:
-            vehicle_data = self._fetch_usa_preview(identifier)
-            if vehicle_data and 'error' in vehicle_data:
-                ctx['error']        = vehicle_data['error']
-                ctx['vehicle_data'] = None
-            else:
-                ctx['vehicle_data'] = vehicle_data
+            ctx['vehicle_data'] = vehicle_data
 
         return ctx
 
@@ -441,85 +314,6 @@ class ContactView(FormView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['sent'] = self.request.GET.get('sent') == '1'
-        return ctx
-
-
-class DealersView(FormView):
-    template_name = 'pages/dealers.html'
-    form_class    = DealerApplicationForm
-    success_url   = '/dealers/?applied=1'
-
-    def form_valid(self, form):
-        application = form.save()
-        self._notify_applicant(application)
-        messages.success(
-            self.request,
-            'Your dealer application has been received. '
-            'We will be in touch within 2 business days.',
-        )
-        return super().form_valid(form)
-
-    def _notify_applicant(self, application):
-        try:
-            from django.core.mail import send_mail
-            from django.template.loader import render_to_string
-            body = render_to_string(
-                'emails/dealer_application_email.html',
-                {'application': application},
-            )
-            send_mail(
-                subject='Dealer Application Received - CarHaki',
-                message=(
-                    f'Dear {application.contact_person},\n\n'
-                    f'Thank you for applying to become a CarHaki dealer partner. '
-                    f'We have received your application for {application.business_name} '
-                    f'and will review it within 2 business days.\n\nCarHaki Team'
-                ),
-                from_email=None,
-                recipient_list=[application.email],
-                html_message=body,
-                fail_silently=True,
-            )
-        except Exception:
-            pass
-
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        ctx['applied']        = self.request.GET.get('applied') == '1'
-        ctx['dealer_bundles'] = [
-            {
-                'name':             'Starter Pack',
-                'reports':          10,
-                'price_ugx':        600000,
-                'price_per_report': 60000,
-                'saving_ugx':       150000,
-                'highlight':        False,
-            },
-            {
-                'name':             'Growth Pack',
-                'reports':          25,
-                'price_ugx':        1250000,
-                'price_per_report': 50000,
-                'saving_ugx':       625000,
-                'highlight':        True,
-            },
-            {
-                'name':             'Pro Pack',
-                'reports':          50,
-                'price_ugx':        2000000,
-                'price_per_report': 40000,
-                'saving_ugx':       1750000,
-                'highlight':        False,
-            },
-            {
-                'name':             'Enterprise Pack',
-                'reports':          100,
-                'price_ugx':        3500000,
-                'price_per_report': 35000,
-                'saving_ugx':       4000000,
-                'highlight':        False,
-            },
-        ]
         return ctx
 
 

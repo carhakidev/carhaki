@@ -6,9 +6,6 @@ from solo.models import SingletonModel
 
 class SiteConfig(SingletonModel):
     usd_to_ugx_rate = models.DecimalField(max_digits=10, decimal_places=2, default=3720)
-    basic_report_ugx = models.DecimalField(max_digits=12, decimal_places=2, default=35000)
-    full_report_ugx = models.DecimalField(max_digits=12, decimal_places=2, default=75000)
-    dealer_pack_10_ugx = models.DecimalField(max_digits=12, decimal_places=2, default=600000)
     maintenance_mode = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -18,11 +15,6 @@ class SiteConfig(SingletonModel):
     def __str__(self):
         return 'Site Configuration'
 
-    def ugx_to_usd(self, ugx_amount):
-        if self.usd_to_ugx_rate:
-            return round(float(ugx_amount) / float(self.usd_to_ugx_rate), 2)
-        return 0
-
 
 class APILog(models.Model):
     NHTSA = 'NHTSA'
@@ -30,7 +22,7 @@ class APILog(models.Model):
     OTOFACTS = 'OTOFACTS'
     CARCHECK_JP = 'CARCHECK_JP'
     ANTHROPIC = 'ANTHROPIC'
-    FLUTTERWAVE = 'FLUTTERWAVE'
+    PAYSTACK = 'PAYSTACK'
 
     PROVIDER_CHOICES = [
         (NHTSA, 'NHTSA (Free)'),
@@ -38,7 +30,7 @@ class APILog(models.Model):
         (OTOFACTS, 'OtoFacts'),
         (CARCHECK_JP, 'CarCheck.jp'),
         (ANTHROPIC, 'Anthropic Claude'),
-        (FLUTTERWAVE, 'Flutterwave'),
+        (PAYSTACK, 'Paystack'),
     ]
 
     provider = models.CharField(max_length=20, choices=PROVIDER_CHOICES)
@@ -108,48 +100,6 @@ class ContactMessage(models.Model):
     def __str__(self):
         return f'{self.name} - {self.get_subject_display()} ({self.created_at:%Y-%m-%d})'
 
-
-class DealerApplication(models.Model):
-    PENDING = 'PENDING'
-    APPROVED = 'APPROVED'
-    REJECTED = 'REJECTED'
-    STATUS_CHOICES = [
-        (PENDING, 'Pending Review'),
-        (APPROVED, 'Approved'),
-        (REJECTED, 'Rejected'),
-    ]
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    business_name = models.CharField(max_length=200)
-    contact_person = models.CharField(max_length=200)
-    email = models.EmailField()
-    phone = models.CharField(max_length=30)
-    physical_address = models.TextField()
-    district = models.CharField(max_length=100)
-    website = models.URLField(blank=True)
-    monthly_sales_volume = models.CharField(
-        max_length=50,
-        help_text='Approximate number of vehicles sold monthly'
-    )
-    how_did_you_hear = models.CharField(max_length=200, blank=True)
-    message = models.TextField(blank=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PENDING)
-    applied_at = models.DateTimeField(auto_now_add=True)
-    reviewed_at = models.DateTimeField(null=True, blank=True)
-    reviewed_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name='dealer_application_reviews'
-    )
-    rejection_reason = models.TextField(blank=True)
-    approval_notes = models.TextField(blank=True)
-
-    class Meta:
-        verbose_name = 'Dealer Application'
-        verbose_name_plural = 'Dealer Applications'
-        ordering = ['-applied_at']
-
-    def __str__(self):
-        return f'{self.business_name} - {self.get_status_display()}'
 
 
 class FAQ(models.Model):
