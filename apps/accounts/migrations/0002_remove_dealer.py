@@ -9,7 +9,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.DeleteModel(name='DealerProfile'),
+        migrations.RunSQL(
+            sql="DROP TABLE IF EXISTS accounts_dealerprofile CASCADE;",
+            reverse_sql=migrations.RunSQL.noop,
+        ),
         migrations.AlterField(
             model_name='customuser',
             name='account_type',

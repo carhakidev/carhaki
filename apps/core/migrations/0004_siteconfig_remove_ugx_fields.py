@@ -13,5 +13,8 @@ class Migration(migrations.Migration):
         migrations.RemoveField(model_name='siteconfig', name='basic_report_ugx'),
         migrations.RemoveField(model_name='siteconfig', name='full_report_ugx'),
         migrations.RemoveField(model_name='siteconfig', name='dealer_pack_10_ugx'),
-        migrations.DeleteModel(name='DealerApplication'),
+        migrations.RunSQL(
+            sql="DROP TABLE IF EXISTS core_dealerapplication CASCADE;",
+            reverse_sql=migrations.RunSQL.noop,
+        ),
     ]
