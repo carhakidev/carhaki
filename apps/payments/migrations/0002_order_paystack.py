@@ -8,37 +8,52 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # 1. Add new NGN amount field (allow null temporarily for the rename)
-        migrations.AddField(
-            model_name='order',
-            name='amount_ngn',
-            field=models.DecimalField(decimal_places=2, default=0, max_digits=12),
-            preserve_default=False,
-        ),
-        # 2. Copy existing UGX values into NGN column
+        # 1. Add amount_ngn if it doesn't already exist
         migrations.RunSQL(
-            sql='UPDATE payments_order SET amount_ngn = amount_ugx',
+            sql="ALTER TABLE payments_order ADD COLUMN IF NOT EXISTS amount_ngn numeric(12,2) DEFAULT 0;",
             reverse_sql=migrations.RunSQL.noop,
         ),
-        # 3. Remove the old UGX and USD fields
-        migrations.RemoveField(model_name='order', name='amount_ugx'),
-        migrations.RemoveField(model_name='order', name='amount_usd'),
-        # 4. Remove Flutterwave-specific fields
-        migrations.RemoveField(model_name='order', name='flutterwave_ref'),
-        migrations.RemoveField(model_name='order', name='flutterwave_tx_id'),
-        migrations.RemoveField(model_name='order', name='phone_number'),
-        # 5. Add Paystack reference fields
-        migrations.AddField(
-            model_name='order',
-            name='paystack_reference',
-            field=models.CharField(blank=True, max_length=100),
+        # 2. Copy UGX values into NGN only when amount_ugx column exists
+        migrations.RunSQL(
+            sql="""
+                DO $$
+                BEGIN
+                    IF EXISTS (
+                        SELECT 1 FROM information_schema.columns
+                        WHERE table_name='payments_order' AND column_name='amount_ugx'
+                    ) THEN
+                        UPDATE payments_order SET amount_ngn = amount_ugx;
+                    END IF;
+                END $$;
+            """,
+            reverse_sql=migrations.RunSQL.noop,
         ),
-        migrations.AddField(
-            model_name='order',
-            name='paystack_access_code',
-            field=models.CharField(blank=True, max_length=100),
+        # 3. Drop old UGX / USD columns if they exist
+        migrations.RunSQL(
+            sql="""
+                ALTER TABLE payments_order DROP COLUMN IF EXISTS amount_ugx;
+                ALTER TABLE payments_order DROP COLUMN IF EXISTS amount_usd;
+            """,
+            reverse_sql=migrations.RunSQL.noop,
         ),
-        # 6. Update payment_method choices (existing rows keep their value; blank is still valid)
+        # 4. Drop Flutterwave-specific columns if they exist
+        migrations.RunSQL(
+            sql="""
+                ALTER TABLE payments_order DROP COLUMN IF EXISTS flutterwave_ref;
+                ALTER TABLE payments_order DROP COLUMN IF EXISTS flutterwave_tx_id;
+                ALTER TABLE payments_order DROP COLUMN IF EXISTS phone_number;
+            """,
+            reverse_sql=migrations.RunSQL.noop,
+        ),
+        # 5. Add Paystack columns if not already present
+        migrations.RunSQL(
+            sql="""
+                ALTER TABLE payments_order ADD COLUMN IF NOT EXISTS paystack_reference varchar(100) NOT NULL DEFAULT '';
+                ALTER TABLE payments_order ADD COLUMN IF NOT EXISTS paystack_access_code varchar(100) NOT NULL DEFAULT '';
+            """,
+            reverse_sql=migrations.RunSQL.noop,
+        ),
+        # 6. Choices-only change — no schema mutation
         migrations.AlterField(
             model_name='order',
             name='payment_method',
@@ -48,7 +63,7 @@ class Migration(migrations.Migration):
                 max_length=20,
             ),
         ),
-        # 7. Update report_type display labels (remove currency strings)
+        # 7. Choices-only change — no schema mutation
         migrations.AlterField(
             model_name='order',
             name='report_type',

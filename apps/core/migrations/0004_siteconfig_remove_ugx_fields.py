@@ -10,9 +10,15 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name='siteconfig', name='basic_report_ugx'),
-        migrations.RemoveField(model_name='siteconfig', name='full_report_ugx'),
-        migrations.RemoveField(model_name='siteconfig', name='dealer_pack_10_ugx'),
+        # Drop UGX price columns only if they exist (production may never have had them)
+        migrations.RunSQL(
+            sql="""
+                ALTER TABLE core_siteconfig DROP COLUMN IF EXISTS basic_report_ugx;
+                ALTER TABLE core_siteconfig DROP COLUMN IF EXISTS full_report_ugx;
+                ALTER TABLE core_siteconfig DROP COLUMN IF EXISTS dealer_pack_10_ugx;
+            """,
+            reverse_sql=migrations.RunSQL.noop,
+        ),
         migrations.RunSQL(
             sql="DROP TABLE IF EXISTS core_dealerapplication CASCADE;",
             reverse_sql=migrations.RunSQL.noop,
