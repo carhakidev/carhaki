@@ -41,11 +41,10 @@ def generate_report(self, report_id: str):
             cache.set_report(identifier, report.report_type, source_country, processed)
 
         # Compute market value in NGN
-        from apps.core.models import SiteConfig
-        config = SiteConfig.get_solo()
+        usd_to_ngn_rate = getattr(settings, 'USD_TO_NGN_RATE', 1600)
         mv = processed.get('market_value', {})
         if mv.get('estimate_usd'):
-            mv['estimate_ngn'] = int(mv['estimate_usd'] * float(config.usd_to_ngn_rate))
+            mv['estimate_ngn'] = int(mv['estimate_usd'] * float(usd_to_ngn_rate))
             processed['market_value'] = mv
 
         # Grade the vehicle
