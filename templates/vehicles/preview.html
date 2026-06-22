@@ -6,129 +6,110 @@
 {% endblock %}
 
 {% block content %}
-<div style="max-width:720px;margin:0 auto;padding:48px 24px;">
+<div style="background:var(--ch-bg); min-height:calc(100vh - var(--nav-h)); padding:48px 24px;">
+<div style="max-width:680px; margin:0 auto;">
 
   {% if error %}
-  <!-- ══ Error State ══ -->
-  <div style="background:var(--ch-danger-bg);border:1px solid #FECACA;border-radius:var(--r-xl);padding:48px 32px;text-align:center;">
-    <div style="font-size:48px;margin-bottom:16px;">😕</div>
-    <h2 class="font-display" style="font-weight:800;font-size:22px;color:var(--ch-danger);margin-bottom:8px;">Vehicle Not Found</h2>
-    <p style="color:var(--ch-danger);margin-bottom:8px;">
+  <!-- Error State -->
+  <div class="ch-card" style="border-radius:var(--ch-radius-lg); text-align:center; padding:48px 32px;">
+    <div style="font-size:48px; margin-bottom:16px;">😕</div>
+    <h2 style="font-size:22px; font-weight:800; color:var(--ch-red); margin-bottom:8px;">Vehicle Not Found</h2>
+    <p style="color:var(--ch-red); margin-bottom:8px;">
       We couldn't find data for <strong style="font-family:'JetBrains Mono',monospace;">{{ identifier }}</strong>.
     </p>
-    <p style="color:var(--ch-text-3);font-size:13px;margin-bottom:28px;">
+    <p style="color:var(--ch-text-muted); font-size:13px; margin-bottom:28px;">
       Please check the VIN and try again. A valid USA VIN is exactly 17 characters.
     </p>
     <a href="{% url 'vehicles:home' %}" class="btn btn-primary">Try Again</a>
   </div>
 
   {% elif vehicle_data %}
-  <!-- ══ USA VIN Free Preview ══ -->
-  <div style="background:white;border-radius:var(--r-xl);border:1px solid var(--ch-border);overflow:hidden;box-shadow:var(--shadow-md);">
+  <!-- USA VIN Preview -->
+  <div class="ch-card" style="padding:0; border-radius:var(--ch-radius-lg); overflow:hidden; box-shadow:var(--ch-shadow-lg);">
 
     <!-- Header -->
-    <div style="background:var(--ch-navy);padding:28px 32px;">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="background:var(--ch-bg-dark); padding:28px 32px;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;">
         <div>
-          <p style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">Free Preview</p>
-          <h1 class="font-display" style="font-weight:800;font-size:clamp(18px,3vw,26px);color:white;letter-spacing:-0.5px;margin-bottom:6px;">
+          <p style="font-size:11px; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px;">Free Preview</p>
+          <h1 style="font-size:clamp(18px,3vw,26px); font-weight:800; color:white; letter-spacing:-.5px; margin-bottom:6px;">
             {{ vehicle_data.year }} {{ vehicle_data.make }} {{ vehicle_data.model }}
             {% if vehicle_data.trim %}
-              <span style="font-weight:400;color:rgba(255,255,255,.5);"> {{ vehicle_data.trim }}</span>
+              <span style="font-weight:400; color:rgba(255,255,255,.5);"> {{ vehicle_data.trim }}</span>
             {% endif %}
           </h1>
-          <p style="font-size:12px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace;letter-spacing:.04em;">
-            {{ identifier }}
-          </p>
+          <p style="font-size:12px; color:rgba(255,255,255,.45); font-family:'JetBrains Mono',monospace; letter-spacing:.04em;">{{ identifier }}</p>
         </div>
-        <span style="background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.25);color:var(--ch-blue-light);border-radius:99px;padding:5px 14px;font-size:11px;font-weight:700;flex-shrink:0;">
+        <span style="background:rgba(37,99,235,.15); border:1px solid rgba(37,99,235,.3); color:#93C5FD; border-radius:99px; padding:5px 14px; font-size:11px; font-weight:700; flex-shrink:0;">
           🇺🇸 USA
         </span>
       </div>
     </div>
 
     <!-- Specs grid -->
-    <div style="padding:28px 32px;">
-      <h2 class="font-display" style="font-weight:700;font-size:15px;color:var(--ch-navy);margin-bottom:16px;">
-        Vehicle Specifications
-        <span style="font-size:12px;font-weight:400;color:var(--ch-text-3);">(included free)</span>
-      </h2>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;">
+    <div style="padding:28px 32px; border-bottom:1px solid var(--ch-border);">
+      <p style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--ch-text-muted); margin-bottom:14px;">
+        Vehicle Specifications <span style="font-weight:400; color:var(--ch-blue);">(free)</span>
+      </p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
         {% if vehicle_data.engine %}
-        <div class="report-metric">
-          <div class="report-metric-label">Engine</div>
-          <div class="report-metric-value">{{ vehicle_data.engine }}{% if vehicle_data.cylinders %} ({{ vehicle_data.cylinders }} cyl){% endif %}</div>
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:12px 14px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Engine</div>
+          <div style="font-size:15px; font-weight:600; color:var(--ch-text-1);">{{ vehicle_data.engine }}{% if vehicle_data.cylinders %} ({{ vehicle_data.cylinders }} cyl){% endif %}</div>
         </div>
         {% endif %}
         {% if vehicle_data.fuel_type %}
-        <div class="report-metric">
-          <div class="report-metric-label">Fuel Type</div>
-          <div class="report-metric-value">{{ vehicle_data.fuel_type }}</div>
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:12px 14px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Fuel Type</div>
+          <div style="font-size:15px; font-weight:600; color:var(--ch-text-1);">{{ vehicle_data.fuel_type }}</div>
         </div>
         {% endif %}
         {% if vehicle_data.transmission %}
-        <div class="report-metric">
-          <div class="report-metric-label">Transmission</div>
-          <div class="report-metric-value">{{ vehicle_data.transmission }}</div>
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:12px 14px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Transmission</div>
+          <div style="font-size:15px; font-weight:600; color:var(--ch-text-1);">{{ vehicle_data.transmission }}</div>
         </div>
         {% endif %}
         {% if vehicle_data.drive_type %}
-        <div class="report-metric">
-          <div class="report-metric-label">Drive Type</div>
-          <div class="report-metric-value">{{ vehicle_data.drive_type }}</div>
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:12px 14px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Drive Type</div>
+          <div style="font-size:15px; font-weight:600; color:var(--ch-text-1);">{{ vehicle_data.drive_type }}</div>
         </div>
         {% endif %}
         {% if vehicle_data.body_type %}
-        <div class="report-metric">
-          <div class="report-metric-label">Body Type</div>
-          <div class="report-metric-value">{{ vehicle_data.body_type }}</div>
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:12px 14px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Body Type</div>
+          <div style="font-size:15px; font-weight:600; color:var(--ch-text-1);">{{ vehicle_data.body_type }}</div>
         </div>
         {% endif %}
         {% if vehicle_data.country_of_manufacture %}
-        <div class="report-metric" style="grid-column:span 2;">
-          <div class="report-metric-label">Country of Manufacture</div>
-          <div class="report-metric-value">{{ vehicle_data.country_of_manufacture }}</div>
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:12px 14px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Manufactured In</div>
+          <div style="font-size:15px; font-weight:600; color:var(--ch-text-1);">{{ vehicle_data.country_of_manufacture }}</div>
         </div>
         {% endif %}
       </div>
+    </div>
 
-      <!-- Locked items -->
-      <div style="border-top:1px solid var(--ch-border);padding-top:24px;">
-        <h3 class="font-display" style="font-weight:700;font-size:14px;color:var(--ch-text-2);margin-bottom:12px;">
-          Full Report Includes:
-        </h3>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
-            <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-            <span style="font-size:13px;color:var(--ch-text-3);">Accident &amp; damage history (USA records)</span>
+    <!-- What's in the full report -->
+    <div style="padding:24px 32px; border-bottom:1px solid var(--ch-border);">
+      <p style="font-size:13px; font-weight:700; color:var(--ch-text-1); margin-bottom:12px;">Full Report Includes:</p>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        {% for item in "Accident & damage history (USA records),Title brands (Salvage / Rebuilt / Flood / Not Actual Mileage),Odometer timeline — detect mileage fraud,Open NHTSA recall alerts + AI plain-English summary,Theft records + overall grade (A–F) with risk score"|split:"," %}
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:20px; height:20px; border-radius:50%; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
-            <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-            <span style="font-size:13px;color:var(--ch-text-3);">Title brands (Salvage / Rebuilt / Flood / Not Actual Mileage)</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
-            <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-            <span style="font-size:13px;color:var(--ch-text-3);">Odometer timeline — detect mileage fraud</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
-            <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-            <span style="font-size:13px;color:var(--ch-text-3);">Open NHTSA recall alerts + AI plain-English summary</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-md);padding:12px 16px;">
-            <span style="opacity:.4;flex-shrink:0;" aria-hidden="true">🔒</span>
-            <span style="font-size:13px;color:var(--ch-text-3);">Theft records + overall grade (A–F) with risk score</span>
-          </div>
+          <span style="font-size:13px; color:var(--ch-text-secondary);">{{ item }}</span>
         </div>
+        {% endfor %}
       </div>
     </div>
 
-    <!-- CTA footer -->
-    <div style="background:var(--ch-blue-faint);border-top:1px solid var(--ch-blue-pale);padding:28px 32px;text-align:center;">
-      <h3 class="font-display" style="font-weight:800;font-size:19px;color:var(--ch-navy);margin-bottom:6px;">
-        Unlock the Full Report
-      </h3>
-      <p style="font-size:13px;color:var(--ch-text-3);margin-bottom:22px;">
+    <!-- CTA -->
+    <div style="padding:28px 32px; background:var(--ch-bg-subtle); text-align:center;">
+      <h3 style="font-size:19px; font-weight:800; color:var(--ch-text-1); margin-bottom:6px;">Unlock Full Report</h3>
+      <p style="font-size:13px; color:var(--ch-text-secondary); margin-bottom:22px;">
         Know exactly what you're buying before spending millions of naira.
       </p>
 
@@ -136,40 +117,39 @@
       <form method="post" action="{% url 'vehicles:home' %}">
         {% csrf_token %}
         <input type="hidden" name="identifier" value="{{ identifier }}">
-        <button type="submit" class="btn btn-primary btn-lg">
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%; max-width:320px; justify-content:center;">
           Get Full Report — ₦{{ price_ngn|default:"15,000" }}
         </button>
       </form>
       {% else %}
       <a href="{% url 'accounts:login' %}?next={{ request.path }}"
-         class="btn btn-primary btn-lg">
+         class="btn btn-primary btn-lg" style="width:100%; max-width:320px; justify-content:center; display:inline-flex;">
         Sign In to Get Report — ₦{{ price_ngn|default:"15,000" }}
       </a>
-      <p style="font-size:12px;color:var(--ch-text-3);margin-top:10px;">
-        <a href="{% url 'accounts:register' %}" style="color:var(--ch-blue);">Create a free account</a> to purchase.
+      <p style="font-size:12px; color:var(--ch-text-muted); margin-top:10px;">
+        <a href="{% url 'accounts:register' %}" style="color:var(--ch-blue); font-weight:500;">Create a free account</a> — takes under 2 minutes
       </p>
       {% endif %}
 
-      <p style="font-size:12px;color:var(--ch-text-3);margin-top:14px;">Secured by Paystack · Visa / Mastercard / Bank Transfer / USSD</p>
+      <p style="font-size:12px; color:var(--ch-text-muted); margin-top:14px;">
+        🔒 Secured by Paystack · Visa / Mastercard / Bank Transfer / USSD
+      </p>
     </div>
 
   </div>
 
   {% else %}
-  <!-- ══ Fallback / loading state ══ -->
-  <div style="text-align:center;padding:80px 24px;">
-    <div style="font-size:48px;margin-bottom:16px;" aria-hidden="true">🔍</div>
-    <h2 class="font-display" style="font-weight:800;font-size:22px;color:var(--ch-navy);margin-bottom:8px;">
-      Looking up vehicle…
-    </h2>
-    <p style="color:var(--ch-text-3);margin-bottom:24px;">
+  <!-- Fallback -->
+  <div style="text-align:center; padding:80px 24px;">
+    <div style="font-size:48px; margin-bottom:16px;" aria-hidden="true">🔍</div>
+    <h2 style="font-size:22px; font-weight:800; color:var(--ch-text-1); margin-bottom:8px;">Looking up vehicle…</h2>
+    <p style="color:var(--ch-text-muted); margin-bottom:24px;">
       Checking <span style="font-family:'JetBrains Mono',monospace;">{{ identifier }}</span>
     </p>
-    <a href="{% url 'vehicles:home' %}" style="color:var(--ch-blue);font-size:14px;text-decoration:underline;">
-      Back to search
-    </a>
+    <a href="{% url 'vehicles:home' %}" style="color:var(--ch-blue); font-size:14px; font-weight:500;">← Back to search</a>
   </div>
   {% endif %}
 
+</div>
 </div>
 {% endblock %}

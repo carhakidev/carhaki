@@ -3,33 +3,31 @@
 <nav class="nav">
   <div class="nav-inner">
 
-    <!-- ── Logo ─────────────────────────────────────────────── -->
-    <a href="{% url 'vehicles:home' %}" class="nav-logo" aria-label="CarHaki home"
-       style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+    <!-- Logo -->
+    <a href="{% url 'vehicles:home' %}" class="nav-logo" aria-label="CarHaki home">
       <img src="{% static 'images/carhaki-mark-40.svg' %}"
-           alt="" aria-hidden="true"
-           style="width:32px;height:32px;display:block;flex-shrink:0;">
-      <span class="font-display"
-            style="font-size:18px;font-weight:800;color:white;letter-spacing:-.3px;white-space:nowrap;">
-        Car<span style="color:var(--ch-blue-light);">Haki</span>
+           alt="" aria-hidden="true" class="nav-logo-mark"
+           style="width:32px;height:32px;">
+      <span style="font-size:18px;font-weight:800;color:var(--ch-navy);letter-spacing:-.3px;white-space:nowrap;">
+        Car<span style="color:var(--ch-blue);">Haki</span>
       </span>
     </a>
 
-    <!-- ── Desktop links ─────────────────────────────────────── -->
+    <!-- Desktop links -->
     <div class="nav-links">
       <a href="{% url 'vehicles:pricing' %}" class="nav-link {% if request.resolver_match.url_name == 'pricing' %}active{% endif %}">Pricing</a>
       <a href="{% url 'vehicles:faq' %}"     class="nav-link {% if request.resolver_match.url_name == 'faq'     %}active{% endif %}">FAQ</a>
       <a href="{% url 'vehicles:about' %}"   class="nav-link {% if request.resolver_match.url_name == 'about'   %}active{% endif %}">About</a>
     </div>
 
-    <!-- ── Desktop actions ───────────────────────────────────── -->
+    <!-- Desktop auth -->
     <div class="nav-actions">
       {% if user.is_authenticated %}
-        <a href="{% url 'accounts:dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+        <a href="{% url 'accounts:dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+           style="display:flex;align-items:center;gap:6px;">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round"
-               style="display:inline;vertical-align:-2px;margin-right:4px;" aria-hidden="true">
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
@@ -45,7 +43,7 @@
       {% endif %}
     </div>
 
-    <!-- ── Mobile toggle ─────────────────────────────────────── -->
+    <!-- Mobile toggle -->
     <button id="nav-toggle" class="nav-toggle" aria-label="Open menu" aria-expanded="false">
       <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -56,8 +54,7 @@
       </svg>
       <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-           stroke-linecap="round" stroke-linejoin="round"
-           style="display:none;" aria-hidden="true">
+           stroke-linecap="round" stroke-linejoin="round" style="display:none;" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"/>
         <line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
@@ -66,29 +63,24 @@
   </div>
 </nav>
 
-<!-- ── Mobile menu ─────────────────────────────────────────── -->
+<!-- Mobile menu -->
 <div id="nav-mobile" class="nav-mobile" role="navigation" aria-label="Mobile menu">
-
   <a href="{% url 'vehicles:pricing' %}" class="nav-link">Pricing</a>
   <a href="{% url 'vehicles:faq' %}"     class="nav-link">FAQ</a>
   <a href="{% url 'vehicles:about' %}"   class="nav-link">About</a>
-
   <div class="nav-mobile-divider"></div>
-
   <div class="nav-mobile-actions">
     {% if user.is_authenticated %}
       <a href="{% url 'accounts:dashboard' %}" class="nav-link">Dashboard</a>
       <form method="post" action="{% url 'accounts:logout' %}">
         {% csrf_token %}
-        <button type="submit" class="btn btn-ghost btn-sm"
-                style="width:100%;justify-content:center;cursor:pointer;">Sign Out</button>
+        <button type="submit" class="btn btn-outline btn-sm" style="width:100%;justify-content:center;cursor:pointer;">Sign Out</button>
       </form>
     {% else %}
-      <a href="{% url 'accounts:login' %}"    class="btn btn-ghost btn-sm"    style="justify-content:center;">Sign In</a>
-      <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm"  style="justify-content:center;">Get Started</a>
+      <a href="{% url 'accounts:login' %}"    class="btn btn-outline btn-sm" style="justify-content:center;">Sign In</a>
+      <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm" style="justify-content:center;">Get Started</a>
     {% endif %}
   </div>
-
 </div>
 
 <script>
@@ -97,6 +89,7 @@
     const menu   = document.getElementById('nav-mobile');
     const open   = document.getElementById('icon-open');
     const close  = document.getElementById('icon-close');
+    if (!toggle) return;
 
     toggle.addEventListener('click', function () {
       const isOpen = menu.classList.toggle('open');

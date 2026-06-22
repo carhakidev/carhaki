@@ -2,264 +2,276 @@
 {% load static %}
 
 {% block title %}CarHaki — Know the Truth About Every Tokunbo Car | Nigeria{% endblock %}
-{% block meta_desc %}Before buying that Tokunbo car in Nigeria, check its full USA history. Accidents, mileage tampering, salvage titles, and open recalls — instant report for ₦15,000.{% endblock %}
+{% block meta_desc %}Before buying that Tokunbo car in Nigeria, check its full USA history. Accidents, mileage fraud, salvage titles, open recalls. Instant report for ₦15,000.{% endblock %}
 
 {% block extra_head %}
 <style>
-  @media (max-width: 768px) {
-    .home-2col   { grid-template-columns: 1fr !important; gap: 32px !important; }
-    .home-3col   { grid-template-columns: 1fr !important; }
-    .home-steps  { grid-template-columns: 1fr !important; }
-    .hero-title  { font-size: 28px !important; }
-    .hero-sub    { font-size: 15px !important; }
-    .report-card-preview { display: none !important; }
-    .home-features-solo  { max-width: 100% !important; }
+  @media (max-width: 640px) {
+    .home-hero-search { flex-direction: column !important; border-radius: 10px !important; padding: 12px !important; }
+    .home-hero-search input { padding: 12px 14px !important; border-radius: 6px !important; border: 1.5px solid var(--ch-border) !important; }
+    .home-hero-btn { width: 100% !important; justify-content: center !important; border-radius: 6px !important; }
+    .home-stats-grid { grid-template-columns: 1fr 1fr !important; }
+    .home-risk-grid  { grid-template-columns: 1fr !important; }
+    .home-steps-grid { grid-template-columns: 1fr !important; }
+    .home-feat-grid  { grid-template-columns: 1fr !important; }
+    .home-price-grid { grid-template-columns: 1fr !important; }
+    .home-test-grid  { grid-template-columns: 1fr !important; }
+    .hero-trust      { gap: 12px !important; }
+    .trust-item      { font-size: 12px !important; }
   }
-  @media (max-width: 540px) {
-    .home-pricing-grid { grid-template-columns: 1fr !important; max-width: 360px !important; margin-left: auto !important; margin-right: auto !important; }
-    .hero-trust        { gap: 12px !important; }
-    .trust-item        { font-size: 12px !important; }
+  .feat-check {
+    width: 20px; height: 20px; border-radius: 50%; background: var(--ch-blue-faint);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
-  .feat-row { display:flex; align-items:center; gap:10px; }
-  .feat-dot {
-    width:20px; height:20px; border-radius:50%;
-    background:var(--ch-blue-pale);
-    display:flex; align-items:center; justify-content:center; flex-shrink:0;
-  }
-  .feat-dot svg { display:block; }
-  .feat-label { font-size:14px; color:var(--ch-text-2); }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- ═══════════════ HERO ═══════════════ -->
-<section class="hero">
-  <div class="hero-grid" aria-hidden="true"></div>
-  <div class="hero-inner">
+<!-- ═══════════ HERO ═══════════ -->
+<section style="background:white; padding:80px 24px 64px; text-align:center; border-bottom:1px solid var(--ch-border);">
+  <div style="max-width:680px; margin:0 auto;">
 
-    <div class="hero-badge animate-fade-up">
-      <span class="hero-badge-dot"></span>
-      Powered by USA Government Records
-    </div>
+    <div class="ch-section-label" style="margin-bottom:16px;">POWERED BY USA GOVERNMENT RECORDS</div>
 
-    <h1 class="hero-title animate-fade-up delay-1">
-      Avoid Salvaged, Flooded
-      <span class="line2">&amp; <span class="accent">Tampered</span> Tokunbo Cars.</span>
+    <h1 style="font-size:clamp(32px,5vw,52px); font-weight:800; color:var(--ch-text-1); line-height:1.12; margin-bottom:20px; letter-spacing:-1px;">
+      Avoid Salvaged, Flooded &amp;<br>
+      <span style="color:var(--ch-blue);">Tampered</span> Tokunbo Cars.
     </h1>
 
-    <p class="hero-sub animate-fade-up delay-2">
-      Enter any USA VIN number and get the full vehicle history in seconds —
-      accident records, title brands, real mileage, and open safety recalls.
+    <p style="font-size:17px; color:var(--ch-text-secondary); max-width:520px; margin:0 auto 40px; line-height:1.65;">
+      Enter any USA VIN and get the full vehicle history in seconds — accident records, title brands, mileage timeline, and open safety recalls.
     </p>
 
     <form action="{% url 'vehicles:search' %}" method="GET"
-          class="hero-search animate-fade-up delay-3">
+          class="home-hero-search"
+          style="display:flex; align-items:center; gap:10px; max-width:580px; margin:0 auto 20px;
+                 background:var(--ch-bg-subtle); border:1.5px solid var(--ch-border);
+                 border-radius:var(--ch-radius); padding:8px 8px 8px 16px;
+                 transition:border-color .2s, box-shadow .2s;"
+          onfocus="this.style.borderColor='var(--ch-blue)'"
+          onblur="this.style.borderColor='var(--ch-border)'">
       <input type="text" name="q" id="vinInput"
-             placeholder="Enter VIN e.g. 1HGCM82633A004352"
+             placeholder="Enter VIN — e.g. 1HGCM82633A004352"
              autocomplete="off" spellcheck="false" maxlength="17"
-             value="{{ request.GET.q|default:'' }}">
-      <button type="submit" class="hero-search-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+             value="{{ request.GET.q|default:'' }}"
+             style="flex:1; background:none; border:none; outline:none; font-size:15px;
+                    color:var(--ch-text-1); font-family:'JetBrains Mono',monospace; letter-spacing:.04em;
+                    padding:6px 0;"
+             onfocus="this.closest('form').style.borderColor='var(--ch-blue)';this.closest('form').style.boxShadow='0 0 0 3px rgba(37,99,235,0.1)'"
+             onblur="this.closest('form').style.borderColor='var(--ch-border)';this.closest('form').style.boxShadow='none'">
+      <button type="submit" class="btn btn-primary home-hero-btn"
+              style="border-radius:var(--ch-radius-sm); padding:12px 24px; white-space:nowrap;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
              fill="none" stroke="currentColor" stroke-width="2.5"
-             stroke-linecap="round" stroke-linejoin="round"
-             style="margin-right:6px;" aria-hidden="true">
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
         Check History
       </button>
     </form>
 
-    <div class="hero-samples animate-fade-up delay-3">
-      Try a sample VIN:
-      <span class="hero-sample-chip" onclick="document.getElementById('vinInput').value='1HGCM82633A004352'">1HGCM82633A004352</span>
-      <span class="hero-sample-chip" onclick="document.getElementById('vinInput').value='5TDYK3DC8DS290235'">5TDYK3DC8DS290235</span>
-    </div>
+    <p style="font-size:12px; color:var(--ch-text-muted); margin-bottom:40px;">
+      Sample VINs:
+      <span class="hero-sample-chip" onclick="document.getElementById('vinInput').value='1HGCM82633A004352'" style="background:var(--ch-blue-faint); color:var(--ch-blue); border-color:var(--ch-blue-pale);">1HGCM82633A004352</span>
+      <span class="hero-sample-chip" onclick="document.getElementById('vinInput').value='5TDYK3DC8DS290235'" style="background:var(--ch-blue-faint); color:var(--ch-blue); border-color:var(--ch-blue-pale);">5TDYK3DC8DS290235</span>
+    </p>
 
-    <div class="hero-trust animate-fade-up delay-4">
-      <div class="trust-item">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M8 1.5L10.5 4H14.5V8L11.5 10L13 14L8 12L3 14L4.5 10L1.5 8V4H5.5L8 1.5Z" stroke="#60A5FA" stroke-width="1.2" fill="none"/>
-        </svg>
-        <span><span class="trust-num">NHTSA</span> recall data</span>
-      </div>
-      <div class="trust-item">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M3 8L6.5 11.5L13 4.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span><span class="trust-num">50M+</span> USA vehicle records</span>
-      </div>
-      <div class="trust-item">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <circle cx="8" cy="8" r="6" stroke="#60A5FA" stroke-width="1.2"/>
-          <path d="M8 5V8.5L10 10" stroke="#60A5FA" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
-        <span><span class="trust-num">Instant</span> results</span>
-      </div>
-      <div class="trust-item">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <rect x="2" y="2" width="12" height="12" rx="2" stroke="#60A5FA" stroke-width="1.2"/>
-          <path d="M5 8H11M8 5V11" stroke="#60A5FA" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
-        <span><span class="trust-num">₦15,000</span> per report</span>
-      </div>
+    <!-- Trust pills -->
+    <div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
+      {% for label in "NHTSA Records|50M+ Vehicles|Instant Results|₦15,000 per report"|split:"|" %}
+      {% endfor %}
+      <span style="background:var(--ch-bg-subtle); border:1px solid var(--ch-border); border-radius:99px; padding:5px 14px; font-size:12px; font-weight:500; color:var(--ch-text-secondary);">🔒 NHTSA Recall Data</span>
+      <span style="background:var(--ch-bg-subtle); border:1px solid var(--ch-border); border-radius:99px; padding:5px 14px; font-size:12px; font-weight:500; color:var(--ch-text-secondary);">✓ 50M+ USA Records</span>
+      <span style="background:var(--ch-bg-subtle); border:1px solid var(--ch-border); border-radius:99px; padding:5px 14px; font-size:12px; font-weight:500; color:var(--ch-text-secondary);">⚡ Instant Results</span>
+      <span style="background:var(--ch-blue-faint); border:1px solid var(--ch-blue-pale); border-radius:99px; padding:5px 14px; font-size:12px; font-weight:600; color:var(--ch-blue);">₦15,000 per report</span>
     </div>
 
   </div>
 </section>
 
-<!-- ═══════════════ STATS BAR ═══════════════ -->
-<div style="background:var(--ch-blue-faint);border-bottom:1px solid var(--ch-blue-pale);">
-  <div class="container" style="padding:20px 24px;display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;">
-    <div style="text-align:center;">
-      <div class="font-display" style="font-size:24px;font-weight:800;color:var(--ch-blue);">{{ total_reports|default:"0" }}+</div>
-      <div style="font-size:12px;color:var(--ch-text-3);margin-top:2px;">Reports Generated</div>
-    </div>
-    <div style="width:1px;height:36px;background:var(--ch-border);"></div>
-    <div style="text-align:center;">
-      <div class="font-display" style="font-size:24px;font-weight:800;color:var(--ch-blue);">NMVTIS</div>
-      <div style="font-size:12px;color:var(--ch-text-3);margin-top:2px;">Official USA Database</div>
-    </div>
-    <div style="width:1px;height:36px;background:var(--ch-border);"></div>
-    <div style="text-align:center;">
-      <div class="font-display" style="font-size:24px;font-weight:800;color:var(--ch-blue);">30s</div>
-      <div style="font-size:12px;color:var(--ch-text-3);margin-top:2px;">Avg Report Time</div>
-    </div>
-    <div style="width:1px;height:36px;background:var(--ch-border);"></div>
-    <div style="text-align:center;">
-      <div class="font-display" style="font-size:24px;font-weight:800;color:var(--ch-blue);">🇳🇬</div>
-      <div style="font-size:12px;color:var(--ch-text-3);margin-top:2px;">Built for Nigeria</div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════ PROBLEMS ═══════════════ -->
-<section class="section" style="background:var(--ch-surface);">
+<!-- ═══════════ STATS STRIP ═══════════ -->
+<section style="background:var(--ch-bg-subtle); border-bottom:1px solid var(--ch-border); padding:28px 24px;">
   <div class="container">
-    <div class="text-center" style="margin-bottom:48px;">
-      <div class="section-label">Why it matters</div>
-      <h2 class="section-title">The Risks Every Nigerian<br>Tokunbo Buyer Faces</h2>
-      <p class="section-sub" style="margin:12px auto 0;">Dealers know the full history. Buyers know nothing. CarHaki closes that gap.</p>
-    </div>
-    <div class="problems home-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-      <div class="problem-card">
-        <div class="problem-icon" style="background:var(--ch-danger-bg);">🔢</div>
-        <div class="problem-title">Mileage Rollback Fraud</div>
-        <p class="problem-desc">Odometers are wound back before export from the USA. A car showing 60,000 miles may have actually done 200,000. CarHaki shows the real mileage timeline from official US state DMV records.</p>
+    <div class="home-stats-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; text-align:center;">
+      <div style="padding:8px 16px; border-right:1px solid var(--ch-border);">
+        <div style="font-size:28px; font-weight:800; color:var(--ch-blue);">{{ total_reports|default:"0" }}+</div>
+        <div style="font-size:12px; color:var(--ch-text-muted); margin-top:2px;">Reports Generated</div>
       </div>
-      <div class="problem-card">
-        <div class="problem-icon" style="background:var(--ch-warn-bg);">💥</div>
-        <div class="problem-title">Salvage &amp; Rebuilt Titles</div>
-        <p class="problem-desc">Insurance write-offs are repaired, repainted, and shipped to Nigeria. A salvage or rebuilt title means the car was once declared a total loss — a fact sellers rarely disclose.</p>
+      <div style="padding:8px 16px; border-right:1px solid var(--ch-border);">
+        <div style="font-size:28px; font-weight:800; color:var(--ch-blue);">NMVTIS</div>
+        <div style="font-size:12px; color:var(--ch-text-muted); margin-top:2px;">Official USA Database</div>
       </div>
-      <div class="problem-card">
-        <div class="problem-icon" style="background:var(--ch-danger-bg);">🌊</div>
-        <div class="problem-title">Flood &amp; Fire Damage</div>
-        <p class="problem-desc">Flood-damaged cars are dried out and exported. Electrical failures and rust appear months later. Our reports reveal flood damage brands recorded by US insurance companies.</p>
+      <div style="padding:8px 16px; border-right:1px solid var(--ch-border);">
+        <div style="font-size:28px; font-weight:800; color:var(--ch-blue);">30s</div>
+        <div style="font-size:12px; color:var(--ch-text-muted); margin-top:2px;">Avg Report Time</div>
       </div>
-      <div class="problem-card">
-        <div class="problem-icon" style="background:var(--ch-blue-pale);">⚠️</div>
-        <div class="problem-title">Open Safety Recalls</div>
-        <p class="problem-desc">Millions of cars in Nigeria have open safety recalls that were never repaired before export. CarHaki checks every VIN against NHTSA's national recall database.</p>
+      <div style="padding:8px 16px;">
+        <div style="font-size:28px; font-weight:800; color:var(--ch-blue);">🇳🇬</div>
+        <div style="font-size:12px; color:var(--ch-text-muted); margin-top:2px;">Built for Nigeria</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
-<section class="section">
+<!-- ═══════════ RISKS ═══════════ -->
+<section style="background:white; padding:80px 24px;">
   <div class="container">
-    <div class="text-center" style="margin-bottom:48px;">
-      <div class="section-label">How it works</div>
-      <h2 class="section-title">Get a Full Report in 3 Steps</h2>
+    <div style="text-align:center; margin-bottom:48px;">
+      <div class="ch-section-label">Why it matters</div>
+      <h2 style="font-size:clamp(24px,3vw,36px); font-weight:800; color:var(--ch-text-1);">The Risks Every Nigerian<br>Tokunbo Buyer Faces</h2>
+      <p style="font-size:16px; color:var(--ch-text-secondary); max-width:480px; margin:12px auto 0; line-height:1.65;">Dealers know the full history. Buyers know nothing. CarHaki closes that gap.</p>
     </div>
-    <div class="home-steps" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--ch-border);border-radius:var(--r-xl);overflow:hidden;">
-      <div class="step">
-        <div class="step-num">01</div>
-        <div class="step-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <div class="home-risk-grid" style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px;">
+      <div class="ch-card" style="display:flex; gap:16px; align-items:flex-start;">
+        <div style="font-size:28px; flex-shrink:0;">🔄</div>
+        <div>
+          <div style="font-size:16px; font-weight:700; color:var(--ch-text-1); margin-bottom:6px;">Mileage Rollback Fraud</div>
+          <p style="font-size:13px; color:var(--ch-text-secondary); line-height:1.65;">A car showing 60,000 miles may have done 200,000. CarHaki shows the full odometer timeline from official US state DMV records.</p>
         </div>
-        <div class="step-title">Enter the VIN</div>
-        <p class="step-desc">Find the 17-character VIN on the car's dashboard (visible through the windshield), door sticker, or import documents.</p>
       </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <div class="step-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      <div class="ch-card" style="display:flex; gap:16px; align-items:flex-start;">
+        <div style="font-size:28px; flex-shrink:0;">🚗</div>
+        <div>
+          <div style="font-size:16px; font-weight:700; color:var(--ch-text-1); margin-bottom:6px;">Salvage &amp; Rebuilt Titles</div>
+          <p style="font-size:13px; color:var(--ch-text-secondary); line-height:1.65;">Insurance write-offs are repaired and shipped to Nigeria. A salvage or rebuilt title means the car was once declared a total loss — a fact sellers rarely disclose.</p>
         </div>
-        <div class="step-title">Pay Securely</div>
-        <p class="step-desc">Pay ₦15,000 via card or bank transfer through Paystack. Money-back guarantee if no data is found for your VIN.</p>
       </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <div class="step-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <div class="ch-card" style="display:flex; gap:16px; align-items:flex-start;">
+        <div style="font-size:28px; flex-shrink:0;">💧</div>
+        <div>
+          <div style="font-size:16px; font-weight:700; color:var(--ch-text-1); margin-bottom:6px;">Flood &amp; Fire Damage</div>
+          <p style="font-size:13px; color:var(--ch-text-secondary); line-height:1.65;">Flood-damaged cars are dried out and exported. Electrical failures appear months later. Our reports reveal flood damage brands from US insurance companies.</p>
         </div>
-        <div class="step-title">Get Your Report</div>
-        <p class="step-desc">Instant full report: accident history, title brands, odometer timeline, open recalls, and an AI plain-English summary.</p>
+      </div>
+      <div class="ch-card" style="display:flex; gap:16px; align-items:flex-start;">
+        <div style="font-size:28px; flex-shrink:0;">⚠️</div>
+        <div>
+          <div style="font-size:16px; font-weight:700; color:var(--ch-text-1); margin-bottom:6px;">Open Safety Recalls</div>
+          <p style="font-size:13px; color:var(--ch-text-secondary); line-height:1.65;">Millions of Tokunbo cars have open NHTSA safety recalls never repaired before export. CarHaki checks every VIN against the national recall database.</p>
+        </div>
       </div>
     </div>
-    <div style="text-align:center;margin-top:32px;">
+  </div>
+</section>
+
+<!-- ═══════════ HOW IT WORKS ═══════════ -->
+<section style="background:var(--ch-bg-subtle); padding:80px 24px;">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:48px;">
+      <div class="ch-section-label">How it works</div>
+      <h2 style="font-size:clamp(24px,3vw,36px); font-weight:800; color:var(--ch-text-1);">Get a Full Report in 3 Steps</h2>
+    </div>
+    <div class="home-steps-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--ch-border); border-radius:var(--ch-radius-lg); overflow:hidden;">
+
+      <div style="background:white; padding:36px 28px;">
+        <div style="font-size:48px; font-weight:800; color:var(--ch-blue-pale); line-height:1; margin-bottom:16px; letter-spacing:-2px;">01</div>
+        <div style="width:44px; height:44px; border-radius:10px; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ch-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div style="font-size:17px; font-weight:700; color:var(--ch-text-1); margin-bottom:8px;">Enter the VIN</div>
+        <p style="font-size:14px; color:var(--ch-text-secondary); line-height:1.6;">Find the 17-character VIN on the dashboard (visible through the windshield), door sticker, or import documents.</p>
+      </div>
+
+      <div style="background:white; padding:36px 28px; border-left:1px solid var(--ch-border); border-right:1px solid var(--ch-border);">
+        <div style="font-size:48px; font-weight:800; color:var(--ch-blue-pale); line-height:1; margin-bottom:16px; letter-spacing:-2px;">02</div>
+        <div style="width:44px; height:44px; border-radius:10px; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ch-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <div style="font-size:17px; font-weight:700; color:var(--ch-text-1); margin-bottom:8px;">Pay Securely</div>
+        <p style="font-size:14px; color:var(--ch-text-secondary); line-height:1.6;">Pay ₦15,000 via card, bank transfer, or USSD through Paystack. Money-back guarantee if no data found.</p>
+      </div>
+
+      <div style="background:white; padding:36px 28px;">
+        <div style="font-size:48px; font-weight:800; color:var(--ch-blue-pale); line-height:1; margin-bottom:16px; letter-spacing:-2px;">03</div>
+        <div style="width:44px; height:44px; border-radius:10px; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ch-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div style="font-size:17px; font-weight:700; color:var(--ch-text-1); margin-bottom:8px;">Get Your Report</div>
+        <p style="font-size:14px; color:var(--ch-text-secondary); line-height:1.6;">Instant full report: accident history, title brands, odometer timeline, open recalls, and AI plain-English summary.</p>
+      </div>
+
+    </div>
+    <div style="text-align:center; margin-top:32px;">
       <a href="{% url 'vehicles:search' %}" class="btn btn-primary btn-lg">Check a Car Now</a>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ WHAT YOU GET ═══════════════ -->
-<section class="section" style="background:var(--ch-surface);">
+<!-- ═══════════ WHAT YOU GET ═══════════ -->
+<section style="background:white; padding:80px 24px;">
   <div class="container">
-    <div class="home-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;">
+    <div class="home-feat-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
 
-      <div class="home-features-solo">
-        <div class="section-label">What you get</div>
-        <h2 class="section-title">A Complete Picture.<br>No Surprises.</h2>
-        <p style="font-size:15px;color:var(--ch-text-3);margin:16px 0 28px;line-height:1.7;">
-          Our reports pull from NMVTIS, NHTSA, state DMV records, and insurance databases —
-          combined into one clear, shareable report.
-        </p>
+      <div>
+        <div class="ch-section-label">What you get</div>
+        <h2 style="font-size:clamp(24px,3vw,34px); font-weight:800; color:var(--ch-text-1); margin-bottom:16px;">A Complete Picture.<br>No Surprises.</h2>
+        <p style="font-size:15px; color:var(--ch-text-secondary); margin-bottom:28px; line-height:1.7;">Our reports pull from NMVTIS, NHTSA, state DMV records, and US insurance databases — combined into one clear, shareable report.</p>
 
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div class="feat-row"><div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="feat-label">Full title history (salvage, rebuilt, flood)</span></div>
-          <div class="feat-row"><div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="feat-label">Odometer timeline — detect rollback</span></div>
-          <div class="feat-row"><div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="feat-label">Full accident &amp; damage records</span></div>
-          <div class="feat-row"><div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="feat-label">Open NHTSA safety recall alerts</span></div>
-          <div class="feat-row"><div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="feat-label">Theft records</span></div>
-          <div class="feat-row"><div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="feat-label">AI plain-English summary</span></div>
-          <div class="feat-row"><div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="feat-label">Overall grade (A–F) with risk score</span></div>
-          <div class="feat-row"><div class="feat-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="feat-label">PDF download + shareable link</span></div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          {% for feat in "Full title history (salvage, rebuilt, flood)|Odometer timeline — detect rollback|Accident & damage records|Open NHTSA safety recalls|Theft records|AI plain-English summary|Overall grade (A–F) with risk score|PDF download + shareable link"|split:"|" %}
+          {% endfor %}
+          {% with feats="Full title history (salvage, rebuilt, flood),Odometer timeline — detect rollback,Accident & damage records,Open NHTSA safety recalls,Theft records,AI plain-English summary,Overall grade (A–F) with risk score,PDF download + shareable link" %}
+          {% for feat in feats|split:"," %}
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="feat-check">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span style="font-size:14px; color:var(--ch-text-2);">{{ feat }}</span>
+          </div>
+          {% endfor %}
+          {% endwith %}
         </div>
       </div>
 
-      <!-- Report card preview — hidden on mobile -->
-      <div class="report-card-preview">
-        <div class="report-card"
-             style="transform:perspective(1000px) rotateY(-3deg);transition:transform .3s;"
-             onmouseover="this.style.transform='perspective(1000px) rotateY(0deg)'"
-             onmouseout="this.style.transform='perspective(1000px) rotateY(-3deg)'">
-          <div class="report-card-header">
-            <div>
-              <div class="report-vehicle-name">2019 Toyota Camry</div>
-              <div class="report-chassis">4T1B11HK8JU601234</div>
-            </div>
-            <div class="report-grade-badge">
-              <div class="report-grade-num">A</div>
-              <div class="report-grade-label">Clean History</div>
+      <!-- Mock report card -->
+      <div style="position:relative;">
+        <div class="ch-card" style="border-radius:var(--ch-radius-lg); box-shadow:var(--ch-shadow-lg); padding:0; overflow:hidden;">
+          <div style="background:var(--ch-bg-dark); padding:20px 24px;">
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+              <div>
+                <div style="font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.4); margin-bottom:4px;">US Vehicle Report</div>
+                <div style="font-size:18px; font-weight:800; color:white;">2019 Toyota Camry</div>
+                <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#93C5FD; margin-top:2px;">4T1B11HK8JU601234</div>
+              </div>
+              <div style="background:rgba(22,163,74,.15); border:1px solid rgba(22,163,74,.3); border-radius:8px; padding:8px 14px; text-align:center; flex-shrink:0;">
+                <div style="font-size:28px; font-weight:800; color:#4ADE80; line-height:1;">A</div>
+                <div style="font-size:10px; color:rgba(255,255,255,.4); margin-top:2px;">Grade</div>
+              </div>
             </div>
           </div>
-          <div class="report-body">
-            <div class="report-metrics">
-              <div class="report-metric"><div class="report-metric-label">Odometer</div><div class="report-metric-value">47,200 mi</div></div>
-              <div class="report-metric"><div class="report-metric-label">Accidents</div><div class="report-metric-value status-ok">None ✓</div></div>
-              <div class="report-metric"><div class="report-metric-label">Title</div><div class="report-metric-value status-ok">Clean ✓</div></div>
-              <div class="report-metric"><div class="report-metric-label">Recalls</div><div class="report-metric-value status-ok">None ✓</div></div>
-              <div class="report-metric"><div class="report-metric-label">Theft</div><div class="report-metric-value status-ok">None ✓</div></div>
-              <div class="report-metric"><div class="report-metric-label">Risk</div><div class="report-metric-value" style="font-size:13px;">Score: 95/100</div></div>
+          <div style="padding:20px 24px; background:white;">
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px;">
+              <div style="background:var(--ch-bg-subtle); border-radius:8px; padding:10px 12px;">
+                <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:3px;">Odometer</div>
+                <div style="font-size:14px; font-weight:700; color:var(--ch-text-1);">47,200 mi</div>
+              </div>
+              <div style="background:var(--ch-bg-subtle); border-radius:8px; padding:10px 12px;">
+                <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:3px;">Accidents</div>
+                <div style="font-size:14px; font-weight:700; color:var(--ch-green);">None ✓</div>
+              </div>
+              <div style="background:var(--ch-bg-subtle); border-radius:8px; padding:10px 12px;">
+                <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:3px;">Title</div>
+                <div style="font-size:14px; font-weight:700; color:var(--ch-green);">Clean ✓</div>
+              </div>
+              <div style="background:var(--ch-bg-subtle); border-radius:8px; padding:10px 12px;">
+                <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:3px;">Recalls</div>
+                <div style="font-size:14px; font-weight:700; color:var(--ch-green);">None ✓</div>
+              </div>
+              <div style="background:var(--ch-bg-subtle); border-radius:8px; padding:10px 12px;">
+                <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:3px;">Theft</div>
+                <div style="font-size:14px; font-weight:700; color:var(--ch-green);">None ✓</div>
+              </div>
+              <div style="background:var(--ch-bg-subtle); border-radius:8px; padding:10px 12px;">
+                <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:3px;">Risk</div>
+                <div style="font-size:14px; font-weight:700; color:var(--ch-text-1);">95/100</div>
+              </div>
             </div>
-            <div style="background:var(--ch-ok-bg);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;">
-              <span style="font-size:18px;">✅</span>
+            <div style="background:var(--ch-green-light); border-radius:8px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
+              <span style="font-size:16px;">✅</span>
               <div>
-                <div style="font-size:13px;font-weight:600;color:var(--ch-ok);">Clean Vehicle — Safe to Buy</div>
-                <div style="font-size:12px;color:var(--ch-ok);opacity:.8;">No red flags in USA records</div>
+                <div style="font-size:13px; font-weight:600; color:var(--ch-green);">Clean Vehicle — Safe to Buy</div>
+                <div style="font-size:12px; color:var(--ch-green); opacity:.8;">No red flags in USA records</div>
               </div>
             </div>
           </div>
@@ -270,75 +282,80 @@
   </div>
 </section>
 
-<!-- ═══════════════ PRICING TEASER ═══════════════ -->
-<section class="section">
-  <div class="container-sm text-center">
-    <div class="section-label">Pricing</div>
-    <h2 class="section-title">One Report. Full Truth.<br>₦15,000.</h2>
-    <p class="section-sub" style="margin:12px auto 40px;">That's less than a tank of fuel. The cost of not checking could be your entire car investment.</p>
-    <div class="home-pricing-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:0 auto 40px;">
-      <div style="background:var(--ch-navy);border:2px solid var(--ch-blue);border-radius:var(--r-lg);padding:28px 20px;text-align:center;position:relative;">
-        <div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--ch-blue);color:white;font-size:10px;font-weight:700;padding:3px 12px;border-radius:99px;white-space:nowrap;">SINGLE REPORT</div>
-        <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">US Vehicle Report</div>
-        <div class="font-display" style="font-size:28px;font-weight:800;color:white;">₦15,000</div>
-        <div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:4px;">Full history + AI summary</div>
+<!-- ═══════════ PRICING ═══════════ -->
+<section style="background:var(--ch-bg-subtle); padding:80px 24px;">
+  <div style="max-width:820px; margin:0 auto; text-align:center;">
+    <div class="ch-section-label">Pricing</div>
+    <h2 style="font-size:clamp(24px,3vw,36px); font-weight:800; color:var(--ch-text-1); margin-bottom:12px;">One Report. Full Truth.</h2>
+    <p style="font-size:16px; color:var(--ch-text-secondary); margin-bottom:40px;">That's less than a tank of fuel. The cost of not checking could be your entire investment.</p>
+
+    <div class="home-price-grid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:32px;">
+
+      <div class="ch-card" style="border-radius:var(--ch-radius-lg); border:2px solid var(--ch-blue); box-shadow:var(--shadow-blue); position:relative; padding:28px 20px; text-align:center;">
+        <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--ch-blue); color:white; font-size:10px; font-weight:700; padding:3px 12px; border-radius:99px; white-space:nowrap;">SINGLE REPORT</div>
+        <div style="font-size:12px; font-weight:600; color:var(--ch-text-3); text-transform:uppercase; letter-spacing:.07em; margin-bottom:8px;">US Vehicle Report</div>
+        <div style="font-size:32px; font-weight:800; color:var(--ch-blue); margin-bottom:4px;">₦15,000</div>
+        <div style="font-size:13px; color:var(--ch-text-muted);">Full history + AI summary</div>
       </div>
-      <div style="background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px 20px;text-align:center;">
-        <div style="font-size:12px;font-weight:600;color:var(--ch-text-3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">3-Report Bundle</div>
-        <div class="font-display" style="font-size:28px;font-weight:800;color:var(--ch-text-1);">₦35,000</div>
-        <div style="font-size:13px;color:var(--ch-text-3);margin-top:4px;">Save ₦10,000</div>
+
+      <div class="ch-card" style="border-radius:var(--ch-radius-lg); padding:28px 20px; text-align:center;">
+        <div style="font-size:12px; font-weight:600; color:var(--ch-text-3); text-transform:uppercase; letter-spacing:.07em; margin-bottom:8px;">3-Report Bundle</div>
+        <div style="font-size:32px; font-weight:800; color:var(--ch-text-1); margin-bottom:4px;">₦35,000</div>
+        <div style="font-size:13px; color:var(--ch-text-muted);">Save ₦10,000</div>
       </div>
-      <div style="background:var(--ch-surface);border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px 20px;text-align:center;">
-        <div style="font-size:12px;font-weight:600;color:var(--ch-text-3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">5-Report Bundle</div>
-        <div class="font-display" style="font-size:28px;font-weight:800;color:var(--ch-text-1);">₦50,000</div>
-        <div style="font-size:13px;color:var(--ch-text-3);margin-top:4px;">Save ₦25,000</div>
+
+      <div class="ch-card" style="border-radius:var(--ch-radius-lg); padding:28px 20px; text-align:center;">
+        <div style="font-size:12px; font-weight:600; color:var(--ch-text-3); text-transform:uppercase; letter-spacing:.07em; margin-bottom:8px;">5-Report Bundle</div>
+        <div style="font-size:32px; font-weight:800; color:var(--ch-text-1); margin-bottom:4px;">₦50,000</div>
+        <div style="font-size:13px; color:var(--ch-text-muted);">Save ₦25,000</div>
       </div>
+
     </div>
     <a href="{% url 'vehicles:pricing' %}" class="btn btn-primary">See Full Pricing →</a>
   </div>
 </section>
 
-<!-- ═══════════════ TESTIMONIALS ═══════════════ -->
-<section class="section" style="background:var(--ch-surface);">
+<!-- ═══════════ TESTIMONIALS ═══════════ -->
+<section style="background:white; padding:80px 24px;">
   <div class="container">
-    <div class="text-center" style="margin-bottom:40px;">
-      <div class="section-label">Trusted in Nigeria</div>
-      <h2 class="section-title">What Our Users Say</h2>
+    <div style="text-align:center; margin-bottom:40px;">
+      <div class="ch-section-label">Trusted in Nigeria</div>
+      <h2 style="font-size:clamp(24px,3vw,36px); font-weight:800; color:var(--ch-text-1);">What Our Users Say</h2>
     </div>
-    <div class="home-3col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+    <div class="home-test-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
 
-      <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px;">
-        <div style="color:#F59E0B;font-size:14px;margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
-        <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">"The Tokunbo I was about to buy had a salvage title and had been in two accidents in Texas. CarHaki saved me over ₦3 million. Every Nigerian buying from Benin should use this first."</p>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--ch-navy);flex-shrink:0;">AO</div>
+      <div class="ch-card" style="border-radius:var(--ch-radius-lg);">
+        <div style="color:#F59E0B; font-size:14px; margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
+        <p style="font-size:14px; color:var(--ch-text-secondary); line-height:1.7; margin-bottom:16px;">"The Tokunbo I was about to buy had a salvage title and had been in two accidents in Texas. CarHaki saved me over ₦3 million. Every Nigerian buying from Benin should use this first."</p>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:36px; height:36px; border-radius:50%; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:var(--ch-blue); flex-shrink:0;">AO</div>
           <div>
-            <div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">Adebayo Okafor</div>
-            <div style="font-size:12px;color:var(--ch-text-3);">Lagos, Nigeria</div>
+            <div style="font-size:14px; font-weight:600; color:var(--ch-text-1);">Adebayo Okafor</div>
+            <div style="font-size:12px; color:var(--ch-text-muted);">Lagos, Nigeria</div>
           </div>
         </div>
       </div>
 
-      <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px;">
-        <div style="color:#F59E0B;font-size:14px;margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
-        <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">"I now run a CarHaki check on every car I source from Cotonou. It's made my dealership more professional and my customers trust me. Zero complaints since I started."</p>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--ch-navy);flex-shrink:0;">CU</div>
+      <div class="ch-card" style="border-radius:var(--ch-radius-lg);">
+        <div style="color:#F59E0B; font-size:14px; margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
+        <p style="font-size:14px; color:var(--ch-text-secondary); line-height:1.7; margin-bottom:16px;">"I now run a CarHaki check on every car I source from Cotonou. It's made my dealership more professional and my customers trust me. Zero complaints since I started."</p>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:36px; height:36px; border-radius:50%; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:var(--ch-blue); flex-shrink:0;">CU</div>
           <div>
-            <div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">Chukwuemeka Uba</div>
-            <div style="font-size:12px;color:var(--ch-text-3);">Dealer, Abuja</div>
+            <div style="font-size:14px; font-weight:600; color:var(--ch-text-1);">Chukwuemeka Uba</div>
+            <div style="font-size:12px; color:var(--ch-text-muted);">Dealer, Abuja</div>
           </div>
         </div>
       </div>
 
-      <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-lg);padding:28px;">
-        <div style="color:#F59E0B;font-size:14px;margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
-        <p style="font-size:14px;color:var(--ch-text-2);line-height:1.7;margin-bottom:16px;">"Paid via Paystack, report came in under a minute. The odometer history showed the car had been clocked — saved me from buying a 200,000-mile car disguised as a 60,000-mile one."</p>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:36px;height:36px;border-radius:50%;background:var(--ch-blue-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--ch-navy);flex-shrink:0;">FI</div>
+      <div class="ch-card" style="border-radius:var(--ch-radius-lg);">
+        <div style="color:#F59E0B; font-size:14px; margin-bottom:12px;" aria-label="5 stars">★★★★★</div>
+        <p style="font-size:14px; color:var(--ch-text-secondary); line-height:1.7; margin-bottom:16px;">"Paid via Paystack, report came in under a minute. The odometer history showed the car had been clocked — saved me from buying a 200,000-mile car disguised as a 60,000-mile one."</p>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:36px; height:36px; border-radius:50%; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:var(--ch-blue); flex-shrink:0;">FI</div>
           <div>
-            <div style="font-size:14px;font-weight:600;color:var(--ch-text-1);">Fatima Ibrahim</div>
-            <div style="font-size:12px;color:var(--ch-text-3);">Kano, Nigeria</div>
+            <div style="font-size:14px; font-weight:600; color:var(--ch-text-1);">Fatima Ibrahim</div>
+            <div style="font-size:12px; color:var(--ch-text-muted);">Kano, Nigeria</div>
           </div>
         </div>
       </div>
@@ -347,15 +364,15 @@
   </div>
 </section>
 
-<!-- ═══════════════ CTA ═══════════════ -->
-<section class="section">
+<!-- ═══════════ CTA ═══════════ -->
+<section style="padding:0 24px 80px;">
   <div class="container">
     <div class="cta-section">
       <h2 class="cta-title">Don't Buy a Tokunbo Blind.</h2>
       <p class="cta-sub">One report. Full truth. ₦15,000.</p>
       <div class="cta-actions">
         <a href="{% url 'vehicles:search' %}" class="btn btn-white btn-lg">Check a Car Now</a>
-        <a href="{% url 'vehicles:pricing' %}" class="btn btn-lg btn-ghost">See Pricing</a>
+        <a href="{% url 'vehicles:pricing' %}" class="btn btn-ghost btn-lg">See Pricing</a>
       </div>
     </div>
   </div>

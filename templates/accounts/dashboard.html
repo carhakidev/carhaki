@@ -4,76 +4,84 @@
 {% block title %}Dashboard — CarHaki{% endblock %}
 
 {% block content %}
-<div style="background:var(--surface);min-height:100vh;">
+<div style="background:var(--ch-bg); min-height:calc(100vh - var(--nav-h)); padding:32px 24px 80px;">
+<div style="max-width:900px; margin:0 auto;">
 
-  <!-- Dashboard header -->
-  <div style="background:var(--blue-deep);padding:36px 24px;">
-    <div class="container">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-        <div>
-          <div style="font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--blue-light);margin-bottom:6px;">My Dashboard</div>
-          <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:white;">Welcome back, {{ user.get_full_name|default:user.email|truncatechars:20 }}</h1>
-          <div style="font-size:13px;color:rgba(255,255,255,.45);margin-top:4px;">{{ user.email }}</div>
-        </div>
-        <a href="{% url 'vehicles:search' %}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> New Report</a>
-      </div>
+  <!-- Page header -->
+  <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+    <div>
+      <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--ch-blue); margin-bottom:4px;">My Dashboard</div>
+      <h1 style="font-size:24px; font-weight:800; color:var(--ch-text-1);">Welcome back, {{ user.get_full_name|default:user.email|truncatechars:24 }}</h1>
+      <div style="font-size:13px; color:var(--ch-text-muted); margin-top:2px;">{{ user.email }}</div>
+    </div>
+    <a href="{% url 'vehicles:home' %}" class="btn btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      New Report
+    </a>
+  </div>
 
-      <!-- Stats row -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px;">
-        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:16px 20px;">
-          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:white;">{{ reports.count|default:"0" }}</div>
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#6b7280;margin-top:4px;">Total Reports</div>
-        </div>
-        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:16px 20px;">
-          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:#34D399;">{{ clean_count|default:"0" }}</div>
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#6b7280;margin-top:4px;">Reports Completed</div>
-        </div>
-        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:16px 20px;">
-          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:#F87171;">{{ issues_count|default:"0" }}</div>
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#6b7280;margin-top:4px;">Reports Pending</div>
-        </div>
-        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:16px 20px;">
-          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:white;">₦{{ total_spent|default:"0" }}</div>
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#6b7280;margin-top:4px;">Total Spent</div>
-        </div>
-      </div>
+  <!-- Stats row -->
+  <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px;">
+    <div class="ch-card" style="border-radius:var(--ch-radius);">
+      <div style="font-size:28px; font-weight:800; color:var(--ch-text-1);">{{ reports.count|default:"0" }}</div>
+      <div style="font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-top:4px;">Total Reports</div>
+    </div>
+    <div class="ch-card" style="border-radius:var(--ch-radius);">
+      <div style="font-size:28px; font-weight:800; color:var(--ch-green);">{{ clean_count|default:"0" }}</div>
+      <div style="font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-top:4px;">Reports Completed</div>
+    </div>
+    <div class="ch-card" style="border-radius:var(--ch-radius);">
+      <div style="font-size:28px; font-weight:800; color:var(--ch-amber);">{{ issues_count|default:"0" }}</div>
+      <div style="font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-top:4px;">Reports Pending</div>
+    </div>
+    <div class="ch-card" style="border-radius:var(--ch-radius);">
+      <div style="font-size:28px; font-weight:800; color:var(--ch-text-1);">₦{{ total_spent|default:"0" }}</div>
+      <div style="font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-top:4px;">Total Spent</div>
     </div>
   </div>
 
-  <!-- Reports list -->
-  <div class="container" style="padding:32px 24px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
-      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--text-1);">My Reports</h2>
+  <!-- Reports section -->
+  <div class="ch-card" style="border-radius:var(--ch-radius-lg); padding:0; margin-bottom:20px; overflow:hidden;">
+    <div style="padding:20px 24px; border-bottom:1px solid var(--ch-border); display:flex; align-items:center; justify-content:space-between;">
+      <h2 style="font-size:17px; font-weight:700; color:var(--ch-text-1);">My Reports</h2>
     </div>
 
     {% if reports %}
-    <div style="display:flex;flex-direction:column;gap:12px;">
+    <div>
       {% for report in reports %}
-      <div style="background:white;border:1px solid var(--border);border-radius:var(--r-xl);padding:20px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;transition:box-shadow .15s;" onmouseover="this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.boxShadow='none'">
+      <div style="padding:18px 24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; border-bottom:1px solid var(--ch-border); transition:background .15s;"
+           onmouseover="this.style.background='var(--ch-bg-subtle)'"
+           onmouseout="this.style.background='white'">
+
         <!-- Grade circle -->
-        <div style="width:52px;height:52px;border-radius:50%;background:{% if report.overall_grade == 'A' %}var(--green-bg){% elif report.overall_grade == 'B' %}var(--amber-bg){% else %}var(--red-bg){% endif %};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:{% if report.overall_grade == 'A' %}var(--green-ok){% elif report.overall_grade == 'B' %}var(--amber-warn){% else %}var(--red-danger){% endif %};">{{ report.overall_grade|default:"–" }}</span>
+        <div style="width:44px; height:44px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:800;
+                    {% if report.overall_grade == 'A' %}background:var(--ch-green-light); color:var(--ch-green); border:2px solid var(--ch-green);
+                    {% elif report.overall_grade == 'B' %}background:#EFF6FF; color:#0284C7; border:2px solid #BAE6FD;
+                    {% elif report.overall_grade == 'C' %}background:var(--ch-amber-light); color:var(--ch-amber); border:2px solid #FDE68A;
+                    {% elif report.overall_grade %}background:var(--ch-red-light); color:var(--ch-red); border:2px solid #FECACA;
+                    {% else %}background:var(--ch-bg-subtle); color:var(--ch-text-muted); border:2px solid var(--ch-border);{% endif %}">
+          {{ report.overall_grade|default:"–" }}
         </div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--text-1);">
-            US Vehicle Report
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-3);">{{ report.search.identifier }}</span>
-            <span style="font-size:11px;color:var(--text-3);">·</span>
-            <span style="font-size:12px;color:var(--text-3);">{{ report.created_at|date:"M j, Y" }}</span>
-            <span class="badge {% if report.status == 'COMPLETED' %}badge-ok{% elif report.status == 'PROCESSING' %}badge-blue{% else %}badge-warn{% endif %}" style="font-size:10px;">
+
+        <div style="flex:1; min-width:0;">
+          <div style="font-size:15px; font-weight:700; color:var(--ch-text-1);">US Vehicle Report</div>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:3px; flex-wrap:wrap;">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ch-text-muted);">{{ report.search.identifier }}</span>
+            <span style="font-size:11px; color:var(--ch-border-strong);">·</span>
+            <span style="font-size:12px; color:var(--ch-text-muted);">{{ report.created_at|date:"M j, Y" }}</span>
+            <span class="badge {% if report.status == 'COMPLETED' %}badge-green{% elif report.status == 'PROCESSING' %}badge-blue{% else %}badge-amber{% endif %}" style="font-size:11px;">
               {{ report.status|title }}
             </span>
           </div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+
+        <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
           {% if report.status == 'COMPLETED' %}
-          <a href="{% url 'vehicles:report_detail' pk=report.id %}" class="btn btn-secondary btn-sm">View Report</a>
+          <a href="{% url 'vehicles:report_detail' pk=report.id %}" class="btn btn-outline btn-sm">View Report</a>
           {% elif report.status == 'PROCESSING' %}
-          <div style="display:flex;align-items:center;gap:6px;background:var(--blue-faint);border-radius:8px;padding:6px 12px;">
-            <span class="spinner" style="width:12px;height:12px;border-width:1.5px;"></span>
-            <span style="font-size:12px;color:var(--blue);">Processing...</span>
+          <div style="display:flex; align-items:center; gap:6px; background:var(--ch-blue-faint); border-radius:8px; padding:7px 14px;">
+            <span class="spinner" style="width:12px; height:12px; border-width:1.5px;"></span>
+            <span style="font-size:12px; font-weight:500; color:var(--ch-blue);">Processing…</span>
           </div>
           {% elif report.status == 'PENDING' %}
           {% if report.order %}<a href="{% url 'payments:initiate' order_id=report.order.id %}" class="btn btn-primary btn-sm">Complete Payment</a>{% endif %}
@@ -82,51 +90,57 @@
       </div>
       {% endfor %}
     </div>
+
     {% else %}
-    <div style="text-align:center;padding:80px 20px;background:white;border:1px solid var(--border);border-radius:var(--r-xl);">
-      <div style="font-size:48px;margin-bottom:16px;">🔍</div>
-      <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;color:var(--text-1);margin-bottom:8px;">No reports yet</h3>
-      <p style="font-size:15px;color:var(--text-3);margin-bottom:24px;max-width:380px;margin-left:auto;margin-right:auto;">Start by checking any Tokunbo car. Enter the 17-character VIN and get the full USA history report instantly.</p>
-      <a href="{% url 'vehicles:search' %}" class="btn btn-primary btn-lg"><i class="fa-solid fa-magnifying-glass"></i> Check Your First Car</a>
+    <div style="text-align:center; padding:64px 24px;">
+      <div style="font-size:48px; margin-bottom:16px;">🔍</div>
+      <h3 style="font-size:18px; font-weight:700; color:var(--ch-text-1); margin-bottom:8px;">No reports yet</h3>
+      <p style="font-size:14px; color:var(--ch-text-secondary); margin-bottom:24px; max-width:360px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        Check any Tokunbo car before buying. Enter the 17-character VIN and get the full USA history instantly.
+      </p>
+      <a href="{% url 'vehicles:home' %}" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Check Your First Car
+      </a>
     </div>
     {% endif %}
+  </div>
 
-    <!-- Account settings card -->
-    <div style="margin-top:28px;background:white;border:1px solid var(--border);border-radius:var(--r-xl);padding:24px;">
-      <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--text-1);margin-bottom:16px;">Account Settings</h3>
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
-        <div style="background:var(--surface);border-radius:var(--r-md);padding:14px 16px;">
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:4px;">Name</div>
-          <div style="font-size:15px;font-weight:500;color:var(--text-1);">{{ user.get_full_name|default:"Not set" }}</div>
-        </div>
-        <div style="background:var(--surface);border-radius:var(--r-md);padding:14px 16px;">
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:4px;">Email</div>
-          <div style="font-size:15px;font-weight:500;color:var(--text-1);">{{ user.email }}</div>
-        </div>
-        <div style="background:var(--surface);border-radius:var(--r-md);padding:14px 16px;">
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:4px;">Account Type</div>
-          <div style="font-size:15px;font-weight:500;color:var(--text-1);">{{ user.account_type|title|default:"Individual" }}</div>
-        </div>
-        <div style="background:var(--surface);border-radius:var(--r-md);padding:14px 16px;">
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:4px;">Member Since</div>
-          <div style="font-size:15px;font-weight:500;color:var(--text-1);">{{ user.date_joined|date:"M Y" }}</div>
-        </div>
+  <!-- Account settings -->
+  <div class="ch-card" style="border-radius:var(--ch-radius-lg);">
+    <h3 style="font-size:16px; font-weight:700; color:var(--ch-text-1); margin-bottom:18px;">Account Settings</h3>
+    <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:18px;">
+      <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:14px 16px;">
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ch-text-muted); margin-bottom:4px;">Name</div>
+        <div style="font-size:15px; font-weight:500; color:var(--ch-text-1);">{{ user.get_full_name|default:"Not set" }}</div>
       </div>
-      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
-        <a href="{% url 'accounts:profile' %}" class="btn btn-secondary btn-sm">Edit Profile</a>
-        <a href="{% url 'accounts:change_password' %}" class="btn btn-secondary btn-sm">Change Password</a>
+      <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:14px 16px;">
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ch-text-muted); margin-bottom:4px;">Email</div>
+        <div style="font-size:15px; font-weight:500; color:var(--ch-text-1);">{{ user.email }}</div>
+      </div>
+      <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:14px 16px;">
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ch-text-muted); margin-bottom:4px;">Account Type</div>
+        <div style="font-size:15px; font-weight:500; color:var(--ch-text-1);">Individual Buyer</div>
+      </div>
+      <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:14px 16px;">
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ch-text-muted); margin-bottom:4px;">Member Since</div>
+        <div style="font-size:15px; font-weight:500; color:var(--ch-text-1);">{{ user.date_joined|date:"M Y" }}</div>
       </div>
     </div>
-
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <a href="{% url 'accounts:profile' %}" class="btn btn-outline btn-sm">Edit Profile</a>
+      <a href="{% url 'accounts:change_password' %}" class="btn btn-outline btn-sm">Change Password</a>
+    </div>
   </div>
+
+</div>
 </div>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
-  // Auto-refresh processing reports every 15s
   {% if has_processing_reports %}
-  setTimeout(() => location.reload(), 15000);
+  setTimeout(function() { location.reload(); }, 15000);
   {% endif %}
 </script>
 {% endblock %}
