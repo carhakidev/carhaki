@@ -67,10 +67,10 @@ def generate_report(self, report_id: str):
         report.is_public = True
         report.save()
 
-        generate_report_pdf.delay(str(report.pk))
+        generate_report_pdf(str(report.pk))
 
         if report.user and report.user.email:
-            send_report_email.delay(str(report.pk))
+            send_report_email(str(report.pk))
 
     except Exception as exc:
         logger.exception(f'Error generating report {report_id}: {exc}')

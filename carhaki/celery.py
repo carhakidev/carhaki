@@ -8,8 +8,10 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Fix for Upstash rediss:// SSL requirement
 redis_url = os.getenv('REDIS_URL', '')
-if redis_url.startswith('rediss://'):
-    app.conf.broker_url = redis_url + '?ssl_cert_reqs=CERT_NONE'
-    app.conf.result_backend = redis_url + '?ssl_cert_reqs=CERT_NONE'
+if redis_url.startswith('rediss://') and 'ssl_cert_reqs' not in redis_url:
+    redis_url = redis_url + '?ssl_cert_reqs=CERT_NONE'
+
+app.conf.broker_url = redis_url
+app.conf.result_backend = redis_url
 
 app.autodiscover_tasks()
