@@ -79,8 +79,6 @@
 
     <!-- Trust pills -->
     <div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
-      {% for label in "NHTSA Records|50M+ Vehicles|Instant Results|₦15,000 per report"|split:"|" %}
-      {% endfor %}
       <span style="background:var(--ch-bg-subtle); border:1px solid var(--ch-border); border-radius:99px; padding:5px 14px; font-size:12px; font-weight:500; color:var(--ch-text-secondary);">🔒 NHTSA Recall Data</span>
       <span style="background:var(--ch-bg-subtle); border:1px solid var(--ch-border); border-radius:99px; padding:5px 14px; font-size:12px; font-weight:500; color:var(--ch-text-secondary);">✓ 50M+ USA Records</span>
       <span style="background:var(--ch-bg-subtle); border:1px solid var(--ch-border); border-radius:99px; padding:5px 14px; font-size:12px; font-weight:500; color:var(--ch-text-secondary);">⚡ Instant Results</span>
@@ -209,18 +207,21 @@
         <p style="font-size:15px; color:var(--ch-text-secondary); margin-bottom:28px; line-height:1.7;">Our reports pull from NMVTIS, NHTSA, state DMV records, and US insurance databases — combined into one clear, shareable report.</p>
 
         <div style="display:flex; flex-direction:column; gap:10px;">
-          {% for feat in "Full title history (salvage, rebuilt, flood)|Odometer timeline — detect rollback|Accident & damage records|Open NHTSA safety recalls|Theft records|AI plain-English summary|Overall grade (A–F) with risk score|PDF download + shareable link"|split:"|" %}
-          {% endfor %}
-          {% with feats="Full title history (salvage, rebuilt, flood),Odometer timeline — detect rollback,Accident & damage records,Open NHTSA safety recalls,Theft records,AI plain-English summary,Overall grade (A–F) with risk score,PDF download + shareable link" %}
-          {% for feat in feats|split:"," %}
+          {% for label in feat_list %}
           <div style="display:flex; align-items:center; gap:10px;">
-            <div class="feat-check">
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <span style="font-size:14px; color:var(--ch-text-2);">{{ feat }}</span>
+            <div class="feat-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span style="font-size:14px; color:var(--ch-text-2);">{{ label }}</span>
           </div>
+          {% empty %}
+          <div style="display:flex; align-items:center; gap:10px;"><div class="feat-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:14px; color:var(--ch-text-2);">Full title history (salvage, rebuilt, flood)</span></div>
+          <div style="display:flex; align-items:center; gap:10px;"><div class="feat-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:14px; color:var(--ch-text-2);">Odometer timeline — detect rollback</span></div>
+          <div style="display:flex; align-items:center; gap:10px;"><div class="feat-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:14px; color:var(--ch-text-2);">Accident &amp; damage records</span></div>
+          <div style="display:flex; align-items:center; gap:10px;"><div class="feat-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:14px; color:var(--ch-text-2);">Open NHTSA safety recalls</span></div>
+          <div style="display:flex; align-items:center; gap:10px;"><div class="feat-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:14px; color:var(--ch-text-2);">Theft records</span></div>
+          <div style="display:flex; align-items:center; gap:10px;"><div class="feat-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:14px; color:var(--ch-text-2);">AI plain-English summary</span></div>
+          <div style="display:flex; align-items:center; gap:10px;"><div class="feat-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:14px; color:var(--ch-text-2);">Overall grade (A–F) with risk score</span></div>
+          <div style="display:flex; align-items:center; gap:10px;"><div class="feat-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:14px; color:var(--ch-text-2);">PDF download + shareable link</span></div>
           {% endfor %}
-          {% endwith %}
         </div>
       </div>
 

@@ -95,13 +95,19 @@
     <div style="padding:24px 32px; border-bottom:1px solid var(--ch-border);">
       <p style="font-size:13px; font-weight:700; color:var(--ch-text-1); margin-bottom:12px;">Full Report Includes:</p>
       <div style="display:flex; flex-direction:column; gap:8px;">
-        {% for item in "Accident & damage history (USA records),Title brands (Salvage / Rebuilt / Flood / Not Actual Mileage),Odometer timeline — detect mileage fraud,Open NHTSA recall alerts + AI plain-English summary,Theft records + overall grade (A–F) with risk score"|split:"," %}
+        {% for label in preview_features %}
         <div style="display:flex; align-items:center; gap:10px;">
           <div style="width:20px; height:20px; border-radius:50%; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <span style="font-size:13px; color:var(--ch-text-secondary);">{{ item }}</span>
+          <span style="font-size:13px; color:var(--ch-text-secondary);">{{ label }}</span>
         </div>
+        {% empty %}
+        <div style="display:flex; align-items:center; gap:10px;"><div style="width:20px; height:20px; border-radius:50%; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:13px; color:var(--ch-text-secondary);">Accident &amp; damage history (USA records)</span></div>
+        <div style="display:flex; align-items:center; gap:10px;"><div style="width:20px; height:20px; border-radius:50%; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:13px; color:var(--ch-text-secondary);">Title brands (Salvage / Rebuilt / Flood / Not Actual Mileage)</span></div>
+        <div style="display:flex; align-items:center; gap:10px;"><div style="width:20px; height:20px; border-radius:50%; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:13px; color:var(--ch-text-secondary);">Odometer timeline — detect mileage fraud</span></div>
+        <div style="display:flex; align-items:center; gap:10px;"><div style="width:20px; height:20px; border-radius:50%; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:13px; color:var(--ch-text-secondary);">Open NHTSA recall alerts + AI plain-English summary</span></div>
+        <div style="display:flex; align-items:center; gap:10px;"><div style="width:20px; height:20px; border-radius:50%; background:var(--ch-blue-faint); display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="var(--ch-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span style="font-size:13px; color:var(--ch-text-secondary);">Theft records + overall grade (A–F) with risk score</span></div>
         {% endfor %}
       </div>
     </div>
