@@ -97,7 +97,7 @@ class VerifyPaymentView(View):
 
                 if order.report:
                     from apps.vehicles.tasks import generate_report
-                    generate_report.delay(str(order.report.pk))
+                    generate_report(str(order.report.pk))
                     logger.info(f'VerifyPaymentView: queued report for order {order.id}')
 
             messages.success(request, 'Payment confirmed! Your report is being generated.')
@@ -158,7 +158,7 @@ class PaystackWebhookView(View):
 
             if order.report:
                 from apps.vehicles.tasks import generate_report
-                generate_report.delay(str(order.report.pk))
+                generate_report(str(order.report.pk))
                 logger.info(f'PaystackWebhookView: queued report for order {order.id}')
 
         return HttpResponse(status=200)
