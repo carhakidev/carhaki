@@ -1,103 +1,119 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}{{ report.year }} {{ report.make }} {{ report.model }} — CarHaki Report{% endblock %}
-{% block meta_desc %}CarHaki vehicle history report for {{ report.chassis_number }}. Auction grade: {{ report.auction_grade }}. View the full history report.{% endblock %}
+{% block title %}{% if data.vehicle.year %}{{ data.vehicle.year }} {% endif %}{% if data.vehicle.make %}{{ data.vehicle.make }} {{ data.vehicle.model }}{% else %}{{ report.search.identifier }}{% endif %} — CarHaki Report{% endblock %}
+{% block meta_desc %}CarHaki US Vehicle History Report for {{ report.search.identifier }}. Overall grade: {{ report.overall_grade }}. View the full report.{% endblock %}
 
 {% block content %}
-<div style="background:var(--ch-surface);min-height:100vh;padding-bottom:80px;">
+<div style="background:var(--ch-bg); min-height:100vh; padding-bottom:80px;">
 
   <!-- Shared report banner -->
-  <div style="background:var(--ch-blue-faint);border-bottom:1px solid var(--ch-blue-pale);padding:12px 24px;">
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-      <div style="display:flex;align-items:center;gap:8px;">
+  <div style="background:var(--ch-blue-faint); border-bottom:1px solid var(--ch-blue-pale); padding:12px 24px;">
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+      <div style="display:flex; align-items:center; gap:8px;">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ch-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-        <span style="font-size:13px;color:var(--ch-blue);font-weight:500;">This report was shared with you by CarHaki</span>
+        <span style="font-size:13px; color:var(--ch-blue); font-weight:500;">This report was shared with you by CarHaki</span>
       </div>
-      <a href="{% url 'vehicles:search' %}" class="btn btn-primary btn-sm">Check Your Own Car →</a>
+      <a href="{% url 'vehicles:search' %}" class="btn btn-primary btn-sm">Check Your Own Car &rarr;</a>
     </div>
   </div>
 
   <!-- Report header -->
-  <div style="background:var(--ch-navy);padding:32px 24px;">
+  <div style="background:var(--ch-bg-dark); padding:32px 24px;">
     <div class="container" style="max-width:900px;">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:16px;">
         <div>
-          <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ch-blue-light);margin-bottom:8px;">Vehicle History Report</div>
-          <h1 class="font-display" style="font-size:clamp(20px,4vw,30px);font-weight:800;color:white;letter-spacing:-.3px;margin-bottom:8px;">
-            {{ report.year }} {{ report.make }} {{ report.model }}
+          <div style="font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#93C5FD; margin-bottom:8px;">US Vehicle History Report</div>
+          <h1 style="font-size:clamp(20px,4vw,30px); font-weight:800; color:white; letter-spacing:-.3px; margin-bottom:8px;">
+            {% if data.vehicle.year %}{{ data.vehicle.year }} {% endif %}{% if data.vehicle.make %}{{ data.vehicle.make }} {{ data.vehicle.model }}{% else %}{{ report.search.identifier }}{% endif %}
           </h1>
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ch-blue-light);">{{ report.chassis_number }}</span>
-            <span style="font-size:11px;color:rgba(255,255,255,.4);">·</span>
-            <span style="font-size:12px;color:rgba(255,255,255,.45);">Generated {{ report.created_at|date:"M j, Y" }}</span>
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:13px; color:#93C5FD;">{{ report.search.identifier }}</span>
+            <span style="font-size:11px; color:rgba(255,255,255,.4);">&middot;</span>
+            <span style="font-size:12px; color:rgba(255,255,255,.45);">Generated {{ report.created_at|date:"M j, Y" }}</span>
           </div>
         </div>
-        {% if report.auction_grade %}
-        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-lg);padding:14px 20px;text-align:center;flex-shrink:0;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:5px;">Auction Grade</div>
-          <div class="font-display" style="font-size:36px;font-weight:800;line-height:1;color:{% if report.auction_grade >= 4 %}#34D399{% elif report.auction_grade >= 3 %}#FCD34D{% else %}#F87171{% endif %};">{{ report.auction_grade }}</div>
+        {% if report.overall_grade %}
+        <div style="background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:var(--r-lg); padding:14px 20px; text-align:center; flex-shrink:0;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.4); margin-bottom:5px;">Overall Grade</div>
+          <div style="font-size:36px; font-weight:800; line-height:1;
+                      color:{% if report.overall_grade == 'A' %}#4ADE80{% elif report.overall_grade == 'B' %}#60A5FA{% elif report.overall_grade == 'C' %}#FCD34D{% else %}#F87171{% endif %};">
+            {{ report.overall_grade }}
+          </div>
         </div>
         {% endif %}
       </div>
     </div>
   </div>
 
-  <div style="max-width:900px;margin:0 auto;padding:28px 24px;">
+  <div style="max-width:900px; margin:0 auto; padding:28px 24px;">
 
     <!-- Verdict -->
-    <div style="background:white;border:1px solid {% if report.overall_grade == 'A' %}#6EE7B7{% elif report.overall_grade == 'B' %}var(--ch-blue-pale){% else %}#FCA5A5{% endif %};border-width:2px;border-radius:var(--r-xl);padding:24px;margin-bottom:20px;">
-      <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
-        <div style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;flex-shrink:0;background:{% if report.overall_grade == 'A' %}var(--ch-ok-bg){% elif report.overall_grade == 'B' %}var(--ch-blue-faint){% else %}var(--ch-danger-bg){% endif %};color:{% if report.overall_grade == 'A' %}var(--ch-ok){% elif report.overall_grade == 'B' %}var(--ch-blue){% else %}var(--ch-danger){% endif %};">
-          {{ report.overall_grade|default:"B" }}
+    <div style="background:white; border:2px solid {% if report.overall_grade == 'A' %}#6EE7B7{% elif report.overall_grade == 'B' %}var(--ch-blue-pale){% elif report.overall_grade == 'C' %}#FDE68A{% else %}#FCA5A5{% endif %}; border-radius:var(--ch-radius-lg); padding:24px; margin-bottom:20px;">
+      <div style="display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap;">
+        <div style="width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:800; flex-shrink:0;
+                    background:{% if report.overall_grade == 'A' %}var(--ch-ok-bg){% elif report.overall_grade == 'B' %}var(--ch-blue-faint){% elif report.overall_grade == 'C' %}var(--ch-amber-light){% else %}var(--ch-danger-bg){% endif %};
+                    color:{% if report.overall_grade == 'A' %}var(--ch-ok){% elif report.overall_grade == 'B' %}var(--ch-blue){% elif report.overall_grade == 'C' %}var(--ch-amber){% else %}var(--ch-danger){% endif %};">
+          {{ report.overall_grade|default:"&ndash;" }}
         </div>
         <div style="flex:1;">
-          <div class="font-display" style="font-size:17px;font-weight:800;color:var(--ch-text-1);margin-bottom:6px;">
-            {% if report.overall_grade == 'A' %}✅ Clean Vehicle — Recommended
-            {% elif report.overall_grade == 'B' %}⚠️ Minor Issues — Inspect Before Buying
-            {% else %}🚨 Significant Issues — Buy With Caution{% endif %}
+          <div style="font-size:17px; font-weight:800; color:var(--ch-text-1); margin-bottom:6px;">
+            {% if report.overall_grade == 'A' %}&check; Clean Vehicle &mdash; Recommended
+            {% elif report.overall_grade == 'B' %}&approx; Minor Issues &mdash; Inspect Before Buying
+            {% elif report.overall_grade == 'C' %}&#9888; Some Issues &mdash; Review Carefully
+            {% else %}&#128680; Significant Issues &mdash; Buy With Caution{% endif %}
           </div>
-          <p style="font-size:14px;color:var(--ch-text-3);line-height:1.7;margin:0;">{{ report.ai_summary|default:"Based on available Japan auction records, this vehicle's history has been reviewed. Always conduct a physical inspection before finalising your purchase." }}</p>
+          <p style="font-size:14px; color:var(--ch-text-secondary); line-height:1.7; margin:0;">
+            {{ report.ai_summary|default:"Based on available USA government records, this vehicle's history has been reviewed. Always conduct a physical inspection before finalising your purchase." }}
+          </p>
         </div>
       </div>
     </div>
 
-    <!-- Metrics grid -->
-    <div style="background:white;border:1px solid var(--ch-border);border-radius:var(--r-xl);padding:24px;margin-bottom:20px;">
-      <div class="font-display" style="font-size:14px;font-weight:700;color:var(--ch-navy);margin-bottom:16px;">Key Findings</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Mileage (Japan)</div>
-          <div class="font-display" style="font-size:16px;font-weight:700;color:{% if report.mileage_status == 'danger' %}var(--ch-danger){% elif report.mileage_status == 'warn' %}var(--ch-warn){% else %}var(--ch-text-1){% endif %};">{{ report.mileage_km|default:"—" }} km</div>
-        </div>
-        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Accidents</div>
-          <div class="font-display" style="font-size:16px;font-weight:700;color:{% if report.accident_status == 'none' %}var(--ch-ok){% elif report.accident_status == 'minor' %}var(--ch-warn){% else %}var(--ch-danger){% endif %};">
-            {% if report.accident_status == 'none' %}None ✓{% elif report.accident_status == 'minor' %}Minor{% else %}Major{% endif %}
+    <!-- Key Findings -->
+    <div style="background:white; border:1px solid var(--ch-border); border-radius:var(--ch-radius-lg); padding:24px; margin-bottom:20px;">
+      <div style="font-size:14px; font-weight:700; color:var(--ch-navy); margin-bottom:16px;">Key Findings</div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:14px 16px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Accidents</div>
+          <div style="font-size:16px; font-weight:700; color:{% if data.accidents %}var(--ch-danger){% else %}var(--ch-ok){% endif %};">
+            {% if data.accidents %}{{ data.accidents|length }} recorded{% else %}None &check;{% endif %}
           </div>
         </div>
-        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Frame Grade</div>
-          <div class="font-display" style="font-size:16px;font-weight:700;color:{% if report.frame_grade == 'A' %}var(--ch-ok){% else %}var(--ch-text-1){% endif %};">{{ report.frame_grade|default:"—" }}</div>
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:14px 16px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Title</div>
+          <div style="font-size:16px; font-weight:700; color:{% if data.brands %}var(--ch-danger){% else %}var(--ch-ok){% endif %};">
+            {% if data.brands %}{{ data.brands|join:", " }}{% else %}Clean &check;{% endif %}
+          </div>
         </div>
-        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Engine Grade</div>
-          <div class="font-display" style="font-size:16px;font-weight:700;color:var(--ch-text-1);">{{ report.engine_grade|default:"—" }}</div>
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:14px 16px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Safety Recalls</div>
+          <div style="font-size:16px; font-weight:700; color:{% if data.recalls %}var(--ch-amber){% else %}var(--ch-ok){% endif %};">
+            {% if data.recalls %}{{ data.recalls|length }} open{% else %}None &check;{% endif %}
+          </div>
         </div>
-        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Auction House</div>
-          <div class="font-display" style="font-size:13px;font-weight:600;color:var(--ch-text-1);">{{ report.auction_house|default:"—" }}</div>
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:14px 16px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Theft</div>
+          <div style="font-size:16px; font-weight:700; color:{% if data.theft %}var(--ch-danger){% else %}var(--ch-ok){% endif %};">
+            {% if data.theft %}Recorded{% else %}None &check;{% endif %}
+          </div>
         </div>
-        <div style="background:var(--ch-surface);border-radius:var(--r-md);padding:14px 16px;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ch-text-3);margin-bottom:4px;">Auction Date</div>
-          <div class="font-display" style="font-size:13px;font-weight:600;color:var(--ch-text-1);">{{ report.auction_date|default:"—" }}</div>
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:14px 16px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Risk Score</div>
+          <div style="font-size:16px; font-weight:700; color:var(--ch-text-1);">{{ report.risk_score|default:"&ndash;" }} / 100</div>
+        </div>
+        <div style="background:var(--ch-bg-subtle); border-radius:var(--ch-radius-sm); padding:14px 16px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--ch-text-muted); margin-bottom:4px;">Total Loss</div>
+          <div style="font-size:16px; font-weight:700; color:{% if data.total_loss %}var(--ch-danger){% else %}var(--ch-ok){% endif %};">
+            {% if data.total_loss %}Yes &mdash; Declared{% else %}No &check;{% endif %}
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- CTA for new visitors -->
+    <!-- CTA -->
     <div class="cta-section" style="padding:40px 32px;">
-      <h2 class="cta-title" style="font-size:22px;">Check Your Car's History Too</h2>
-      <p class="cta-sub" style="font-size:14px;margin-bottom:24px;">Don't buy any ex-Japan car without a CarHaki report. UGX 25,000 per report.</p>
+      <h2 class="cta-title" style="font-size:22px;">Check Your Tokunbo Car's History</h2>
+      <p class="cta-sub" style="font-size:14px; margin-bottom:24px;">Don't buy any Tokunbo car without a CarHaki report. &#8358;15,000 per report.</p>
       <div class="cta-actions">
         <a href="{% url 'vehicles:search' %}" class="btn btn-white">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -107,9 +123,9 @@
       </div>
     </div>
 
-    <div style="background:var(--ch-blue-faint);border:1px solid var(--ch-blue-pale);border-radius:var(--r-lg);padding:14px 18px;margin-top:16px;">
-      <p style="font-size:12px;color:var(--ch-text-3);line-height:1.65;margin:0;">
-        This report is generated from Japan auction records and import data. CarHaki provides this information in good faith but cannot guarantee completeness. Always inspect the vehicle physically before purchase.
+    <div style="background:var(--ch-blue-faint); border:1px solid var(--ch-blue-pale); border-radius:var(--ch-radius); padding:14px 18px; margin-top:16px;">
+      <p style="font-size:12px; color:var(--ch-text-secondary); line-height:1.65; margin:0;">
+        This report is generated from NMVTIS, NHTSA, US state DMV records, and US insurance databases. CarHaki provides this information in good faith but cannot guarantee completeness. Always inspect the vehicle physically before purchase.
       </p>
     </div>
 
