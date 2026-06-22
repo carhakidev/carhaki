@@ -39,6 +39,12 @@ if env('SENDGRID_API_KEY', default=''):
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+CORS_ALLOWED_ORIGINS = [
+    "https://carhaki.com",
+    "https://www.carhaki.com",
+]
+CORS_ALLOW_CREDENTIALS = True
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

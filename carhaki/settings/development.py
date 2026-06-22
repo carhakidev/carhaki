@@ -18,6 +18,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Relax rate limiting in dev
 AXES_ENABLED = False
 
+# Allow JWT cookies over http:// in local development
+JWT_AUTH_COOKIE_SECURE = False
+
 # Fall back to local-memory cache if Redis is not available in dev
 import environ as _environ_dev
 _env_dev = _environ_dev.Env()

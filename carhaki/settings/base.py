@@ -1,4 +1,6 @@
 from pathlib import Path
+from datetime import timedelta
+import os
 import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -27,6 +29,10 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'axes',
     'solo',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
 ]
 
 LOCAL_APPS = [
@@ -36,6 +42,7 @@ LOCAL_APPS = [
     'apps.payments',
     'apps.integrations',
     'apps.reports',
+    'apps.api',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -44,6 +51,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -168,6 +176,38 @@ AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default='eu-west-1')
 AWS_DEFAULT_ACL = 'private'
 AWS_S3_FILE_OVERWRITE = False
 
+# ── REST Framework ──────────────────────────────────────────
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'apps.api.authentication.CookieJWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+}
+
+# ── JWT ─────────────────────────────────────────────────────
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+JWT_AUTH_COOKIE = 'ch_access'
+JWT_AUTH_REFRESH_COOKIE = 'ch_refresh'
+JWT_AUTH_COOKIE_SECURE = True
+JWT_AUTH_COOKIE_HTTP_ONLY = True
+JWT_AUTH_COOKIE_SAMESITE = 'Lax'
+
+# ── CORS ─────────────────────────────────────────────────────
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+CORS_ALLOW_CREDENTIALS = True
+
 # Jazzmin admin theme
 JAZZMIN_SETTINGS = {
     'site_title': 'CarHaki Admin',
@@ -180,7 +220,6 @@ JAZZMIN_SETTINGS = {
     ],
     'icons': {
         'accounts.customuser': 'fas fa-users',
-        'accounts.dealerprofile': 'fas fa-building',
         'vehicles.vehiclereport': 'fas fa-car',
         'vehicles.vehiclesearch': 'fas fa-search',
         'payments.order': 'fas fa-credit-card',
