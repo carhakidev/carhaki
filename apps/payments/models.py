@@ -45,6 +45,7 @@ class Order(models.Model):
     paystack_reference = models.CharField(max_length=100, blank=True)
     paystack_access_code = models.CharField(max_length=100, blank=True)
     customer_email = models.EmailField(blank=True)
+    quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     paid_at = models.DateTimeField(null=True, blank=True)
 
