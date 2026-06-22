@@ -25,11 +25,11 @@
           <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:white;">{{ reports.count|default:"0" }}</div>
         </div>
         <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:16px 20px;">
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.4);margin-bottom:6px;">Clean Vehicles</div>
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.4);margin-bottom:6px;">Reports Completed</div>
           <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:#34D399;">{{ clean_count|default:"0" }}</div>
         </div>
         <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:16px 20px;">
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.4);margin-bottom:6px;">Issues Found</div>
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.4);margin-bottom:6px;">Reports Pending</div>
           <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:#F87171;">{{ issues_count|default:"0" }}</div>
         </div>
         <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:16px 20px;">
@@ -44,9 +44,6 @@
   <div class="container" style="padding:32px 24px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
       <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--text-1);">My Reports</h2>
-      <div style="display:flex;gap:8px;">
-        <a href="{% url 'vehicles:search' %}" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> New Check</a>
-      </div>
     </div>
 
     {% if reports %}
@@ -55,33 +52,30 @@
       <div style="background:white;border:1px solid var(--border);border-radius:var(--r-xl);padding:20px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;transition:box-shadow .15s;" onmouseover="this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.boxShadow='none'">
         <!-- Grade circle -->
         <div style="width:52px;height:52px;border-radius:50%;background:{% if report.overall_grade == 'A' %}var(--green-bg){% elif report.overall_grade == 'B' %}var(--amber-bg){% else %}var(--red-bg){% endif %};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:{% if report.overall_grade == 'A' %}var(--green-ok){% elif report.overall_grade == 'B' %}var(--amber-warn){% else %}var(--red-danger){% endif %};">{{ report.overall_grade|default:"B" }}</span>
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:{% if report.overall_grade == 'A' %}var(--green-ok){% elif report.overall_grade == 'B' %}var(--amber-warn){% else %}var(--red-danger){% endif %};">{{ report.overall_grade|default:"–" }}</span>
         </div>
         <div style="flex:1;min-width:0;">
           <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--text-1);">
-            {{ report.year }} {{ report.make }} {{ report.model }}
+            US Vehicle Report
           </div>
           <div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-3);">{{ report.chassis_number }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-3);">{{ report.search.identifier }}</span>
             <span style="font-size:11px;color:var(--text-3);">·</span>
             <span style="font-size:12px;color:var(--text-3);">{{ report.created_at|date:"M j, Y" }}</span>
-            <span class="badge {% if report.status == 'completed' %}badge-ok{% elif report.status == 'processing' %}badge-blue{% else %}badge-warn{% endif %}" style="font-size:10px;">
+            <span class="badge {% if report.status == 'COMPLETED' %}badge-ok{% elif report.status == 'PROCESSING' %}badge-blue{% else %}badge-warn{% endif %}" style="font-size:10px;">
               {{ report.status|title }}
             </span>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-          <span style="font-size:12px;color:var(--text-3);">
-            {% if report.auction_grade %}Grade {{ report.auction_grade }}{% endif %}
-          </span>
-          {% if report.status == 'completed' %}
+          {% if report.status == 'COMPLETED' %}
           <a href="{% url 'vehicles:report_detail' pk=report.id %}" class="btn btn-secondary btn-sm">View Report</a>
-          {% elif report.status == 'processing' %}
+          {% elif report.status == 'PROCESSING' %}
           <div style="display:flex;align-items:center;gap:6px;background:var(--blue-faint);border-radius:8px;padding:6px 12px;">
             <span class="spinner" style="width:12px;height:12px;border-width:1.5px;"></span>
             <span style="font-size:12px;color:var(--blue);">Processing...</span>
           </div>
-          {% elif report.status == 'pending' %}
+          {% elif report.status == 'PENDING' %}
           {% if report.order %}<a href="{% url 'payments:initiate' order_id=report.order.id %}" class="btn btn-primary btn-sm">Complete Payment</a>{% endif %}
           {% endif %}
         </div>

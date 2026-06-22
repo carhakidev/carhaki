@@ -65,8 +65,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         from apps.payments.models import Order
         all_reports = user.reports.all()
 
-        ctx['clean_count']  = all_reports.filter(overall_grade__in=['A', 'B']).count()
-        ctx['issues_count'] = all_reports.filter(overall_grade__in=['D', 'E', 'F']).count()
+        ctx['clean_count']  = all_reports.filter(status='COMPLETED').count()
+        ctx['issues_count'] = all_reports.filter(status__in=['PENDING', 'PROCESSING']).count()
 
         total_spent = Order.objects.filter(
             user=user,
