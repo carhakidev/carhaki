@@ -23,6 +23,7 @@ ALLOWED_HOSTS = _extra + ['.onrender.com', 'localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [f'https://{h}' for h in _extra if h not in ('localhost', '127.0.0.1')] + [
     'https://*.onrender.com',
+    'https://carhaki-web.vercel.app',
 ]
 
 # Use S3 for media files only when bucket is configured
@@ -42,6 +43,7 @@ else:
 CORS_ALLOWED_ORIGINS = [
     "https://carhaki.com",
     "https://www.carhaki.com",
+    "https://carhaki-web.vercel.app",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
